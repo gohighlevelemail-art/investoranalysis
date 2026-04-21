@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ThePlaybook</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#06090D;--surface:#0C1219;--s2:#111923;--s3:#172030;
+  --border:#1A2635;--b2:#243547;
+  --accent:#00C8FF;--green:#00E87A;--gold:#FFCA28;
+  --red:#FF3D5A;--orange:#FF7043;--purple:#B388FF;
+  --text:#DDE6EE;--muted:#4A6478;--muted2:#7A9BB0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospace;min-height:100vh;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* TOOLTIP */
+.tip{display:inline-flex;align-items:center;gap:5px;position:relative;}
+.tip-q{width:15px;height:15px;border-radius:50%;background:rgba(0,200,255,0.15);border:1px solid rgba(0,200,255,0.4);color:var(--accent);font-size:9px;font-weight:800;cursor:help;display:inline-flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;flex-shrink:0;transition:all .2s;}
+.tip-q:hover{background:var(--accent);color:var(--bg);}
+.tip-box{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0A1520;border:1px solid var(--accent);border-radius:10px;padding:13px 15px;width:250px;z-index:9999;pointer-events:none;box-shadow:0 8px 30px rgba(0,200,255,0.12);}
+.tip-box::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--accent);}
+.tip-q:hover+.tip-box,.tip:hover .tip-box{display:block;}
+.tip-title{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.tip-main{font-size:11px;color:var(--text);line-height:1.6;}
+.tip-kid{font-size:10px;color:var(--gold);margin-top:7px;padding-top:7px;border-top:1px solid var(--border);line-height:1.5;}
+.tip-kid::before{content:'🧒 Like you\'re 12: ';font-weight:700;}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:54px;border-bottom:1px solid var(--border);background:rgba(6,9,13,0.96);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-0.5px;}
+.logo em{color:var(--accent);font-style:normal;}
+.top-center{display:flex;align-items:center;gap:20px;}
+.clock{font-size:11px;color:var(--muted2);}
+.clock span{color:var(--green);}
+.top-right{display:flex;align-items:center;gap:10px;}
+.user-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--accent);padding:6px 14px;background:rgba(0,200,255,0.08);border:1px solid rgba(0,200,255,0.2);border-radius:6px;}
+.tbtn{padding:7px 14px;border-radius:6px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted2);letter-spacing:.4px;transition:all .2s;}
+.tbtn:hover{border-color:var(--accent);color:var(--accent);}
+.tbtn.save{background:var(--green);color:var(--bg);border-color:var(--green);}
+.tbtn.save:hover{background:#00FF8A;}
+
+/* SIDENAV */
+.sidenav{position:fixed;left:0;top:54px;bottom:0;width:210px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;overflow-y:auto;z-index:90;}
+.nav-section{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:2px;padding:0 20px 8px;text-transform:uppercase;font-family:'Syne',sans-serif;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:10px 20px;font-size:12px;color:var(--muted2);cursor:pointer;transition:all .15s;border-left:2px solid transparent;font-family:'Syne',sans-serif;font-weight:600;}
+.nav-item:hover{color:var(--text);background:var(--s2);}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(0,200,255,0.04);}
+.nav-icon{font-size:13px;width:16px;text-align:center;}
+.nav-div{height:1px;background:var(--border);margin:10px 20px;}
+
+/* MAIN */
+.main{margin-left:210px;padding:28px 32px;min-height:calc(100vh - 54px);}
+.sec{display:none;animation:fi .25s ease;}
+.sec.active{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* SECTION HEADER */
+.sh{margin-bottom:24px;}
+.sh h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px;}
+.sh p{color:var(--muted2);font-size:11px;margin-top:5px;}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.card+.card{margin-top:16px;}
+.card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+
+/* FORM ELEMENTS */
+.lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:7px;}
+.inp,.tarea,.sel{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:10px 13px;color:var(--text);font-size:12px;font-family:'IBM Plex Mono',monospace;transition:border-color .2s;}
+.inp:focus,.tarea:focus,.sel:focus{outline:none;border-color:var(--accent);}
+.tarea{resize:vertical;min-height:80px;}
+.sel{appearance:none;cursor:pointer;}
+.sel option{background:var(--s2);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.fg{margin-bottom:16px;}
+
+/* BUTTONS */
+.btn{padding:9px 18px;border-radius:7px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:none;letter-spacing:.4px;transition:all .2s;}
+.btn-p{background:var(--accent);color:var(--bg);}
+.btn-p:hover{background:#33D4FF;transform:translateY(-1px);}
+.btn-g{background:var(--green);color:var(--bg);}
+.btn-g:hover{background:#00FF8A;}
+.btn-o{background:transparent;border:1px solid var(--border);color:var(--muted2);}
+.btn-o:hover{border-color:var(--accent);color:var(--accent);}
+.btn-sm{padding:6px 13px;font-size:11px;}
+.btn-xs{padding:4px 10px;font-size:10px;}
+.btn-red{background:rgba(255,61,90,0.1);color:var(--red);border:1px solid rgba(255,61,90,0.3);}
+.btn-red:hover{background:rgba(255,61,90,0.2);}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+/* DIVIDER */
+.div{height:1px;background:var(--border);margin:24px 0;}
+
+/* TAGS */
+.tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;letter-spacing:.4px;}
+.tag-acq{background:rgba(255,202,40,0.12);color:var(--gold);}
+.tag-earn{background:rgba(0,200,255,0.12);color:var(--accent);}
+.tag-ipo{background:rgba(0,232,122,0.12);color:var(--green);}
+.tag-merger{background:rgba(179,136,255,0.12);color:var(--purple);}
+.tag-reg{background:rgba(255,112,67,0.12);color:var(--orange);}
+.tag-macro{background:rgba(0,200,255,0.08);color:var(--muted2);}
+.tag-split{background:rgba(0,232,122,0.08);color:var(--green);}
+
+/* SENTIMENT */
+.sent-row{display:flex;gap:7px;margin-top:10px;}
+.sent-btn{flex:1;padding:7px;border-radius:6px;border:1px solid var(--border);background:transparent;font-size:10px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif;letter-spacing:.4px;}
+.sent-btn.ron{color:var(--green);}
+.sent-btn.ron.sel{background:rgba(0,232,122,0.1);border-color:var(--green);}
+.sent-btn.neu{color:var(--gold);}
+.sent-btn.neu.sel{background:rgba(255,202,40,0.1);border-color:var(--gold);}
+.sent-btn.roff{color:var(--red);}
+.sent-btn.roff.sel{background:rgba(255,61,90,0.1);border-color:var(--red);}
+
+/* SUBSECTION TABS */
+.sub-tabs{display:flex;gap:2px;background:var(--s2);border-radius:8px;padding:3px;margin-bottom:20px;border:1px solid var(--border);}
+.sub-tab{flex:1;padding:8px;text-align:center;border-radius:6px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--muted2);}
+.sub-tab.active{background:var(--s3);color:var(--accent);border:1px solid rgba(0,200,255,0.2);}
+
+/* REGION CONTENT */
+.region-sec{display:none;}
+.region-sec.active{display:block;animation:fi .2s ease;}
+
+/* METRIC GRID */
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.metric-box{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.metric-name{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'Syne',sans-serif;display:flex;align-items:center;gap:5px;}
+.metric-inp{width:100%;background:transparent;border:none;color:var(--text);font-size:14px;font-family:'IBM Plex Mono',monospace;font-weight:500;padding:5px 0 0;outline:none;}
+.metric-inp::placeholder{color:var(--muted);font-size:12px;}
+
+/* SAVED PULSES */
+.pulse-card{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s;}
+.pulse-card:hover{border-color:var(--accent);background:var(--s3);}
+.pulse-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.pulse-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;}
+.pulse-date{font-size:10px;color:var(--muted);}
+.pulse-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.pulse-preview{font-size:11px;color:var(--muted2);line-height:1.5;margin-top:8px;}
+
+/* PROJECTS */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.proj-folder{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;position:relative;}
+.proj-folder:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,200,255,0.06);}
+.proj-folder-icon{font-size:24px;margin-bottom:10px;}
+.proj-folder-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:6px;}
+.proj-folder-meta{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:10px;}
+.proj-folder-tags{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap;}
+.new-folder{border:2px dashed var(--border);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:140px;gap:8px;}
+.new-folder:hover{border-color:var(--accent);background:rgba(0,200,255,0.03);}
+.new-folder-plus{font-size:28px;color:var(--muted);}
+.new-folder-text{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--muted);}
+
+/* PROJECT DETAIL */
+.proj-detail{display:none;}
+.proj-detail.open{display:block;animation:fi .2s ease;}
+.proj-breadcrumb{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted2);margin-bottom:20px;cursor:pointer;}
+.proj-breadcrumb:hover span{color:var(--accent);}
+.proj-notes-area{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px;}
+.proj-note-item{padding:12px 0;border-bottom:1px solid var(--border);}
+.proj-note-item:last-child{border-bottom:none;}
+.proj-note-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.proj-note-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted2);}
+.proj-note-time{font-size:9px;color:var(--muted);}
+
+/* DEEP DIVE WIZARD */
+.wizard-steps{display:flex;gap:0;margin-bottom:28px;background:var(--s2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.wizard-step{flex:1;padding:12px 8px;text-align:center;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--muted);transition:all .2s;border-right:1px solid var(--border);cursor:pointer;}
+.wizard-step:last-child{border-right:none;}
+.wizard-step.done{color:var(--green);background:rgba(0,232,122,0.04);}
+.wizard-step.current{color:var(--accent);background:rgba(0,200,255,0.06);}
+.wiz-pane{display:none;}
+.wiz-pane.active{display:block;animation:fi .2s ease;}
+.wiz-q{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px;color:var(--text);}
+.wiz-hint{font-size:11px;color:var(--muted2);margin-bottom:18px;line-height:1.6;}
+.wiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
+
+/* SCORE BUTTONS */
+.score-row{display:flex;gap:6px;}
+.sc-btn{flex:1;padding:9px 4px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted2);font-size:12px;font-weight:700;cursor:pointer;text-align:center;font-family:'Syne',sans-serif;transition:all .15s;}
+.sc-btn:hover,.sc-btn.sel{border-color:var(--accent);color:var(--accent);background:rgba(0,200,255,0.08);}
+
+/* PORTFOLIO TABLE */
+.pt{width:100%;border-collapse:collapse;}
+.pt th{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:12px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.pt td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:12px;}
+.pt tr:last-child td{border-bottom:none;}
+.pt tr:hover td{background:var(--s2);}
+.pt-ticker{font-family:'Syne',sans-serif;font-weight:700;color:var(--accent);}
+.editable{cursor:text;border-radius:4px;padding:3px 6px;transition:background .15s;}
+.editable:hover{background:var(--s3);}
+.editable:focus{outline:none;background:var(--s3);border:1px solid var(--accent);border-radius:4px;}
+.pos{color:var(--green);}
+.neg{color:var(--red);}
+
+/* UPDATE LOG */
+.log-entry{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.log-entry:last-child{border-bottom:none;}
+.log-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px;}
+.log-time{font-size:10px;color:var(--muted);white-space:nowrap;min-width:120px;}
+.log-text{font-size:12px;color:var(--muted2);}
+.log-text strong{color:var(--text);}
+
+/* MODAL */
+.modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:999;display:flex;align-items:center;justify-content:center;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px;width:420px;position:relative;}
+.modal h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:5px;}
+.modal p{font-size:12px;color:var(--muted2);margin-bottom:24px;line-height:1.6;}
+.modal-inp{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-size:13px;font-family:'IBM Plex Mono',monospace;margin-bottom:12px;}
+.modal-inp:focus{outline:none;border-color:var(--accent);}
+.modal-btn{width:100%;padding:13px;background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;}
+.modal-btn:hover{background:#33D4FF;}
+.modal-note{font-size:10px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6;}
+
+/* NEW PROJECT MODAL */
+.npm{width:500px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--green);color:var(--bg);padding:11px 18px;border-radius:8px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;z-index:999;transform:translateY(50px);opacity:0;transition:all .3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* INFO BOX */
+.info-box{background:rgba(0,200,255,0.04);border:1px solid rgba(0,200,255,0.12);border-radius:10px;padding:14px 18px;margin-bottom:20px;}
+.info-box p{font-size:11px;color:var(--muted2);line-height:1.7;}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:50px 20px;}
+.empty-icon{font-size:36px;margin-bottom:12px;}
+.empty-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--muted2);margin-bottom:6px;}
+.empty-sub{font-size:11px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="modal-wrap" id="loginModal">
+  <div class="modal">
+    <h2>The<em style="color:var(--accent)">Playbook</em></h2>
+    <p>Your personal investment process tool. Enter your name to begin. Your work saves to this device automatically.</p>
+    <input class="modal-inp" type="text" id="loginName" placeholder="Your name or initials" maxlength="30"/>
+    <button class="modal-btn" onclick="doLogin()">Enter →</button>
+    <p class="modal-note">No password needed. Use the Export button to back up your work and move it to another device.</p>
+  </div>
+</div>
+
+<!-- NEW PROJECT MODAL -->
+<div class="modal-wrap" id="newProjModal" style="display:none;">
+  <div class="modal npm">
+    <h2>New Project</h2>
+    <p>Name your project and give it a type. You can add notes, sub-notes, and details once it's created.</p>
+    <div class="fg"><div class="lbl">Project Name</div><input class="modal-inp" id="np-name" placeholder="e.g. Chevron–Hess Acquisition Analysis" style="margin-bottom:0"/></div>
+    <div class="fg" style="margin-top:12px"><div class="lbl">Label / Type</div>
+      <select class="inp" id="np-type" style="background:var(--s2);margin-bottom:0">
+        <option value="">Select a label</option>
+        <option value="acq">Acquisition</option>
+        <option value="earn">Earnings</option>
+        <option value="ipo">IPO</option>
+        <option value="merger">Merger</option>
+        <option value="reg">Regulatory</option>
+        <option value="macro">Macro Event</option>
+        <option value="split">Stock Split</option>
+        <option value="other">Other / General</option>
+      </select>
+    </div>
+    <div class="fg" style="margin-top:12px"><div class="lbl">Initial Notes (optional)</div><textarea class="tarea" id="np-notes" placeholder="What's the initial idea or reason for this project?" style="margin-bottom:0;min-height:70px"></textarea></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-o" style="flex:1" onclick="closeNewProj()">Cancel</button>
+      <button class="btn btn-p" style="flex:2" onclick="createProject()">Create Project →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">The<em>Playbook</em></div>
+  <div class="top-center">
+    <div class="clock"><span id="liveDate"></span> &nbsp;·&nbsp; <span id="liveTime"></span></div>
+  </div>
+  <div class="top-right">
+    <div class="user-name" id="userDisplay">—</div>
+    <button class="tbtn save" onclick="saveAll()">💾 Save</button>
+    <button class="tbtn" onclick="exportData()">↗ Export</button>
+    <button class="tbtn" onclick="document.getElementById('importFile').click()">↙ Import</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"/>
+  </div>
+</div>
+
+<!-- SIDENAV -->
+<nav class="sidenav">
+  <div class="nav-section">Research Process</div>
+  <div class="nav-item active" onclick="nav('macro')" id="n-macro"><span class="nav-icon">🌐</span> Macro Pulse</div>
+  <div class="nav-item" onclick="nav('projects')" id="n-projects"><span class="nav-icon">📁</span> Projects</div>
+  <div class="nav-div"></div>
+  <div class="nav-section">Investment Work</div>
+  <div class="nav-item" onclick="nav('deepdive')" id="n-deepdive"><span class="nav-icon">🔬</span> Deep Dive</div>
+  <div class="nav-item" onclick="nav('ideas')" id="n-ideas"><span class="nav-icon">💡</span> Idea Board</div>
+  <div class="nav-div"></div>
+  <div class="nav-section">Portfolio</div>
+  <div class="nav-item" onclick="nav('portfolio')" id="n-portfolio"><span class="nav-icon">📊</span> My Portfolio</div>
+</nav>
+
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<div class="main">
+
+<!-- ═══════════ MACRO PULSE ═══════════ -->
+<div class="sec active" id="sec-macro">
+  <div class="sh">
+    <h1>🌐 Macro Pulse</h1>
+    <p>Read the global picture first. US → Europe → Asia. Form your own opinion, then save the snapshot.</p>
+  </div>
+
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="region('us',this)">🇺🇸 US Markets</div>
+    <div class="sub-tab" onclick="region('eu',this)">🇪🇺 European Markets</div>
+    <div class="sub-tab" onclick="region('asia',this)">🌏 Asian Markets</div>
+    <div class="sub-tab" onclick="region('pulses',this)">🗂 Saved Pulses</div>
+  </div>
+
+  <!-- US -->
+  <div class="region-sec active" id="region-us">
+    <div class="info-box"><p>Start here every session. The US market moves everything else. Your job: form a view on what's happening before you look at any individual stock.</p></div>
+
+    <div class="card">
+      <div class="card-title">📈 Key Indices
+        <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Key Indices</div><div class="tip-main">The main scorecards of the US stock market. S&P 500 tracks 500 big companies. NASDAQ is tech-heavy. Dow Jones is 30 major companies. Russell 2000 tracks small companies.</div><div class="tip-kid">Like checking the top scores in four different leagues. Each one tells you something different about the game.</div></div></div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-box"><div class="metric-name">S&P 500 <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">S&P 500</div><div class="tip-main">500 of the largest US companies. The single most-watched number in global finance. If this is up, most things are up.</div><div class="tip-kid">The report card for the 500 most popular kids in the school. If they're all doing well, school is doing well.</div></div></div></div><input class="metric-inp" placeholder="Enter value / change" id="us-sp500"/></div>
+        <div class="metric-box"><div class="metric-name">NASDAQ <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">NASDAQ</div><div class="tip-main">Tech-heavy index. Home to Apple, Google, Nvidia, Meta. When AI/tech is hot, NASDAQ outperforms. When rates rise, it often falls harder than the S&P.</div><div class="tip-kid">The tech kids' table. When gadgets and apps are popular, this table is the loudest. When nerds fall out of fashion, it gets quiet fast.</div></div></div></div><input class="metric-inp" placeholder="Enter value / change" id="us-nasdaq"/></div>
+        <div class="metric-box"><div class="metric-name">DOW JONES <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Dow Jones</div><div class="tip-main">Only 30 companies — older, more industrial. Boeing, Goldman, McDonald's. Less tech-forward. Good gauge of old-economy health.</div><div class="tip-kid">The 30 oldest, most established students. Not the cool new kids, but the dependable ones that have been around forever.</div></div></div></div><input class="metric-inp" placeholder="Enter value / change" id="us-dow"/></div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-box"><div class="metric-name">RUSSELL 2000 <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Russell 2000</div><div class="tip-main">Tracks 2,000 small US companies. Considered a leading indicator — small caps react faster to economic conditions. If Russell is weak while S&P is strong, the rally may not be broad-based.</div><div class="tip-kid">The junior varsity team. If they're losing while varsity is winning, it might mean the whole school isn't really doing great — just the star athletes.</div></div></div></div><input class="metric-inp" placeholder="Enter value / change" id="us-russ"/></div>
+        <div class="metric-box"><div class="metric-name">VIX <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">VIX — Fear Index</div><div class="tip-main">Measures expected market volatility. Below 15 = calm. 15–25 = moderate concern. Above 30 = fear. Above 40 = panic. Higher VIX = more uncertainty in the market.</div><div class="tip-kid">The school's stress level. If VIX is low, everyone's chill. If VIX is high, everyone's panicking about exams. You want to buy when everyone's panicking, sell when everyone's calm.</div></div></div></div><input class="metric-inp" placeholder="Enter level" id="us-vix"/></div>
+        <div class="metric-box"><div class="metric-name">10YR TREASURY <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">10-Year Treasury Yield</div><div class="tip-main">The interest rate the US government pays to borrow money for 10 years. Rising yields = bad for growth stocks and real estate. It's the global benchmark for the 'risk-free rate.'</div><div class="tip-kid">Imagine the safest possible investment — lending money to the US government. The rate they pay is the floor everything else is measured against. Higher floor = harder for risky bets to look attractive.</div></div></div></div><input class="metric-inp" placeholder="e.g. 4.32%" id="us-10yr"/></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="card-title">🏦 Fed & Macro Environment
+        <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Federal Reserve</div><div class="tip-main">The US central bank. They control interest rates. When they raise rates, borrowing costs go up and stocks often fall. When they cut, money flows easier and stocks often rise.</div><div class="tip-kid">The Fed is like the school principal who sets the rules. When they tighten rules (raise rates), everyone slows down. When they loosen up (cut rates), people get more freedom — and more willing to take risks.</div></div></div>
+      </div>
+      <div class="frow3">
+        <div class="fg"><div class="lbl">Fed Stance <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Fed Stance</div><div class="tip-main">Is the Fed currently raising rates (hawkish), cutting rates (dovish), or holding steady? This sets the tone for the entire market.</div><div class="tip-kid">Hawk = strict. Dove = relaxed. Hawk Fed = market gets nervous. Dove Fed = market gets excited.</div></div></div></div><select class="sel" id="us-fed"><option value="">Select stance</option><option>Hawkish — raising rates</option><option>Neutral — holding steady</option><option>Dovish — cutting / signalling cuts</option><option>Unclear / mixed signals</option></select></div>
+        <div class="fg"><div class="lbl">Inflation Reading <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Inflation (CPI)</div><div class="tip-main">How fast prices are rising. High inflation forces the Fed to raise rates. Low/falling inflation gives them room to cut. The target is around 2%.</div><div class="tip-kid">If everything at the store costs more than last year, that's inflation. When it's too high, the Fed makes borrowing expensive to slow people down from spending.</div></div></div></div><input class="inp" placeholder="e.g. CPI 3.2% YoY" id="us-cpi"/></div>
+        <div class="fg"><div class="lbl">Next Fed Meeting</div><input class="inp" placeholder="Date + expected decision" id="us-feddate"/></div>
+      </div>
+      <div class="fg"><div class="lbl">Your Read on the US Macro</div><textarea class="tarea" id="us-macro-notes" placeholder="What's your view on the US macro environment today? What are you watching? What feels mispriced?"></textarea></div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="card-title">🎯 Sector Check
+        <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Sector Rotation</div><div class="tip-main">Money moves between sectors depending on the macro environment. In a recession, defensive sectors (healthcare, utilities) do well. In a boom, cyclicals (tech, consumer, energy) lead. Spotting rotation early is an edge.</div><div class="tip-kid">It's like weather in different parts of the country. While it's raining in one place, it's sunny somewhere else. Money moves to wherever the conditions are best right now.</div></div></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><div class="lbl">Leading Sectors Today</div><input class="inp" placeholder="e.g. Energy, Defence, AI chips" id="us-leading"/></div>
+        <div class="fg"><div class="lbl">Lagging / Weak Sectors</div><input class="inp" placeholder="e.g. Real estate, small caps, biotech" id="us-lagging"/></div>
+      </div>
+      <div class="fg"><div class="lbl">Set Your Sentiment <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Market Sentiment</div><div class="tip-main">Your gut read on whether investors are in risk-seeking mode (buying aggressive bets) or risk-avoiding mode (moving to safety). This affects how you size positions.</div><div class="tip-kid">Is everyone at recess running around excitedly (Risk-On) or sitting quietly at their desks (Risk-Off)? The market has moods just like people do.</div></div></div></div>
+        <div class="sent-row">
+          <button class="sent-btn ron" onclick="sent(this)">RISK-ON ↑</button>
+          <button class="sent-btn neu" onclick="sent(this)">NEUTRAL →</button>
+          <button class="sent-btn roff" onclick="sent(this)">RISK-OFF ↓</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EUROPE -->
+  <div class="region-sec" id="region-eu">
+    <div class="info-box"><p>European markets open before the US. Use this section to pick up early signals. ECB policy, energy prices, and geopolitics (Ukraine, Middle East) are the key drivers here.</p></div>
+    <div class="card">
+      <div class="card-title">📈 Key Indices</div>
+      <div class="metric-row">
+        <div class="metric-box"><div class="metric-name">FTSE 100 (UK) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">FTSE 100</div><div class="tip-main">The top 100 companies on the London Stock Exchange. Heavy in banking, oil (Shell, BP), and mining. Often moves with commodity prices and the pound sterling.</div><div class="tip-kid">London's version of the S&P 500 but with more oil companies and banks. When oil is up, FTSE is usually happy.</div></div></div></div><input class="metric-inp" placeholder="Value / change" id="eu-ftse"/></div>
+        <div class="metric-box"><div class="metric-name">DAX (Germany) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">DAX</div><div class="tip-main">Germany's 40 largest companies. Very industrial and auto-heavy — BMW, Siemens, BASF. A proxy for European manufacturing health. Sensitive to China trade and energy prices.</div><div class="tip-kid">Germany builds a lot of cars and machines. When factories are busy and trade is flowing, DAX is happy. When energy gets expensive (like in 2022), Germany hurts more than others.</div></div></div></div><input class="metric-inp" placeholder="Value / change" id="eu-dax"/></div>
+        <div class="metric-box"><div class="metric-name">CAC 40 (France) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">CAC 40</div><div class="tip-main">France's top 40. Heavy in luxury goods — LVMH, Hermès, L'Oréal. Also has major defence (Airbus, Thales) and energy companies. A luxury goods bellwether.</div><div class="tip-kid">France's stock market has a lot of luxury brands. When rich people worldwide are buying Gucci and Louis Vuitton, CAC does well.</div></div></div></div><input class="metric-inp" placeholder="Value / change" id="eu-cac"/></div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-box"><div class="metric-name">EUR/USD <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">EUR/USD Exchange Rate</div><div class="tip-main">How many US dollars one Euro buys. Weak Euro makes European exports cheaper, helping exporters. Strong Euro hurts them but reduces import costs (like oil, which is priced in dollars).</div><div class="tip-kid">If 1 Euro used to buy $1.20 but now only buys $1.05, the Euro got weaker. European companies that sell to the US love a weak Euro — their stuff becomes cheaper for Americans to buy.</div></div></div></div><input class="metric-inp" placeholder="e.g. 1.0820" id="eu-eurusd"/></div>
+        <div class="metric-box"><div class="metric-name">Natural Gas (EU) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">European Natural Gas</div><div class="tip-main">Europe imports most of its natural gas. Energy prices directly affect European manufacturing costs and inflation. Since the Russia-Ukraine war this has been a major macro factor for the region.</div><div class="tip-kid">Europe needs to buy gas from other countries to heat homes and power factories. When gas prices spike, everything in Europe gets more expensive and companies suffer more.</div></div></div></div><input class="metric-inp" placeholder="Price / change" id="eu-gas"/></div>
+        <div class="metric-box"><div class="metric-name">ECB Rate <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">ECB — European Central Bank</div><div class="tip-main">Europe's version of the Federal Reserve. Sets interest rates for all Eurozone countries. ECB policy often lags the Fed — watch for divergence between the two as a trading signal.</div><div class="tip-kid">Same as the Fed but for Europe. They control how cheap or expensive it is to borrow money in euros.</div></div></div></div><input class="metric-inp" placeholder="e.g. 4.50%" id="eu-ecb"/></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="card-title">🗺 Geopolitical Flags <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Geopolitical Risk</div><div class="tip-main">Wars, political instability, sanctions, and trade disputes that can move markets suddenly and unpredictably. Europe is closer to active conflict zones, making it more sensitive to geopolitical events.</div><div class="tip-kid">When countries are fighting or imposing bans on each other, it disrupts trade and spooks investors. It's like when two families in the neighbourhood have a feud — it affects the whole street.</div></div></div></div>
+      <div class="fg"><textarea class="tarea" id="eu-geo" placeholder="Ukraine war updates, NATO developments, UK politics, ECB guidance, energy supply news..."></textarea></div>
+      <div class="fg"><div class="lbl">Sentiment</div>
+        <div class="sent-row">
+          <button class="sent-btn ron" onclick="sent(this)">RISK-ON ↑</button>
+          <button class="sent-btn neu" onclick="sent(this)">NEUTRAL →</button>
+          <button class="sent-btn roff" onclick="sent(this)">RISK-OFF ↓</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASIA -->
+  <div class="region-sec" id="region-asia">
+    <div class="info-box"><p>Asia closes before North America opens. Overnight moves here — especially China — often set the early tone for US pre-market trading. China data is uniquely hard to trust; factor that into your read.</p></div>
+    <div class="card">
+      <div class="card-title">📈 Key Indices</div>
+      <div class="metric-row">
+        <div class="metric-box"><div class="metric-name">NIKKEI 225 (Japan) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Nikkei 225</div><div class="tip-main">Japan's main index. Very sensitive to yen strength — a weak yen boosts Japanese exporters like Toyota and Sony. The Bank of Japan (BOJ) controls the yen through its interest rate policy.</div><div class="tip-kid">Japan sells lots of cars and electronics worldwide. When the yen is cheap, Japanese products cost less for other countries to buy, so the companies make more money.</div></div></div></div><input class="metric-inp" placeholder="Value / change" id="as-nikkei"/></div>
+        <div class="metric-box"><div class="metric-name">HANG SENG (HK) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Hang Seng</div><div class="tip-main">Hong Kong's stock exchange. Heavy in Chinese tech giants (Alibaba, Tencent) and Chinese banks. Sensitive to Beijing's regulatory decisions and US-China tensions.</div><div class="tip-kid">Think of it as China's tech companies trading on a freer exchange. When Beijing announces new rules for tech companies, Hang Seng moves immediately.</div></div></div></div><input class="metric-inp" placeholder="Value / change" id="as-hsi"/></div>
+        <div class="metric-box"><div class="metric-name">Shanghai Composite <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Shanghai Composite</div><div class="tip-main">Mainland China's main stock market. Often moves on PBOC (China's central bank) actions, government stimulus, and political signals. Less reliable as a free-market signal — the government actively manages it.</div><div class="tip-kid">China's government sometimes steps in to support its stock market directly. It's less of a free market than the US. The news behind the number matters more than the number itself.</div></div></div></div><input class="metric-inp" placeholder="Value / change" id="as-shcomp"/></div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-box"><div class="metric-name">USD/JPY (Yen) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">USD/JPY</div><div class="tip-main">How many yen one US dollar buys. A higher number = weaker yen. Watch closely — the BOJ's interest rate decisions cause massive yen moves that ripple into global markets.</div><div class="tip-kid">Japan's currency is the yen. When it gets weaker vs the dollar, it's like everything in Japan goes on sale for foreigners — which is good for Japanese companies selling abroad.</div></div></div></div><input class="metric-inp" placeholder="e.g. 151.20" id="as-usdjpy"/></div>
+        <div class="metric-box"><div class="metric-name">PBOC / BOJ Action <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">PBOC & BOJ</div><div class="tip-main">People's Bank of China and Bank of Japan. Both have significant global impact — PBOC through stimulus and yuan management, BOJ through its unique ultra-low interest rate policy. Note any interventions here.</div><div class="tip-kid">China and Japan's versions of the Fed. When they make big moves — like Japan raising rates for the first time in decades — global markets feel it immediately.</div></div></div></div><input class="metric-inp" placeholder="Any interventions / decisions" id="as-central"/></div>
+        <div class="metric-box"><div class="metric-name">Commodities Signal <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Commodities from Asia</div><div class="tip-main">China is the world's largest consumer of copper, iron ore, oil, and soybeans. Strong Chinese demand = higher commodity prices globally. Weak China = commodity prices fall.</div><div class="tip-kid">China buys enormous amounts of raw materials. If China's economy slows down and they buy less copper, the price of copper drops for everyone in the world.</div></div></div></div><input class="metric-inp" placeholder="Copper, iron ore, oil demand signals" id="as-comm"/></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="card-title">📝 Asian Macro Notes</div>
+      <div class="fg"><textarea class="tarea" id="as-notes" placeholder="Taiwan tensions, China property crisis, BOJ policy shifts, Korea/India developments, supply chain signals..."></textarea></div>
+      <div class="fg"><div class="lbl">Sentiment</div>
+        <div class="sent-row">
+          <button class="sent-btn ron" onclick="sent(this)">RISK-ON ↑</button>
+          <button class="sent-btn neu" onclick="sent(this)">NEUTRAL →</button>
+          <button class="sent-btn roff" onclick="sent(this)">RISK-OFF ↓</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVED PULSES -->
+  <div class="region-sec" id="region-pulses">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700">Saved Pulses</h2>
+        <p style="font-size:11px;color:var(--muted2);margin-top:4px">Your dated macro snapshots. Each one is a timestamped read of global markets.</p>
+      </div>
+      <button class="btn btn-p btn-sm" onclick="savePulse()">+ Save Today's Pulse</button>
+    </div>
+    <div id="pulse-list">
+      <div class="empty"><div class="empty-icon">🗂</div><div class="empty-title">No pulses saved yet</div><div class="empty-sub">Fill out the US, Europe, and Asia sections then hit "Save Today's Pulse"</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PROJECTS ═══════════ -->
+<div class="sec" id="sec-projects">
+  <div id="proj-list-view">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px">
+      <div class="sh" style="margin-bottom:0">
+        <h1>📁 Projects</h1>
+        <p>Create a folder for any deal, company, or event you're tracking. Name it yourself, label it, and keep all your notes in one place.</p>
+      </div>
+      <button class="btn btn-p" onclick="openNewProj()">+ New Project</button>
+    </div>
+    <div class="proj-grid" id="projGrid">
+      <div class="proj-folder new-folder" onclick="openNewProj()">
+        <div class="new-folder-plus">＋</div>
+        <div class="new-folder-text">New Project</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-detail" id="proj-detail">
+    <div class="proj-breadcrumb" onclick="closeProject()">
+      <span>← Back to Projects</span>
+    </div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div id="pd-tag-display"></div>
+        <h1 id="pd-title" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-top:6px"></h1>
+        <div id="pd-date" style="font-size:11px;color:var(--muted);margin-top:4px"></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-o btn-sm" onclick="addNote()">+ Add Note</button>
+        <button class="btn btn-red btn-sm" onclick="deleteProject()">Delete</button>
+      </div>
+    </div>
+
+    <div class="card" id="pd-notes-container">
+      <div class="card-title">📝 Project Notes</div>
+      <div id="pd-notes-list"></div>
+      <div style="margin-top:16px">
+        <div class="lbl">Add a note</div>
+        <textarea class="tarea" id="pd-note-input" placeholder="Paste news, write your thoughts, add a link, note a data point..."></textarea>
+        <button class="btn btn-g btn-sm" style="margin-top:10px" onclick="submitNote()">Add Note</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="card-title">🔗 Relevant Info & Links</div>
+      <div id="pd-links-list"></div>
+      <div class="frow" style="margin-top:14px">
+        <div><div class="lbl">Label</div><input class="inp" id="pd-link-label" placeholder="e.g. Reuters article, SEC filing, earnings call"/></div>
+        <div><div class="lbl">URL or Reference</div><input class="inp" id="pd-link-url" placeholder="Paste link or reference text"/></div>
+      </div>
+      <button class="btn btn-o btn-sm" style="margin-top:10px" onclick="addLink()">+ Attach Info</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ DEEP DIVE ═══════════ -->
+<div class="sec" id="sec-deepdive">
+  <div class="sh">
+    <h1>🔬 Deep Dive</h1>
+    <p>A step-by-step research interview. Work through it before entering any position.</p>
+  </div>
+
+  <div class="wizard-steps" id="wiz-bar">
+    <div class="wizard-step current" onclick="goStep(0)">1. Identity</div>
+    <div class="wizard-step" onclick="goStep(1)">2. Business</div>
+    <div class="wizard-step" onclick="goStep(2)">3. Moat</div>
+    <div class="wizard-step" onclick="goStep(3)">4. Catalysts</div>
+    <div class="wizard-step" onclick="goStep(4)">5. Risks</div>
+    <div class="wizard-step" onclick="goStep(5)">6. Prediction</div>
+    <div class="wizard-step" onclick="goStep(6)">7. Score</div>
+  </div>
+
+  <div class="card">
+
+    <!-- Step 0 -->
+    <div class="wiz-pane active" id="wiz-0">
+      <div class="wiz-q">What company or deal are you researching?</div>
+      <div class="wiz-hint">Start with the basics — name, ticker, what sector it's in, and which of your macro themes brought you here. If you can't connect it to a macro theme, question whether you should be looking at it at all.</div>
+      <div class="frow">
+        <div class="fg"><div class="lbl">Ticker Symbol <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Ticker Symbol</div><div class="tip-main">The short code a stock uses on the exchange. Like a username for a company.</div><div class="tip-kid">CVX = Chevron. AAPL = Apple. It's a nickname so traders can type fast.</div></div></div></div><input class="inp" id="dd-ticker" placeholder="e.g. CVX"/></div>
+        <div class="fg"><div class="lbl">Full Company Name</div><input class="inp" id="dd-name" placeholder="e.g. Chevron Corporation"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><div class="lbl">Sector <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Sector</div><div class="tip-main">The industry category. Tech, Energy, Healthcare, Financials, etc. Sectors behave differently in different macro environments.</div><div class="tip-kid">Like school subjects — Math, Science, English. Each one has different rules and each one does better or worse at different times.</div></div></div></div><select class="sel" id="dd-sector"><option value="">Select sector</option><option>Energy</option><option>Technology</option><option>Healthcare</option><option>Financials</option><option>Industrials</option><option>Materials</option><option>Consumer Discretionary</option><option>Consumer Staples</option><option>Utilities</option><option>Real Estate</option><option>Communication Services</option><option>Defence</option></select></div>
+        <div class="fg"><div class="lbl">Macro Theme Connection <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Macro Theme Link</div><div class="tip-main">Which big-picture force does this company benefit from? Every position should connect back to a thesis. Otherwise it's just gambling.</div><div class="tip-kid">If your big idea is "oil prices go up," then every oil company you pick should directly make more money when oil is expensive. You're checking the dots connect.</div></div></div></div><input class="inp" id="dd-theme" placeholder="e.g. Oil supply squeeze, AI infrastructure, NATO rearmament"/></div>
+      </div>
+      <div class="wiz-nav"><div></div><button class="btn btn-p" onclick="goStep(1)">Next: Business Model →</button></div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="wiz-pane" id="wiz-1">
+      <div class="wiz-q">How does this company actually make money?</div>
+      <div class="wiz-hint">Be specific. Don't just say "they sell oil." Who are their customers? What product or service do they provide? What are their main revenue streams? How does this macro theme hit their income statement directly?</div>
+      <div class="fg"><div class="lbl">Business Model <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Business Model</div><div class="tip-main">The specific mechanism by which a company earns revenue. Subscription? Transaction fees? Selling physical products? Licensing? Services?</div><div class="tip-kid">Apple sells iPhones (products) AND charges monthly fees for iCloud (subscription). Two completely different ways to make money — one is lumpy, one is steady.</div></div></div></div><textarea class="tarea" id="dd-biz" placeholder="How does this company make money? Who pays them, for what, and why do they keep coming back?"></textarea></div>
+      <div class="frow">
+        <div class="fg"><div class="lbl">Revenue Drivers <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Revenue Drivers</div><div class="tip-main">The specific factors that make the company's revenue go up or down. For an oil company: oil price and production volume. For a bank: interest rates and loan volume.</div><div class="tip-kid">What makes the cash register ring more? For a lemonade stand: hot weather, a busy street, the price of lemons. Those are the revenue drivers.</div></div></div></div><input class="inp" id="dd-revdrivers" placeholder="What makes revenue go up or down?"/></div>
+        <div class="fg"><div class="lbl">Key Customers / Market</div><input class="inp" id="dd-customers" placeholder="Who buys from them? B2B, B2C, government?"/></div>
+      </div>
+      <div class="wiz-nav"><button class="btn btn-o" onclick="goStep(0)">← Back</button><button class="btn btn-p" onclick="goStep(2)">Next: Moat →</button></div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="wiz-pane" id="wiz-2">
+      <div class="wiz-q">What protects this company from competition?</div>
+      <div class="wiz-hint">If this company is making great profits, why can't a competitor come in tomorrow and steal all their customers? The answer to that question is the moat. No moat = the profit eventually gets competed away.</div>
+      <div class="fg"><div class="lbl">Economic Moat <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Economic Moat</div><div class="tip-main">A durable competitive advantage. Types: cost advantage (cheapest to produce), network effect (more users = more valuable), switching costs (hard to leave), intangible assets (patents, brand), efficient scale (natural monopoly).</div><div class="tip-kid">A castle's moat stops enemies from getting in. A company's moat stops competitors from stealing customers. Warren Buffett invented this phrase. The wider the moat, the safer the profits.</div></div></div></div><textarea class="tarea" id="dd-moat" placeholder="What specifically makes it hard for a competitor to take this company's business?"></textarea></div>
+      <div class="fg"><div class="lbl">Moat Type</div><select class="sel" id="dd-moattype"><option value="">Select type</option><option>Cost advantage</option><option>Network effects</option><option>Switching costs</option><option>Intangible assets (brand/patents)</option><option>Efficient scale / natural monopoly</option><option>Regulatory protection</option><option>Minimal / weak moat</option></select></div>
+      <div class="wiz-nav"><button class="btn btn-o" onclick="goStep(1)">← Back</button><button class="btn btn-p" onclick="goStep(3)">Next: Catalysts →</button></div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="wiz-pane" id="wiz-3">
+      <div class="wiz-q">What specific events could move this stock?</div>
+      <div class="wiz-hint">A good thesis has a trigger — a specific event that will force the market to reprice this stock in your direction. List them. Then set an expected timeline for each one.</div>
+      <div class="fg"><div class="lbl">Upcoming Catalysts <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Catalyst</div><div class="tip-main">A specific, upcoming event that could cause the stock to re-rate — earnings, product launch, regulatory decision, court ruling, election, Fed meeting. The best trades have clear, near-term catalysts.</div><div class="tip-kid">A catalyst is the spark. The firework (stock price) was already loaded. The catalyst is what lights the fuse. "Earnings on May 22" is a catalyst. "I think the company will do well eventually" is NOT a catalyst.</div></div></div></div><textarea class="tarea" id="dd-cat" placeholder="List specific upcoming events: earnings date, product launches, court rulings, regulatory decisions, contract announcements..."></textarea></div>
+      <div class="frow">
+        <div class="fg"><div class="lbl">Nearest Catalyst Date</div><input class="inp" id="dd-catdate" placeholder="e.g. May 22 — Q1 Earnings"/></div>
+        <div class="fg"><div class="lbl">Time Horizon <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Time Horizon</div><div class="tip-main">How long you plan to hold. Short-term trades need near-term catalysts. Long-term holds can be more thesis-driven. Mismatch between time horizon and catalyst is a common mistake.</div><div class="tip-kid">Are you buying candy to eat today, or planting a tree you'll harvest in 5 years? The strategy is completely different.</div></div></div></div><select class="sel" id="dd-horizon"><option value="">Select</option><option>Short-term (days–weeks)</option><option>Medium-term (1–6 months)</option><option>Long-term (6 months – 2 years)</option><option>Multi-year conviction hold</option></select></div>
+      </div>
+      <div class="wiz-nav"><button class="btn btn-o" onclick="goStep(2)">← Back</button><button class="btn btn-p" onclick="goStep(4)">Next: Risks →</button></div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="wiz-pane" id="wiz-4">
+      <div class="wiz-q">What would prove you wrong?</div>
+      <div class="wiz-hint">This is the most important step. Before you put money in, decide what would force you to get out. Writing this now, before you have skin in the game, protects you from stubbornly holding a losing position.</div>
+      <div class="fg"><div class="lbl">Thesis Breakers <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Thesis Breaker</div><div class="tip-main">Specific events or data that would invalidate your investment thesis. If oil prices fall 30% and you're long CVX for the oil thesis — that's a thesis breaker. Know it in advance.</div><div class="tip-kid">Before betting your lunch money, decide: "If THIS happens, I'm out." Decide before the game, not during it. That stops you from being stubborn when you're losing.</div></div></div></div><textarea class="tarea" id="dd-break" placeholder="What specific news, data, or events would completely destroy the reason you entered this trade?"></textarea></div>
+      <div class="fg"><div class="lbl">Key Risks</div><textarea class="tarea" id="dd-risks" placeholder="Regulatory risk, management risk, macro risk, valuation risk, competition — what are the 2-3 biggest threats to this investment?"></textarea></div>
+      <div class="wiz-nav"><button class="btn btn-o" onclick="goStep(3)">← Back</button><button class="btn btn-p" onclick="goStep(5)">Next: Prediction →</button></div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="wiz-pane" id="wiz-5">
+      <div class="wiz-q">What do you think happens, and why?</div>
+      <div class="wiz-hint">Write your prediction with a timestamp. In 6 months you'll look back at this and see if your logic was right — even if the outcome was wrong. This is how you train your instincts over time.</div>
+      <div class="fg"><div class="lbl">Your Prediction <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Prediction Log</div><div class="tip-main">A dated record of your exact thinking. When the trade resolves, compare what you said to what happened. Right outcome for wrong reasons is as important to learn from as wrong outcomes.</div><div class="tip-kid">Detectives write down their guesses before they solve the case. That way they can see if their instincts were good or bad. You're training your investment instincts here.</div></div></div></div><textarea class="tarea" id="dd-pred" placeholder="What do you think happens to this stock over your time horizon? What's the bull case? What's the bear case? Where do you stand?" style="min-height:120px"></textarea></div>
+      <div class="frow">
+        <div class="fg"><div class="lbl">Price Target <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Price Target</div><div class="tip-main">The price you expect the stock to reach if your thesis plays out. Not a guarantee — a reference point. If it hits your target, you evaluate whether to sell or hold.</div><div class="tip-kid">You think this stock is worth $50. It currently trades at $35. Your price target is $50. If it gets there, you decide: take profits or let it run?</div></div></div></div><input class="inp" id="dd-target" placeholder="e.g. $220 in 12 months"/></div>
+        <div class="fg"><div class="lbl">Project / Label Tag <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Project Tag</div><div class="tip-main">Link this deep dive to one of your Projects. Keeps all your research organized by theme so you can come back to it anytime.</div><div class="tip-kid">Like putting this worksheet in the right folder. So when you look for your "Oil Thesis" folder, this research is already in there.</div></div></div></div><input class="inp" id="dd-label" placeholder="e.g. Oil Thesis, NATO Play, AI Infrastructure"/></div>
+      </div>
+      <div class="wiz-nav"><button class="btn btn-o" onclick="goStep(4)">← Back</button><button class="btn btn-p" onclick="goStep(6)">Next: Score It →</button></div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="wiz-pane" id="wiz-6">
+      <div class="wiz-q">How much do you believe in this idea?</div>
+      <div class="wiz-hint">Score your conviction from 1–10. This directly determines position sizing — high conviction gets bigger allocation. Be honest. A 6 should be sized differently than a 9.</div>
+      <div class="fg"><div class="lbl">Conviction Score (1–10) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Conviction Score</div><div class="tip-main">1 = speculative idea, allocate small. 5–6 = moderate confidence, medium size. 8–10 = high conviction, larger position. Never size a 4/10 idea the same as a 9/10 idea.</div><div class="tip-kid">If you're 90% sure you'll win, bet more. If you're 50/50, bet small. Save your biggest bets for when you're most sure. Protect your chips.</div></div></div></div>
+        <div class="score-row" id="wiz-score-row">
+          <button class="sc-btn" onclick="setWizScore(this,1)">1</button>
+          <button class="sc-btn" onclick="setWizScore(this,2)">2</button>
+          <button class="sc-btn" onclick="setWizScore(this,3)">3</button>
+          <button class="sc-btn" onclick="setWizScore(this,4)">4</button>
+          <button class="sc-btn" onclick="setWizScore(this,5)">5</button>
+          <button class="sc-btn" onclick="setWizScore(this,6)">6</button>
+          <button class="sc-btn" onclick="setWizScore(this,7)">7</button>
+          <button class="sc-btn" onclick="setWizScore(this,8)">8</button>
+          <button class="sc-btn" onclick="setWizScore(this,9)">9</button>
+          <button class="sc-btn" onclick="setWizScore(this,10)">10</button>
+        </div>
+      </div>
+      <div class="frow3" style="margin-top:20px">
+        <div class="fg"><div class="lbl">Stage</div><select class="sel" id="dd-stage"><option value="">Pipeline stage</option><option value="watching">Watching</option><option value="researching">Researching</option><option value="conviction">High Conviction</option><option value="ready">Ready to Enter</option></select></div>
+        <div class="fg"><div class="lbl">Position Size <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Position Sizing</div><div class="tip-main">What percentage of your total portfolio you're willing to allocate. High conviction ideas get more. Speculative ideas get less. Most professionals cap a single position at 5–15% of portfolio.</div><div class="tip-kid">You have $100. How much do you put on this one bet? A 10/10 conviction might get $20. A 5/10 conviction gets $5. Never put all your eggs in one basket.</div></div></div></div><input class="inp" id="dd-size" placeholder="e.g. 5% of portfolio"/></div>
+        <div class="fg"><div class="lbl">Entry Price Target</div><input class="inp" id="dd-entry" placeholder="e.g. $180–$186 range"/></div>
+      </div>
+      <div class="wiz-nav">
+        <button class="btn btn-o" onclick="goStep(5)">← Back</button>
+        <button class="btn btn-g" onclick="saveDive()">✓ Save to Idea Board →</button>
+      </div>
+    </div>
+
+  </div><!-- /card -->
+</div>
+
+<!-- ═══════════ IDEA BOARD ═══════════ -->
+<div class="sec" id="sec-ideas">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px">
+    <div class="sh" style="margin-bottom:0">
+      <h1>💡 Idea Board</h1>
+      <p>Your investment pipeline. Every idea from first spark to closed position.</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;" id="kanban-board">
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1.5px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">WATCHING <span id="k-cnt-watching" style="background:var(--border);border-radius:10px;padding:2px 7px;font-size:9px">0</span></div>
+      <div id="k-watching"></div>
+    </div>
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1.5px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">RESEARCHING <span id="k-cnt-researching" style="background:var(--border);border-radius:10px;padding:2px 7px;font-size:9px">0</span></div>
+      <div id="k-researching"></div>
+    </div>
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1.5px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">CONVICTION <span id="k-cnt-conviction" style="background:var(--border);border-radius:10px;padding:2px 7px;font-size:9px">0</span></div>
+      <div id="k-conviction"></div>
+    </div>
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--green);letter-spacing:1.5px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">ENTERED <span id="k-cnt-ready" style="background:var(--border);border-radius:10px;padding:2px 7px;font-size:9px">0</span></div>
+      <div id="k-ready"></div>
+    </div>
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1.5px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">CLOSED <span id="k-cnt-closed" style="background:var(--border);border-radius:10px;padding:2px 7px;font-size:9px">0</span></div>
+      <div id="k-closed"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PORTFOLIO ═══════════ -->
+<div class="sec" id="sec-portfolio">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px">
+    <div class="sh" style="margin-bottom:0">
+      <h1>📊 My Portfolio</h1>
+      <p>Click any value to edit it. Your track record is automatically logged below.</p>
+    </div>
+    <button class="btn btn-p" onclick="addPosition()">+ Add Position</button>
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="g4" style="margin-bottom:20px">
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Total Value <div class="tip" style="display:inline-flex"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Total Portfolio Value</div><div class="tip-main">Current market value of all your holdings combined.</div><div class="tip-kid">If you sold everything right now, how much would you walk away with?</div></div></div></div>
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800" id="stat-total">—</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Total Return <div class="tip" style="display:inline-flex"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Total Return</div><div class="tip-main">How much money you've made or lost since investing.</div><div class="tip-kid">You put in $100. It's worth $108. Return = $8 or 8%.</div></div></div></div>
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800" id="stat-return">—</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Positions</div>
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800" id="stat-positions">0</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Last Updated</div>
+      <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--muted2)" id="stat-updated">—</div>
+    </div>
+  </div>
+
+  <!-- Portfolio Table -->
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px">
+    <table class="pt" id="portfolio-table">
+      <thead>
+        <tr>
+          <th>Ticker / Name</th>
+          <th>Account <div class="tip" style="display:inline-flex"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Account Type</div><div class="tip-main">TFSA (Tax-Free Savings Account) — gains are tax-free in Canada. RRSP — tax-deferred retirement account. Non-registered — standard taxable account. Crypto — digital asset account.</div><div class="tip-kid">In Canada, TFSA is like a magic box where your investment gains don't get taxed. RRSP is for retirement savings. Most people want to fill TFSA first.</div></div></div></th>
+          <th>Quantity</th>
+          <th>Current Price</th>
+          <th>Total Value</th>
+          <th>Return $</th>
+          <th>Return %</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="portfolio-body">
+        <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted);font-size:12px">No positions yet. Click "+ Add Position" to get started.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Update Log -->
+  <div class="card">
+    <div class="card-title">📋 Update Log
+      <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Update Log</div><div class="tip-main">Every time you edit a price or position, it's timestamped here. This becomes a record of your portfolio's history — essential for showing investors your track record.</div><div class="tip-kid">Like a diary for your portfolio. Every change gets written down with the time and date, so you can always see what you changed and when.</div></div></div>
+    </div>
+    <div id="update-log">
+      <div style="font-size:11px;color:var(--muted);padding:10px 0">No updates logged yet. Edits to your portfolio will appear here.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<div class="toast" id="toast">✓ Saved</div>
+
+<script>
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+let state = {
+  user: '',
+  projects: [],
+  ideas: [],
+  portfolio: [],
+  updateLog: [],
+  pulses: [],
+  currentProject: null,
+  wizScore: null
+};
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+window.onload = () => {
+  updateClock();
+  setInterval(updateClock, 1000);
+  const saved = localStorage.getItem('pb2_state');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      state = { ...state, ...parsed };
+      if (state.user) {
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('userDisplay').textContent = state.user;
+        restoreInputs();
+        renderAll();
+      }
+    } catch(e) {}
+  }
+};
+
+function updateClock() {
+  const n = new Date();
+  const d = n.toLocaleDateString('en-CA',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+  const t = n.toLocaleTimeString('en-CA',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('liveDate').textContent = d;
+  document.getElementById('liveTime').textContent = t;
+}
+
+// ═══════════════════════════════════
+// LOGIN / SAVE / EXPORT
+// ═══════════════════════════════════
+function doLogin() {
+  const name = document.getElementById('loginName').value.trim();
+  if (!name) { alert('Please enter your name.'); return; }
+  state.user = name;
+  document.getElementById('loginModal').style.display = 'none';
+  document.getElementById('userDisplay').textContent = name;
+  saveAll();
+}
+
+function saveAll() {
+  // Capture all text inputs
+  const ids = ['us-sp500','us-nasdaq','us-dow','us-russ','us-vix','us-10yr','us-fed','us-cpi','us-feddate','us-macro-notes','us-leading','us-lagging','eu-ftse','eu-dax','eu-cac','eu-eurusd','eu-gas','eu-ecb','eu-geo','as-nikkei','as-hsi','as-shcomp','as-usdjpy','as-central','as-comm','as-notes'];
+  const inputs = {};
+  ids.forEach(id => { const el = document.getElementById(id); if(el) inputs[id] = el.value; });
+  state.inputs = inputs;
+  localStorage.setItem('pb2_state', JSON.stringify(state));
+  toast('✓ Saved to device');
+}
+
+function restoreInputs() {
+  if (!state.inputs) return;
+  Object.entries(state.inputs).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+}
+
+function exportData() {
+  saveAll();
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `playbook-export-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  toast('↗ Exported');
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      if (!parsed.user) { alert('Invalid Playbook file.'); return; }
+      if (!confirm(`Import data for "${parsed.user}"? This will overwrite your current session.`)) return;
+      state = { ...state, ...parsed };
+      localStorage.setItem('pb2_state', JSON.stringify(state));
+      document.getElementById('userDisplay').textContent = state.user;
+      document.getElementById('loginModal').style.display = 'none';
+      restoreInputs();
+      renderAll();
+      toast('✓ Imported successfully');
+    } catch(err) {
+      alert('Could not read file. Make sure it\'s a valid Playbook export.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+function nav(id) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.getElementById('n-'+id)?.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════
+// MACRO PULSE
+// ═══════════════════════════════════
+function region(id, tab) {
+  document.querySelectorAll('.region-sec').forEach(r => r.classList.remove('active'));
+  document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('region-'+id).classList.add('active');
+  tab.classList.add('active');
+}
+
+function sent(btn) {
+  btn.closest('.sent-row').querySelectorAll('.sent-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function savePulse() {
+  const title = prompt('Name this pulse snapshot:', 'Macro Pulse — ' + new Date().toLocaleDateString('en-CA'));
+  if (!title) return;
+  const pulse = {
+    id: Date.now(),
+    title,
+    date: new Date().toLocaleString('en-CA'),
+    usNotes: document.getElementById('us-macro-notes')?.value || '',
+    euNotes: document.getElementById('eu-geo')?.value || '',
+    asiaNotes: document.getElementById('as-notes')?.value || '',
+    usSP: document.getElementById('us-sp500')?.value || '',
+    usFed: document.getElementById('us-fed')?.value || '',
+  };
+  state.pulses = state.pulses || [];
+  state.pulses.unshift(pulse);
+  saveAll();
+  renderPulses();
+  toast('✓ Pulse saved');
+}
+
+function renderPulses() {
+  const list = document.getElementById('pulse-list');
+  if (!list) return;
+  const pulses = state.pulses || [];
+  if (!pulses.length) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">🗂</div><div class="empty-title">No pulses saved yet</div><div class="empty-sub">Fill out the US, Europe, and Asia sections then hit "Save Today\'s Pulse"</div></div>';
+    return;
+  }
+  list.innerHTML = pulses.map(p => `
+    <div class="pulse-card">
+      <div class="pulse-top">
+        <div class="pulse-title">${p.title}</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="pulse-date">${p.date}</div>
+          <button class="btn btn-red btn-xs" onclick="deletePulse(${p.id},event)">✕</button>
+        </div>
+      </div>
+      ${p.usSP ? `<div class="pulse-tags"><span class="tag tag-macro">S&P: ${p.usSP}</span>${p.usFed ? `<span class="tag tag-macro">${p.usFed}</span>` : ''}</div>` : ''}
+      ${p.usNotes ? `<div class="pulse-preview">${p.usNotes.slice(0,150)}${p.usNotes.length>150?'…':''}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function deletePulse(id, e) {
+  e.stopPropagation();
+  if (!confirm('Delete this pulse?')) return;
+  state.pulses = state.pulses.filter(p => p.id !== id);
+  saveAll();
+  renderPulses();
+}
+
+// ═══════════════════════════════════
+// PROJECTS
+// ═══════════════════════════════════
+const labelMap = {acq:'Acquisition',earn:'Earnings',ipo:'IPO',merger:'Merger',reg:'Regulatory',macro:'Macro Event',split:'Stock Split',other:'General'};
+const tagClass = {acq:'tag-acq',earn:'tag-earn',ipo:'tag-ipo',merger:'tag-merger',reg:'tag-reg',macro:'tag-macro',split:'tag-split',other:'tag-macro'};
+const folderIcon = {acq:'💼',earn:'📈',ipo:'🚀',merger:'🤝',reg:'⚖️',macro:'🌐',split:'✂️',other:'📂'};
+
+function openNewProj() { document.getElementById('newProjModal').style.display = 'flex'; }
+function closeNewProj() { document.getElementById('newProjModal').style.display = 'none'; }
+
+function createProject() {
+  const name = document.getElementById('np-name').value.trim();
+  const type = document.getElementById('np-type').value;
+  const notes = document.getElementById('np-notes').value.trim();
+  if (!name) { alert('Please enter a project name.'); return; }
+  const proj = {
+    id: Date.now(),
+    name,
+    type: type || 'other',
+    created: new Date().toLocaleString('en-CA'),
+    notes: notes ? [{id:Date.now(),text:notes,time:new Date().toLocaleString('en-CA')}] : [],
+    links: []
+  };
+  state.projects = state.projects || [];
+  state.projects.unshift(proj);
+  document.getElementById('np-name').value = '';
+  document.getElementById('np-type').value = '';
+  document.getElementById('np-notes').value = '';
+  closeNewProj();
+  saveAll();
+  renderProjects();
+  toast('✓ Project created');
+}
+
+function renderProjects() {
+  const grid = document.getElementById('projGrid');
+  const projects = state.projects || [];
+  const cards = projects.map(p => `
+    <div class="proj-folder" onclick="openProject(${p.id})">
+      <div class="proj-folder-icon">${folderIcon[p.type]||'📂'}</div>
+      <div class="proj-folder-title">${p.name}</div>
+      <div class="proj-folder-meta"><span>${p.created}</span></div>
+      <div class="proj-folder-tags"><span class="tag ${tagClass[p.type]||'tag-macro'}">${labelMap[p.type]||p.type}</span><span style="font-size:10px;color:var(--muted);margin-left:4px">${p.notes.length} note${p.notes.length!==1?'s':''}</span></div>
+    </div>
+  `).join('');
+  grid.innerHTML = cards + `<div class="proj-folder new-folder" onclick="openNewProj()"><div class="new-folder-plus">＋</div><div class="new-folder-text">New Project</div></div>`;
+}
+
+function openProject(id) {
+  const proj = state.projects.find(p => p.id === id);
+  if (!proj) return;
+  state.currentProject = id;
+  document.getElementById('proj-list-view').style.display = 'none';
+  const detail = document.getElementById('proj-detail');
+  detail.classList.add('open');
+  document.getElementById('pd-title').textContent = proj.name;
+  document.getElementById('pd-date').textContent = 'Created ' + proj.created;
+  document.getElementById('pd-tag-display').innerHTML = `<span class="tag ${tagClass[proj.type]||'tag-macro'}">${labelMap[proj.type]||proj.type}</span>`;
+  renderProjectNotes(proj);
+  renderProjectLinks(proj);
+}
+
+function closeProject() {
+  state.currentProject = null;
+  document.getElementById('proj-list-view').style.display = 'block';
+  document.getElementById('proj-detail').classList.remove('open');
+  document.getElementById('pd-note-input').value = '';
+}
+
+function renderProjectNotes(proj) {
+  const list = document.getElementById('pd-notes-list');
+  if (!proj.notes.length) { list.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:10px 0">No notes yet. Add your first one below.</div>'; return; }
+  list.innerHTML = proj.notes.map(n => `
+    <div class="proj-note-item">
+      <div class="proj-note-header">
+        <div class="proj-note-label">Note</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="proj-note-time">${n.time}</div>
+          <button class="btn btn-red btn-xs" onclick="deleteNote(${n.id})">✕</button>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap">${n.text}</div>
+    </div>
+  `).join('');
+}
+
+function renderProjectLinks(proj) {
+  const list = document.getElementById('pd-links-list');
+  if (!proj.links || !proj.links.length) { list.innerHTML = ''; return; }
+  list.innerHTML = proj.links.map(l => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+      <div><div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted2)">${l.label}</div><div style="font-size:11px;color:var(--accent);margin-top:3px;word-break:break-all">${l.url}</div></div>
+      <button class="btn btn-red btn-xs" onclick="deleteLink(${l.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function submitNote() {
+  const text = document.getElementById('pd-note-input').value.trim();
+  if (!text) return;
+  const proj = state.projects.find(p => p.id === state.currentProject);
+  if (!proj) return;
+  proj.notes.unshift({id:Date.now(),text,time:new Date().toLocaleString('en-CA')});
+  document.getElementById('pd-note-input').value = '';
+  saveAll();
+  renderProjectNotes(proj);
+  renderProjects();
+  toast('✓ Note added');
+}
+
+function deleteNote(id) {
+  const proj = state.projects.find(p => p.id === state.currentProject);
+  if (!proj) return;
+  proj.notes = proj.notes.filter(n => n.id !== id);
+  saveAll();
+  renderProjectNotes(proj);
+}
+
+function addLink() {
+  const label = document.getElementById('pd-link-label').value.trim();
+  const url = document.getElementById('pd-link-url').value.trim();
+  if (!label || !url) { alert('Fill in both fields.'); return; }
+  const proj = state.projects.find(p => p.id === state.currentProject);
+  if (!proj) return;
+  if (!proj.links) proj.links = [];
+  proj.links.push({id:Date.now(),label,url});
+  document.getElementById('pd-link-label').value = '';
+  document.getElementById('pd-link-url').value = '';
+  saveAll();
+  renderProjectLinks(proj);
+  toast('✓ Info attached');
+}
+
+function deleteLink(id) {
+  const proj = state.projects.find(p => p.id === state.currentProject);
+  if (!proj) return;
+  proj.links = proj.links.filter(l => l.id !== id);
+  saveAll();
+  renderProjectLinks(proj);
+}
+
+function deleteProject() {
+  if (!confirm('Delete this project and all its notes? This cannot be undone.')) return;
+  state.projects = state.projects.filter(p => p.id !== state.currentProject);
+  saveAll();
+  closeProject();
+  renderProjects();
+  toast('Project deleted');
+}
+
+// ═══════════════════════════════════
+// DEEP DIVE WIZARD
+// ═══════════════════════════════════
+let currentStep = 0;
+
+function goStep(n) {
+  document.querySelectorAll('.wiz-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('wiz-'+n).classList.add('active');
+  document.querySelectorAll('.wizard-step').forEach((s,i) => {
+    s.classList.remove('current','done');
+    if (i < n) s.classList.add('done');
+    else if (i === n) s.classList.add('current');
+  });
+  currentStep = n;
+}
+
+function setWizScore(btn, score) {
+  document.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  state.wizScore = score;
+}
+
+function saveDive() {
+  const ticker = document.getElementById('dd-ticker').value.trim();
+  if (!ticker) { alert('Please enter a ticker symbol.'); goStep(0); return; }
+  const idea = {
+    id: Date.now(),
+    ticker,
+    name: document.getElementById('dd-name').value,
+    sector: document.getElementById('dd-sector').value,
+    theme: document.getElementById('dd-theme').value,
+    biz: document.getElementById('dd-biz').value,
+    moat: document.getElementById('dd-moat').value,
+    moattype: document.getElementById('dd-moattype').value,
+    catalysts: document.getElementById('dd-cat').value,
+    catdate: document.getElementById('dd-catdate').value,
+    horizon: document.getElementById('dd-horizon').value,
+    risks: document.getElementById('dd-risks').value,
+    breaker: document.getElementById('dd-break').value,
+    prediction: document.getElementById('dd-pred').value,
+    target: document.getElementById('dd-target').value,
+    label: document.getElementById('dd-label').value,
+    stage: document.getElementById('dd-stage').value || 'watching',
+    size: document.getElementById('dd-size').value,
+    entry: document.getElementById('dd-entry').value,
+    score: state.wizScore || 5,
+    created: new Date().toLocaleString('en-CA')
+  };
+  state.ideas = state.ideas || [];
+  state.ideas.push(idea);
+  saveAll();
+  renderKanban();
+  toast('✓ Saved to Idea Board');
+  nav('ideas');
+}
+
+// ═══════════════════════════════════
+// IDEA BOARD / KANBAN
+// ═══════════════════════════════════
+function renderKanban() {
+  const stages = ['watching','researching','conviction','ready','closed'];
+  stages.forEach(stage => {
+    const col = document.getElementById('k-'+stage);
+    const cnt = document.getElementById('k-cnt-'+stage);
+    if (!col) return;
+    const ideas = (state.ideas||[]).filter(i => i.stage === stage);
+    if (cnt) cnt.textContent = ideas.length;
+    if (!ideas.length) { col.innerHTML = `<div style="font-size:10px;color:var(--muted);text-align:center;padding:16px 0">Empty</div>`; return; }
+    col.innerHTML = ideas.map(i => `
+      <div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'" onclick="ideaDetail(${i.id})">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--accent)">${i.ticker}</div>
+        <div style="font-size:10px;color:var(--muted2);margin-top:3px">${i.theme||i.sector||'—'}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:10px">
+          <div style="flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden"><div style="height:100%;background:var(--green);border-radius:2px;width:${i.score*10}%"></div></div>
+          <div style="font-size:10px;color:var(--muted2)">${i.score}/10</div>
+        </div>
+        <div style="font-size:9px;color:var(--muted);margin-top:6px">${i.created}</div>
+      </div>
+    `).join('');
+  });
+}
+
+function ideaDetail(id) {
+  const idea = state.ideas.find(i => i.id === id);
+  if (!idea) return;
+  const stages = ['watching','researching','conviction','ready','closed'];
+  const stageNames = ['Watching','Researching','Conviction','Entered','Closed'];
+  const info = Object.entries({
+    'Sector':idea.sector,'Theme':idea.theme,'Business':idea.biz,'Moat':idea.moat,'Catalysts':idea.catalysts,
+    'Next Catalyst':idea.catdate,'Time Horizon':idea.horizon,'Risks':idea.risks,
+    'Thesis Breaker':idea.breaker,'Prediction':idea.prediction,'Price Target':idea.target,
+    'Position Size':idea.size,'Entry Range':idea.entry,'Label':idea.label
+  }).filter(([k,v])=>v).map(([k,v])=>`<div style="margin-bottom:12px"><div style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">${k}</div><div style="font-size:12px;color:var(--text);line-height:1.6">${v}</div></div>`).join('');
+  const stageOpts = stages.map((s,i)=>`<option value="${s}"${idea.stage===s?' selected':''}>${stageNames[i]}</option>`).join('');
+  const html = `<div style="padding:0">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+      <div><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent)">${idea.ticker}</div><div style="font-size:12px;color:var(--muted2)">${idea.name||''}</div></div>
+      <div style="text-align:right"><div style="font-size:24px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green)">${idea.score}/10</div><div style="font-size:10px;color:var(--muted)">conviction</div></div>
+    </div>
+    ${info}
+    <div style="margin-top:16px"><div class="lbl">Move Pipeline Stage</div><select class="sel" onchange="moveStage(${id},this.value)">${stageOpts}</select></div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-red btn-sm" onclick="deleteIdea(${id})">Delete Idea</button>
+      <button class="btn btn-o btn-sm" onclick="document.getElementById('idea-modal').style.display='none'">Close</button>
+    </div>
+  </div>`;
+  let modal = document.getElementById('idea-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'idea-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:999;display:flex;align-items:center;justify-content:center;';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;width:500px;max-height:80vh;overflow-y:auto">${html}</div>`;
+  modal.style.display = 'flex';
+  modal.onclick = e => { if(e.target===modal) modal.style.display='none'; };
+}
+
+function moveStage(id, stage) {
+  const idea = state.ideas.find(i => i.id === id);
+  if (idea) { idea.stage = stage; saveAll(); renderKanban(); }
+}
+
+function deleteIdea(id) {
+  if (!confirm('Delete this idea?')) return;
+  state.ideas = state.ideas.filter(i => i.id !== id);
+  saveAll();
+  renderKanban();
+  document.getElementById('idea-modal').style.display = 'none';
+  toast('Idea deleted');
+}
+
+// ═══════════════════════════════════
+// PORTFOLIO
+// ═══════════════════════════════════
+function addPosition() {
+  const pos = {
+    id: Date.now(),
+    ticker: '',
+    name: '',
+    account: '',
+    qty: '',
+    price: '',
+    costBasis: '',
+    notes: ''
+  };
+  state.portfolio = state.portfolio || [];
+  state.portfolio.push(pos);
+  saveAll();
+  renderPortfolio();
+}
+
+function renderPortfolio() {
+  const tbody = document.getElementById('portfolio-body');
+  const positions = state.portfolio || [];
+  if (!positions.length) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted);font-size:12px">No positions yet. Click "+ Add Position" to get started.</td></tr>';
+    document.getElementById('stat-positions').textContent = '0';
+    document.getElementById('stat-total').textContent = '—';
+    document.getElementById('stat-return').textContent = '—';
+    return;
+  }
+  document.getElementById('stat-positions').textContent = positions.length;
+  tbody.innerHTML = positions.map(p => {
+    const val = (parseFloat(p.qty)||0) * (parseFloat(p.price)||0);
+    const cost = (parseFloat(p.qty)||0) * (parseFloat(p.costBasis)||0);
+    const ret = val - cost;
+    const retPct = cost ? ((ret/cost)*100).toFixed(2) : null;
+    const valStr = val ? '$'+val.toFixed(2) : '—';
+    const retStr = cost && val ? (ret>=0?'+':'')+ret.toFixed(2) : '—';
+    const retPctStr = retPct !== null ? (ret>=0?'+':'')+retPct+'%' : '—';
+    const retClass = ret > 0 ? 'pos' : ret < 0 ? 'neg' : '';
+    return `<tr>
+      <td><div class="pt-ticker editable" contenteditable="true" onblur="updateField(${p.id},'ticker',this.textContent)" data-ph="TICKER">${p.ticker||''}</div><div style="font-size:10px;color:var(--muted2);margin-top:2px" contenteditable="true" onblur="updateField(${p.id},'name',this.textContent)">${p.name||'<span style=color:var(--muted)>Company name</span>'}</div></td>
+      <td><select class="sel" style="font-size:11px;padding:5px 8px;width:auto" onchange="updateField(${p.id},'account',this.value)"><option value="">—</option><option${p.account==='TFSA'?' selected':''}>TFSA</option><option${p.account==='RRSP'?' selected':''}>RRSP</option><option${p.account==='Non-Reg'?' selected':''}>Non-Reg</option><option${p.account==='Crypto'?' selected':''}>Crypto</option><option${p.account==='USD Cash'?' selected':''}>USD Cash</option></select></td>
+      <td><div class="editable" contenteditable="true" onblur="updateField(${p.id},'qty',this.textContent)">${p.qty||''}</div></td>
+      <td><div class="editable" contenteditable="true" onblur="updatePriceField(${p.id},this.textContent)">${p.price||''}</div></td>
+      <td>${valStr}</td>
+      <td class="${retClass}">${retStr}</td>
+      <td class="${retClass}">${retPctStr}</td>
+      <td><div class="editable" style="font-size:11px;color:var(--muted2)" contenteditable="true" onblur="updateField(${p.id},'notes',this.textContent)">${p.notes||''}</div></td>
+      <td><button class="btn btn-red btn-xs" onclick="removePosition(${p.id})">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  // Update stats
+  let totalVal = 0, totalCost = 0;
+  positions.forEach(p => {
+    totalVal += (parseFloat(p.qty)||0)*(parseFloat(p.price)||0);
+    totalCost += (parseFloat(p.qty)||0)*(parseFloat(p.costBasis)||0);
+  });
+  document.getElementById('stat-total').textContent = totalVal ? '$'+totalVal.toFixed(2) : '—';
+  const totalRet = totalVal - totalCost;
+  const el = document.getElementById('stat-return');
+  if (totalCost && totalVal) {
+    el.textContent = (totalRet>=0?'+':'')+totalRet.toFixed(2) + ' (' + (totalRet>=0?'+':'') + ((totalRet/totalCost)*100).toFixed(2)+'%)';
+    el.className = totalRet >= 0 ? 'pos' : 'neg';
+  } else { el.textContent = '—'; }
+}
+
+function updateField(id, field, value) {
+  const pos = state.portfolio.find(p => p.id === id);
+  if (!pos) return;
+  const old = pos[field];
+  pos[field] = value.trim();
+  if (old !== pos[field]) {
+    addLog(`Updated <strong>${pos.ticker||'position'}</strong> — ${field}: "${old||'—'}" → "${pos[field]}"`);
+  }
+  saveAll();
+  renderPortfolio();
+}
+
+function updatePriceField(id, value) {
+  const pos = state.portfolio.find(p => p.id === id);
+  if (!pos) return;
+  const old = pos.price;
+  pos.price = value.trim();
+  if (!pos.costBasis && pos.price) pos.costBasis = pos.price;
+  if (old !== pos.price) {
+    addLog(`Price updated — <strong>${pos.ticker||'position'}</strong>: ${old||'—'} → ${pos.price}`);
+  }
+  saveAll();
+  renderPortfolio();
+}
+
+function removePosition(id) {
+  const pos = state.portfolio.find(p => p.id === id);
+  if (!confirm(`Remove ${pos?.ticker||'this position'}?`)) return;
+  addLog(`Removed position: <strong>${pos?.ticker||id}</strong>`);
+  state.portfolio = state.portfolio.filter(p => p.id !== id);
+  saveAll();
+  renderPortfolio();
+}
+
+function addLog(text) {
+  state.updateLog = state.updateLog || [];
+  state.updateLog.unshift({time: new Date().toLocaleString('en-CA'), text});
+  renderLog();
+  document.getElementById('stat-updated').textContent = new Date().toLocaleTimeString('en-CA',{hour:'2-digit',minute:'2-digit'});
+}
+
+function renderLog() {
+  const el = document.getElementById('update-log');
+  if (!el) return;
+  const log = state.updateLog || [];
+  if (!log.length) { el.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:10px 0">No updates logged yet.</div>'; return; }
+  el.innerHTML = log.slice(0,50).map(l => `
+    <div class="log-entry">
+      <div class="log-dot"></div>
+      <div class="log-time">${l.time}</div>
+      <div class="log-text">${l.text}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════
+// RENDER ALL
+// ═══════════════════════════════════
+function renderAll() {
+  renderProjects();
+  renderKanban();
+  renderPortfolio();
+  renderPulses();
+  renderLog();
+}
+
+// Unused stubs
+function addNote() { document.getElementById('pd-note-input')?.focus(); }
+</script>
+</body>
+</html>
