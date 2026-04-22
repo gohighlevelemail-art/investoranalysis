@@ -271,6 +271,34 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
 .gsb-global-label{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;font-family:'Syne',sans-serif;text-transform:uppercase;margin-bottom:4px;}
 .gsb-global-score{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
 
+
+/* README / REFERENCE GUIDE */
+.readme-wrap{max-width:900px;}
+.readme-chapter{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.readme-chapter-header{padding:16px 22px;background:var(--s2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.readme-chapter-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;gap:10px;}
+.readme-chapter-arrow{color:var(--muted);font-size:12px;transition:transform .2s;}
+.readme-chapter.open .readme-chapter-arrow{transform:rotate(180deg);}
+.readme-chapter-body{display:none;padding:20px 22px;}
+.readme-chapter.open .readme-chapter-body{display:block;}
+.readme-entry{padding:16px 0;border-bottom:1px solid var(--border);}
+.readme-entry:last-child{border-bottom:none;}
+.readme-entry-top{display:flex;align-items:flex-start;gap:16px;margin-bottom:10px;flex-wrap:wrap;}
+.readme-entry-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent);min-width:180px;}
+.readme-ticker{display:inline-block;padding:3px 10px;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.25);border-radius:6px;font-size:11px;font-weight:700;color:var(--accent);font-family:'IBM Plex Mono',monospace;margin-left:8px;}
+.readme-definition{font-size:12px;color:var(--text);line-height:1.7;margin-bottom:8px;}
+.readme-eli5{font-size:11px;color:var(--gold);line-height:1.6;padding:10px 14px;background:rgba(255,202,40,0.06);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;margin-bottom:10px;}
+.readme-eli5::before{content:'🧒 Like you're 12: ';font-weight:700;}
+.readme-sites{display:flex;flex-wrap:wrap;gap:6px;}
+.readme-site{padding:4px 12px;border-radius:20px;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;letter-spacing:.3px;}
+.readme-site.primary{background:rgba(0,232,122,0.12);color:var(--green);border:1px solid rgba(0,232,122,0.3);}
+.readme-site.secondary{background:rgba(0,200,255,0.08);color:var(--muted2);border:1px solid var(--border);}
+.readme-gauge-rule{font-size:10px;color:var(--muted2);margin-top:8px;padding:8px 12px;background:var(--s2);border-radius:6px;line-height:1.8;}
+.readme-gauge-rule span.ron{color:var(--green);font-weight:700;}
+.readme-gauge-rule span.neu{color:var(--gold);font-weight:700;}
+.readme-gauge-rule span.roff{color:var(--red);font-weight:700;}
+.readme-section-intro{font-size:12px;color:var(--muted2);line-height:1.7;margin-bottom:18px;padding:12px 16px;background:rgba(0,200,255,0.04);border:1px solid rgba(0,200,255,0.1);border-radius:8px;}
+
 /* WORLD MAP */
 .map-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;height:calc(100vh - 170px);}
 .map-sidebar{display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-right:2px;}
@@ -407,6 +435,7 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
   <div class="nav-item" onclick="nav('portfolio')" id="n-portfolio"><span class="nav-icon">📊</span> My Portfolio</div>
   <div class="nav-div"></div>
   <div class="nav-section">Intelligence</div>
+  <div class="nav-item" onclick="nav('readme')" id="n-readme"><span class="nav-icon">📖</span> Reference Guide</div>
   <div class="nav-item" onclick="nav('worldmap')" id="n-worldmap"><span class="nav-icon">🗺</span> World Map</div>
   <div class="nav-item" onclick="nav('sessionlog')" id="n-sessionlog"><span class="nav-icon">📓</span> Session Log</div>
 </nav>
@@ -1163,6 +1192,403 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
   </div>
 </div>
 
+
+<!-- ═══════════ REFERENCE GUIDE ═══════════ -->
+<div class="sec" id="sec-readme">
+  <div class="sh">
+    <h1>📖 Reference Guide</h1>
+    <p>Every indicator explained. What it is, what it means, how to find it, and how to read the gauge.</p>
+  </div>
+  <div class="readme-wrap">
+
+    <!-- ── US MARKETS ── -->
+    <div class="readme-chapter open" id="rc-us">
+      <div class="readme-chapter-header" onclick="toggleChapter('rc-us')">
+        <div class="readme-chapter-title">🇺🇸 US Market Indicators</div>
+        <div class="readme-chapter-arrow">▼</div>
+      </div>
+      <div class="readme-chapter-body">
+        <div class="readme-section-intro">These are the five indicators used in your US Risk Gauge. Fill them in at the start of every session before looking at any individual stock.</div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">VIX Index <span class="readme-ticker">^VIX</span></div>
+          </div>
+          <div class="readme-definition">The CBOE Volatility Index. Measures how much the market expects the S&P 500 to move over the next 30 days, derived from the prices of S&P 500 options. It doesn't tell you which direction markets go — only how violently they're expected to move. A low VIX means calm, expected small moves. A high VIX means traders are buying insurance against big swings.</div>
+          <div class="readme-eli5">It's a storm forecast for the stock market. VIX = 12 is clear sunny skies. VIX = 35 is a hurricane warning. It doesn't say if stocks go up or down — just how bumpy the ride will be. Smart investors watch it because big fear = potential buying opportunity, and too much calm = potential complacency before a drop.</div>
+          <div class="readme-gauge-rule"><span class="ron">Below 20 → Risk-On</span> (calm, small daily moves, investors confident) &nbsp;·&nbsp; <span class="neu">20–30 → Neutral</span> (heightened awareness, swings getting bigger) &nbsp;·&nbsp; <span class="roff">Above 30 → Risk-Off</span> (storm warning — major fear, expect large daily swings)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: ^VIX</span>
+            <span class="readme-site secondary">CBOE.com</span>
+            <span class="readme-site secondary">investing.com → search VIX</span>
+            <span class="readme-site secondary">marketwatch.com</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">10yr Treasury Yield <span class="readme-ticker">^TNX</span></div>
+          </div>
+          <div class="readme-definition">The annual interest rate the US government pays to borrow money for 10 years. It's the most important single number in global finance — the benchmark "risk-free" rate. Every other investment (stocks, real estate, corporate bonds) is priced relative to it. When this yield rises, money becomes more expensive everywhere and stocks face more competition from "safe" government bonds. Enter the level — not the daily change.</div>
+          <div class="readme-eli5">Imagine the government offers you a super safe savings account. If they pay you 4.5% per year, why would you take the risk of buying stocks that might lose money? You wouldn't. So when this rate goes up, stocks become less attractive — investors leave stocks for the "safe" government account. When the rate goes down, stocks look better again.</div>
+          <div class="readme-gauge-rule"><span class="ron">Below 3.5% → Risk-On</span> (cheap borrowing, stocks competitive vs bonds) &nbsp;·&nbsp; <span class="neu">3.5–4.5% → Neutral</span> &nbsp;·&nbsp; <span class="roff">Above 4.5% → Risk-Off</span> (expensive money, bonds compete heavily with stocks)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: ^TNX</span>
+            <span class="readme-site secondary">CNBC.com → Markets → Bonds</span>
+            <span class="readme-site secondary">investing.com → Bonds → US 10Y</span>
+            <span class="readme-site secondary">fred.stlouisfed.org</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">DXY US Dollar Index <span class="readme-ticker">DX-Y.NYB</span></div>
+          </div>
+          <div class="readme-definition">Measures the US dollar's value against a basket of 6 major currencies — Euro (57.6%), Japanese Yen (13.6%), British Pound (11.9%), Canadian Dollar (9.1%), Swedish Krona (4.2%), Swiss Franc (3.6%). A rising DXY = stronger dollar = tighter global financial conditions. Most commodities are priced in dollars, so a strong dollar makes them more expensive for foreign buyers and can crush emerging markets. Enter the index level.</div>
+          <div class="readme-eli5">Imagine the US dollar is a measuring stick used worldwide. When the stick gets bigger (stronger dollar), everything priced in dollars — oil, gold, copper — costs more for people in other countries. So they buy less. That slows down global trade and usually hurts stocks outside the US. A weaker dollar is like a sale on global trade — everyone buys more.</div>
+          <div class="readme-gauge-rule"><span class="ron">Below 100 → Risk-On</span> (weak dollar, easier global conditions) &nbsp;·&nbsp; <span class="neu">100–104 → Neutral</span> &nbsp;·&nbsp; <span class="roff">Above 104 → Risk-Off</span> (strong dollar tightening global liquidity)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: DX-Y.NYB</span>
+            <span class="readme-site secondary">investing.com → search US Dollar Index</span>
+            <span class="readme-site secondary">marketwatch.com → search DXY</span>
+            <span class="readme-site secondary">tradingeconomics.com</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">S&P 500 Day % Change <span class="readme-ticker">^GSPC</span></div>
+          </div>
+          <div class="readme-definition">The daily percentage change of the S&P 500 — the benchmark index of 500 large US companies. Tracks $40+ trillion in market cap. Widely used as the single best gauge of US equity market health. Enter the day's percentage change (e.g. +1.2 or -0.8). This is the most direct signal of whether investors are in risk-seeking or risk-avoiding mode right now.</div>
+          <div class="readme-eli5">Think of the S&P 500 as the class average for the 500 most important companies in America. If the class average went up today, most people are doing well and feeling confident. If it went down, people are scared and selling. A tiny move (less than 0.5% either way) doesn't tell you much — it's just noise. Big moves tell you something real is happening.</div>
+          <div class="readme-gauge-rule"><span class="ron">Above +0.5% → Risk-On</span> (buyers in control) &nbsp;·&nbsp; <span class="neu">−0.5% to +0.5% → Neutral</span> (indecision, noise) &nbsp;·&nbsp; <span class="roff">Below −0.5% → Risk-Off</span> (sellers in control)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: ^GSPC</span>
+            <span class="readme-site secondary">Google → search "S&P 500"</span>
+            <span class="readme-site secondary">cnbc.com → Markets</span>
+            <span class="readme-site secondary">wsj.com → Markets</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">IG Credit Spread <span class="readme-ticker">FRED: BAMLC0A0CM</span></div>
+          </div>
+          <div class="readme-definition">The extra yield (in basis points, where 100 bps = 1%) that investment-grade corporate bonds pay above US Treasuries. When companies need to pay more to borrow vs the government, it means lenders think there's more risk of not getting paid back. Tight spreads = confidence. Wide spreads = fear. This is one of the best early warning signals for a credit crunch or recession. Enter the current level in bps.</div>
+          <div class="readme-eli5">Imagine two people asking to borrow money. One is the US government (safest borrower on Earth). The other is a big company like Ford or AT&T. You'd charge the company more because there's more chance they can't pay back. The spread is how much MORE you charge them. When that extra charge gets big, it means even big companies are seen as risky — that's a scary sign for markets.</div>
+          <div class="readme-gauge-rule"><span class="ron">Below 90 bps → Risk-On</span> (companies trusted, cheap to borrow) &nbsp;·&nbsp; <span class="neu">90–130 bps → Neutral</span> &nbsp;·&nbsp; <span class="roff">Above 130 bps → Risk-Off</span> (lenders scared, credit tightening)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">fred.stlouisfed.org → search "ICE BofA IG OAS"</span>
+            <span class="readme-site secondary">Bloomberg Terminal (if available)</span>
+            <span class="readme-site secondary">wsj.com → Markets → Credit Markets</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">Fed Stance — Best Sources</div>
+          </div>
+          <div class="readme-definition">The Federal Reserve's current posture — are they raising rates (hawkish), cutting (dovish), or holding? This sets the macro backdrop for everything. The Fed releases statements after every FOMC meeting (8 per year). Between meetings, watch Fed member speeches — they signal what's coming next.</div>
+          <div class="readme-eli5">The Fed is like the school principal who sets the rules for borrowing lunch money. Hawkish = strict, makes borrowing expensive. Dovish = relaxed, makes borrowing cheap. Everyone in the market watches which direction they're going next — it's the most important single variable for stocks and bonds.</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">federalreserve.gov → Press Releases</span>
+            <span class="readme-site primary">CME FedWatch Tool (fedwatch.cmegroup.com)</span>
+            <span class="readme-site secondary">reuters.com → search "Fed"</span>
+            <span class="readme-site secondary">wsj.com → Economy section</span>
+            <span class="readme-site secondary">axios.com → Markets newsletter</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">Sector Check — Best Sources</div>
+          </div>
+          <div class="readme-definition">Tracking which sectors are leading or lagging the market today. The 11 GICS sectors are: Technology, Healthcare, Financials, Consumer Discretionary, Consumer Staples, Energy, Industrials, Materials, Real Estate, Utilities, Communication Services. Sector rotation — money moving from one sector to another — often signals the next macro move before the index shows it.</div>
+          <div class="readme-eli5">The stock market is like a school with 11 different clubs. Sometimes the tech club is the most popular. Sometimes energy is. Money flows between these clubs depending on what's happening in the economy. If defensive clubs (utilities, healthcare) are getting popular, it means people are scared. If growth clubs (tech, consumer) are hot, people are confident.</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">finviz.com → Groups tab (best free sector heatmap)</span>
+            <span class="readme-site primary">etfdb.com → sector ETF performance</span>
+            <span class="readme-site secondary">Yahoo Finance: sector ETFs — XLK, XLE, XLF, XLV, XLI, XLP, XLY, XLU, XLB, XLRE, XLC</span>
+            <span class="readme-site secondary">stockanalysis.com → Sectors</span>
+            <span class="readme-site secondary">markets.ft.com → Sectors</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── EUROPEAN MARKETS ── -->
+    <div class="readme-chapter" id="rc-eu">
+      <div class="readme-chapter-header" onclick="toggleChapter('rc-eu')">
+        <div class="readme-chapter-title">🇪🇺 European Market Indicators</div>
+        <div class="readme-chapter-arrow">▼</div>
+      </div>
+      <div class="readme-chapter-body">
+        <div class="readme-section-intro">European markets open 6 hours before North America. Use these indicators to get an early read on global risk appetite before the US opens.</div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">VSTOXX <span class="readme-ticker">^V2TX</span></div>
+          </div>
+          <div class="readme-definition">The Euro Stoxx 50 Volatility Index — Europe's equivalent of the VIX. Measures expected volatility of the Euro Stoxx 50 over the next 30 days. Structurally runs 2–4 points higher than VIX because European markets are less liquid and more exposed to geopolitical risk (energy crises, wars, political instability). Watch for divergence — when VSTOXX is high but VIX is low, something is specifically scaring Europe.</div>
+          <div class="readme-eli5">Same idea as VIX but for Europe's 50 biggest companies. Europe tends to be a bit more nervous than the US because they're closer to wars, depend more on imported energy, and have more complicated politics between countries. So a VSTOXX of 22 is actually pretty calm for Europe, while the same number on VIX would be starting to look elevated.</div>
+          <div class="readme-gauge-rule"><span class="ron">Below 22 → Risk-On</span> (calm for European standards) &nbsp;·&nbsp; <span class="neu">22–32 → Neutral</span> &nbsp;·&nbsp; <span class="roff">Above 32 → Risk-Off</span> (significant European stress)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: ^V2TX</span>
+            <span class="readme-site secondary">investing.com → search VSTOXX</span>
+            <span class="readme-site secondary">stoxx.com</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">Euro Stoxx 50 <span class="readme-ticker">^STOXX50E</span></div>
+          </div>
+          <div class="readme-definition">The benchmark index of Europe's 50 largest companies across 8 Eurozone countries. Heavily weighted toward: financials (banks like BNP, Santander), industrials (Siemens, Airbus), luxury (LVMH), and energy (TotalEnergies). Because Europe opens first, this index often gives you a preview of where the US will open — especially on major macro days. Enter the day's percentage change.</div>
+          <div class="readme-eli5">Europe's version of the S&P 500. It has 50 of the biggest companies in countries that use the Euro. Because Europe starts its school day 6 hours before the US, if something big happened overnight — like a central bank decision or a geopolitical event — you'll see the reaction here first, before the US market even opens.</div>
+          <div class="readme-gauge-rule"><span class="ron">Above +0.5% → Risk-On &nbsp;·&nbsp; <span class="neu">−0.5% to +0.5% → Neutral</span> &nbsp;·&nbsp; <span class="roff">Below −0.5% → Risk-Off</span></div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: ^STOXX50E</span>
+            <span class="readme-site secondary">investing.com → Indices → Europe</span>
+            <span class="readme-site secondary">markets.ft.com</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">EUR/USD Day % Change <span class="readme-ticker">EURUSD=X</span></div>
+          </div>
+          <div class="readme-definition">How much the Euro moved against the US dollar today, as a percentage. The most traded currency pair in the world — $1.8 trillion per day. When EUR/USD rises, the dollar is weakening, which is generally Risk-On (cheaper global borrowing costs, commodity prices up). When it falls, the dollar is strengthening — typically Risk-Off. Enter the day's % change, not the level.</div>
+          <div class="readme-eli5">One Euro used to buy you a certain amount of dollars. Today, did that change? If the Euro got stronger vs the dollar (EUR/USD went up), it usually means the dollar is getting weaker — which is like a sale on global risk. If EUR/USD went down (Euro weakened), the dollar is getting stronger — which usually means investors are nervous and running to the safety of the dollar.</div>
+          <div class="readme-gauge-rule"><span class="ron">Above +0.3% (Euro rising) → Risk-On</span> &nbsp;·&nbsp; <span class="neu">−0.3% to +0.3% → Neutral</span> &nbsp;·&nbsp; <span class="roff">Below −0.3% (Euro falling) → Risk-Off</span></div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: EURUSD=X</span>
+            <span class="readme-site secondary">xe.com</span>
+            <span class="readme-site secondary">investing.com → Currencies → EUR/USD</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">German Bund 10yr Yield Change <span class="readme-ticker">^BUND10Y</span></div>
+          </div>
+          <div class="readme-definition">The daily change (in basis points) of Germany's 10-year government bond yield. Germany is the Eurozone's strongest economy, so its bonds are the European equivalent of US Treasuries — the "risk-free" benchmark for Europe. When Bund yields rise sharply, it signals inflation fears or ECB rate hike expectations — Risk-Off for European stocks. Enter the day's change in bps (e.g. +8 or -4).</div>
+          <div class="readme-eli5">Germany is the most trusted, financially stable country in Europe. So when Germany borrows money, the rate they pay is the safest rate in Europe. When that rate jumps up, it means investors expect higher inflation or the ECB to raise rates — both of which are bad for stocks in Europe. Same logic as the US 10yr, just for Europe.</div>
+          <div class="readme-gauge-rule"><span class="ron">Below −5 bps → Risk-On</span> (yields falling, easier conditions) &nbsp;·&nbsp; <span class="neu">−5 to +5 bps → Neutral</span> &nbsp;·&nbsp; <span class="roff">Above +5 bps → Risk-Off</span> (yields rising, tighter conditions)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: ^BUND10Y</span>
+            <span class="readme-site secondary">investing.com → Bonds → Germany 10Y</span>
+            <span class="readme-site secondary">markets.ft.com → Government Bonds</span>
+            <span class="readme-site secondary">tradingeconomics.com → Germany → Government Bond Yield</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">TTF Natural Gas Day % <span class="readme-ticker">TTF</span></div>
+          </div>
+          <div class="readme-definition">The Title Transfer Facility (TTF) is Europe's benchmark natural gas price, traded in the Netherlands. Europe imports roughly 90% of its natural gas needs — making energy prices a uniquely powerful macro driver for European equities and inflation. Spiking TTF gas prices = rising manufacturing costs, higher inflation, pressure on ECB to hike = Risk-Off. Falling gas = relief for European industry = Risk-On.</div>
+          <div class="readme-eli5">Europe doesn't produce much of its own gas — it mostly buys it from Russia (historically), Norway, and the US. When gas prices spike, every factory, home, and office in Europe has to pay more. Companies make less profit. Governments have to subsidise energy. It's like if the price of school lunch suddenly doubled for every student — everything else in the school budget gets squeezed.</div>
+          <div class="readme-gauge-rule"><span class="ron">Below −2% → Risk-On</span> (gas falling, relief for European industry) &nbsp;·&nbsp; <span class="neu">−2% to +2% → Neutral</span> &nbsp;·&nbsp; <span class="roff">Above +2% → Risk-Off</span> (gas spiking, pressure on European margins)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">investing.com → Commodities → Natural Gas → TTF</span>
+            <span class="readme-site secondary">theice.com (ICE exchange)</span>
+            <span class="readme-site secondary">bloomberg.com → Energy → TTF</span>
+            <span class="readme-site secondary">tradingeconomics.com → Netherlands → Natural Gas</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">ECB — Best Sources</div>
+          </div>
+          <div class="readme-definition">The European Central Bank sets interest rates for all 20 Eurozone countries. Its policy decisions lag the Fed by 6–12 months historically. Watch for divergence between ECB and Fed — when one is hiking while the other cuts, major currency moves happen. The ECB president (Christine Lagarde) speaks publicly after every policy meeting — those speeches move EUR/USD immediately.</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">ecb.europa.eu → Press → Monetary policy decisions</span>
+            <span class="readme-site primary">reuters.com → search "ECB"</span>
+            <span class="readme-site secondary">ft.com → Central Banks</span>
+            <span class="readme-site secondary">tradingeconomics.com → Euro Area → Interest Rate</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── ASIAN MARKETS ── -->
+    <div class="readme-chapter" id="rc-asia">
+      <div class="readme-chapter-header" onclick="toggleChapter('rc-asia')">
+        <div class="readme-chapter-title">🌏 Asian Market Indicators</div>
+        <div class="readme-chapter-arrow">▼</div>
+      </div>
+      <div class="readme-chapter-body">
+        <div class="readme-section-intro">Asia closes before North America opens. These overnight moves set the early tone for pre-market trading. China data in particular moves global commodities.</div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">USD/JPY Day Change <span class="readme-ticker">JPY=X</span></div>
+          </div>
+          <div class="readme-definition">How much USD/JPY moved today. The Japanese yen is one of the world's primary safe-haven currencies — when global risk appetite falls, investors rush into yen. A rising USD/JPY (yen weakening) often signals risk-on in Japan and Asia broadly. A falling USD/JPY (yen strengthening) signals safe-haven demand — investors are scared somewhere. Enter the day's change (e.g. +0.8 or -1.2).</div>
+          <div class="readme-eli5">Japan has been a financial safe haven for decades — the yen is like a global panic button. When investors get scared, they buy yen. When they buy yen, USD/JPY goes DOWN (yen gets stronger vs dollar). So: falling USD/JPY = fear somewhere in the world. Rising USD/JPY = investors are feeling brave and selling their yen to buy riskier things.</div>
+          <div class="readme-gauge-rule"><span class="ron">Rising (yen weakening) → Risk-On</span> &nbsp;·&nbsp; <span class="neu">Small move → Neutral</span> &nbsp;·&nbsp; <span class="roff">Falling (yen strengthening) → Risk-Off</span></div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: JPY=X</span>
+            <span class="readme-site secondary">xe.com → USD/JPY</span>
+            <span class="readme-site secondary">investing.com → Currencies → USD/JPY</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">Copper Day % Change <span class="readme-ticker">HG=F</span></div>
+          </div>
+          <div class="readme-definition">The daily % change in copper futures price. Copper is used in construction, electronics, electric vehicles, and virtually every manufactured good — making it the most economically sensitive commodity. Traders call it "Dr. Copper" because it has a PhD in economics — its price has historically predicted economic turning points better than most forecasters. Rising copper = global growth expectations rising. Falling copper = slowdown feared.</div>
+          <div class="readme-eli5">Copper goes into almost everything that gets built or made: houses, cars, phones, factories, power lines. If the price of copper is going up, it means factories worldwide are ordering more of it — business is good. If the price is falling, factories are ordering less — things are slowing down. It's like checking how busy the world's construction sites are just by looking at one number.</div>
+          <div class="readme-gauge-rule"><span class="ron">Above +1% → Risk-On</span> (global growth expected) &nbsp;·&nbsp; <span class="neu">−1% to +1% → Neutral</span> &nbsp;·&nbsp; <span class="roff">Below −1% → Risk-Off</span> (slowdown signal)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: HG=F</span>
+            <span class="readme-site secondary">investing.com → Commodities → Copper</span>
+            <span class="readme-site secondary">tradingeconomics.com → Copper</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">Nikkei 225 Day % <span class="readme-ticker">^N225</span></div>
+          </div>
+          <div class="readme-definition">Japan's benchmark index of 225 large companies. Unusually sensitive to the yen — a weaker yen directly boosts earnings of Japanese exporters (Toyota, Sony, Canon) because their overseas sales convert back to more yen. Also follows US tech closely since many Japanese companies supply components to US tech firms. Closes before US markets open, making it a useful overnight signal. Enter the day % change.</div>
+          <div class="readme-eli5">Japan sells enormous amounts of cars, electronics, and machinery to the rest of the world. When the yen is cheap, it's like all Japanese products go on sale for foreign buyers — so Japanese companies sell more and make more money. That's why when the yen weakens (USD/JPY goes up), the Nikkei often goes up at the same time. They move together.</div>
+          <div class="readme-gauge-rule"><span class="ron">Above +0.5% → Risk-On</span> &nbsp;·&nbsp; <span class="neu">−0.5% to +0.5% → Neutral</span> &nbsp;·&nbsp; <span class="roff">Below −0.5% → Risk-Off</span></div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: ^N225</span>
+            <span class="readme-site secondary">investing.com → Indices → Japan → Nikkei</span>
+            <span class="readme-site secondary">nikkei.com (in English)</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">Hang Seng Day % <span class="readme-ticker">^HSI</span></div>
+          </div>
+          <div class="readme-definition">Hong Kong's benchmark index — the most liquid proxy for Chinese equities accessible to global investors. Heavy in Chinese tech giants (Alibaba, Tencent, Meituan), Chinese banks, and property developers. Extremely sensitive to Beijing policy announcements, PBOC decisions, and US-China tensions. A strong Hang Seng day often signals improving global risk appetite for emerging market assets broadly.</div>
+          <div class="readme-eli5">China's biggest companies — like Alibaba (China's Amazon) and Tencent (China's Facebook + everything else) — trade in Hong Kong. When the Chinese government makes a new rule that helps tech companies, Hang Seng goes up. When there's a trade war with the US or a crackdown on businesses, it goes down. It's the fastest way to see what China's economy is doing.</div>
+          <div class="readme-gauge-rule"><span class="ron">Above +0.5% → Risk-On</span> &nbsp;·&nbsp; <span class="neu">−0.5% to +0.5% → Neutral</span> &nbsp;·&nbsp; <span class="roff">Below −0.5% → Risk-Off</span></div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Yahoo Finance: ^HSI</span>
+            <span class="readme-site secondary">investing.com → Indices → Hong Kong → Hang Seng</span>
+            <span class="readme-site secondary">scmp.com → Business (South China Morning Post)</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top">
+            <div class="readme-entry-name">China Manufacturing PMI <span class="readme-ticker">Monthly release</span></div>
+          </div>
+          <div class="readme-definition">The Purchasing Managers Index for Chinese manufacturing — a monthly survey of 500+ factory managers asking if business is better or worse than last month. Above 50 = expansion. Below 50 = contraction. There are two versions: the official NBS PMI (government, skews large state-owned enterprises) and the Caixin PMI (private sector, more market-driven). The Caixin version is generally more useful as an investment signal. Released on the 1st business day of each month.</div>
+          <div class="readme-eli5">Every month, someone calls 500 Chinese factory managers and asks: "Is your factory busier or slower than last month?" If more than half say busier, PMI is above 50 — China's factories are growing. If more say slower, it's below 50 — factories are shrinking. Because China is the world's manufacturing capital, when its factories slow down, the prices of copper, oil, and iron ore usually fall too.</div>
+          <div class="readme-gauge-rule"><span class="ron">Above 51 → Risk-On</span> (expansion, global commodity demand rising) &nbsp;·&nbsp; <span class="neu">49–51 → Neutral</span> &nbsp;·&nbsp; <span class="roff">Below 49 → Risk-Off</span> (contraction, slowdown signal)</div>
+          <div class="readme-sites" style="margin-top:10px">
+            <span class="readme-site primary">Google: "Caixin PMI" on release day</span>
+            <span class="readme-site primary">tradingeconomics.com → China → Manufacturing PMI</span>
+            <span class="readme-site secondary">reuters.com → search "China PMI"</span>
+            <span class="readme-site secondary">investing.com → Economic Calendar → China PMI</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── GENERAL TOOLS ── -->
+    <div class="readme-chapter" id="rc-tools">
+      <div class="readme-chapter-header" onclick="toggleChapter('rc-tools')">
+        <div class="readme-chapter-title">🛠 Best Websites by Use Case</div>
+        <div class="readme-chapter-arrow">▼</div>
+      </div>
+      <div class="readme-chapter-body">
+
+        <div class="readme-entry">
+          <div class="readme-entry-top"><div class="readme-entry-name" style="color:var(--text)">Daily Market Overview</div></div>
+          <div class="readme-sites">
+            <span class="readme-site primary">finviz.com (heatmap of entire market)</span>
+            <span class="readme-site primary">finance.yahoo.com (all tickers)</span>
+            <span class="readme-site secondary">cnbc.com → Markets</span>
+            <span class="readme-site secondary">wsj.com → Markets</span>
+            <span class="readme-site secondary">marketwatch.com</span>
+            <span class="readme-site secondary">bloomberg.com (limited free)</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top"><div class="readme-entry-name" style="color:var(--text)">Sector Rotation & Heatmaps</div></div>
+          <div class="readme-sites">
+            <span class="readme-site primary">finviz.com → Groups</span>
+            <span class="readme-site primary">stockanalysis.com → Sectors</span>
+            <span class="readme-site secondary">etfdb.com</span>
+            <span class="readme-site secondary">slickcharts.com → S&P 500 sectors</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top"><div class="readme-entry-name" style="color:var(--text)">Economic Data & Central Banks</div></div>
+          <div class="readme-sites">
+            <span class="readme-site primary">fred.stlouisfed.org (Federal Reserve data — free, enormous)</span>
+            <span class="readme-site primary">tradingeconomics.com (global macro data)</span>
+            <span class="readme-site secondary">federalreserve.gov</span>
+            <span class="readme-site secondary">ecb.europa.eu</span>
+            <span class="readme-site secondary">boj.or.jp (Bank of Japan)</span>
+            <span class="readme-site secondary">bls.gov (US jobs, CPI data)</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top"><div class="readme-entry-name" style="color:var(--text)">Economic Calendar (what's coming this week)</div></div>
+          <div class="readme-sites">
+            <span class="readme-site primary">investing.com → Economic Calendar</span>
+            <span class="readme-site primary">forexfactory.com → Calendar</span>
+            <span class="readme-site secondary">marketwatch.com → Economic Calendar</span>
+            <span class="readme-site secondary">reuters.com → Economic Events</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top"><div class="readme-entry-name" style="color:var(--text)">Commodities</div></div>
+          <div class="readme-sites">
+            <span class="readme-site primary">investing.com → Commodities</span>
+            <span class="readme-site primary">tradingeconomics.com → Commodities</span>
+            <span class="readme-site secondary">Yahoo Finance: HG=F (copper), CL=F (oil), GC=F (gold), SI=F (silver)</span>
+            <span class="readme-site secondary">oilprice.com</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top"><div class="readme-entry-name" style="color:var(--text)">News & Geopolitics</div></div>
+          <div class="readme-sites">
+            <span class="readme-site primary">reuters.com (most reliable, fast)</span>
+            <span class="readme-site primary">ft.com (Financial Times)</span>
+            <span class="readme-site secondary">wsj.com</span>
+            <span class="readme-site secondary">bloomberg.com</span>
+            <span class="readme-site secondary">axios.com → Markets AM newsletter</span>
+            <span class="readme-site secondary">politico.com → geopolitics</span>
+          </div>
+        </div>
+
+        <div class="readme-entry">
+          <div class="readme-entry-top"><div class="readme-entry-name" style="color:var(--text)">Company Research & Filings</div></div>
+          <div class="readme-sites">
+            <span class="readme-site primary">sec.gov → EDGAR (official US filings)</span>
+            <span class="readme-site primary">stockanalysis.com (financials, free)</span>
+            <span class="readme-site secondary">macrotrends.net (historical financials)</span>
+            <span class="readme-site secondary">wisesheets.io</span>
+            <span class="readme-site secondary">simplywall.st</span>
+            <span class="readme-site secondary">tikr.com</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
 </div><!-- /main -->
 
 <div class="toast" id="toast">✓ Saved</div>
@@ -1862,6 +2288,12 @@ function renderAll() {
   renderMapSidebar();
   renderSlog();
   updateSlogStats();
+}
+
+
+function toggleChapter(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
 }
 
 // Unused stubs
