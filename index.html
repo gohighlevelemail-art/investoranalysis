@@ -173,6 +173,124 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
 .proj-note-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted2);}
 .proj-note-time{font-size:9px;color:var(--muted);}
 
+/* PROJECT INVESTIGATION */
+.proj-header-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.proj-view-tabs{display:flex;gap:4px;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:18px;flex-wrap:wrap;}
+.proj-view-tab{flex:1;min-width:130px;padding:10px 12px;border-radius:8px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3px;color:var(--muted2);background:transparent;border:1px solid transparent;cursor:pointer;transition:all .18s;}
+.proj-view-tab:hover{color:var(--text);}
+.proj-view-tab.active{background:var(--s3);border-color:rgba(0,200,255,.22);color:var(--accent);}
+.proj-panel{display:none;}
+.proj-panel.active{display:block;animation:fi .2s ease;}
+.proj-identity-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px;}
+.proj-kpi{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:14px;}
+.proj-kpi-label{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'Syne',sans-serif;margin-bottom:6px;}
+.proj-kpi-value{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;}
+.proj-kpi-sub{font-size:11px;color:var(--muted2);margin-top:4px;line-height:1.5;}
+.inv-topbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px;}
+.inv-topbar .fg{margin-bottom:0;}
+.inv-map-shell{display:flex;flex-direction:column;gap:14px;}
+.inv-stage-card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.inv-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border);background:rgba(17,25,35,.88);backdrop-filter:blur(10px);flex-wrap:wrap;}
+.inv-toolbar-left,.inv-toolbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.inv-search{min-width:230px;}
+.inv-stage{position:relative;height:680px;overflow:hidden;background:
+  radial-gradient(circle at 20% 20%, rgba(0,200,255,.05), transparent 28%),
+  radial-gradient(circle at 80% 15%, rgba(179,136,255,.05), transparent 24%),
+  linear-gradient(180deg, rgba(12,18,25,.96), rgba(6,9,13,1));cursor:grab;}
+.inv-stage.panning{cursor:grabbing;}
+.inv-grid-bg{position:absolute;inset:0;background-image:
+  linear-gradient(rgba(36,53,71,.18) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(36,53,71,.18) 1px, transparent 1px);
+  background-size:40px 40px;opacity:.42;pointer-events:none;}
+.inv-world{position:absolute;left:0;top:0;width:3200px;height:2200px;transform-origin:0 0;}
+.inv-svg{position:absolute;left:0;top:0;width:3200px;height:2200px;overflow:visible;pointer-events:none;}
+.inv-svg path{fill:none;stroke-width:2;opacity:.8;stroke-linecap:round;stroke-dasharray:10 8;animation:invline .6s ease;}
+@keyframes invline{from{stroke-dashoffset:90;opacity:0;}to{stroke-dashoffset:0;opacity:.8;}}
+.inv-node-layer{position:absolute;left:0;top:0;width:3200px;height:2200px;}
+.inv-node{position:absolute;width:200px;min-height:92px;padding:12px 12px 10px;background:var(--surface);border:1px solid var(--border);cursor:pointer;border-radius:12px;box-shadow:0 12px 24px rgba(0,0,0,.18);transform:translate(-50%,-50%);transition:box-shadow .18s, transform .18s, border-color .18s, background .18s;cursor:pointer;user-select:none;}
+.inv-node:hover{transform:translate(-50%,-52%);box-shadow:0 16px 30px rgba(0,0,0,.24);}
+.inv-node.selected{box-shadow:0 0 0 2px var(--accent), 0 0 20px rgba(0,200,255,.25);z-index:10;box-shadow:0 0 0 1px rgba(221,230,238,.05),0 0 0 3px rgba(0,200,255,.14),0 16px 34px rgba(0,0,0,.28);}
+.inv-node.search-hit{box-shadow:0 0 0 3px rgba(255,202,40,.16),0 14px 28px rgba(255,202,40,.12);}
+.inv-node.inv-central{width:248px;min-height:148px;padding:18px 16px 16px;border-width:2px;}
+.inv-node.inv-branch{width:212px;min-height:102px;}
+.inv-node.inv-leaf{width:185px;min-height:84px;}
+.inv-node-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.inv-node-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;line-height:1.25;letter-spacing:-.2px;}
+.inv-node-sub{font-size:10px;color:var(--muted2);margin-top:6px;line-height:1.5;}
+.inv-node-score{padding:3px 8px;border-radius:999px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.14);font-size:10px;font-weight:700;white-space:nowrap;}
+.inv-node-flags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.inv-flag{padding:2px 7px;border-radius:999px;font-size:9px;font-weight:700;font-family:'Syne',sans-serif;letter-spacing:.3px;}
+.inv-flag.warn{background:rgba(255,61,90,.12);border:1px solid rgba(255,61,90,.28);color:var(--red);}
+.inv-flag.conf{background:rgba(255,202,40,.12);border:1px solid rgba(255,202,40,.28);color:var(--gold);}
+.inv-drag-handle{width:24px;height:24px;border-radius:8px;border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:var(--muted2);cursor:grab;flex-shrink:0;background:rgba(17,25,35,.7);}
+.inv-drag-handle:active{cursor:grabbing;}
+.inv-node-click-hint{font-size:9px;color:var(--accent);margin-top:8px;opacity:0;transition:opacity .2s;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.5px;text-align:center;padding-top:6px;border-top:1px solid rgba(0,200,255,.15);}.inv-node:hover .inv-node-click-hint{opacity:1;}
+.inv-preview{font-size:11px;color:var(--muted2);line-height:1.55;margin-top:8px;white-space:pre-wrap;word-break:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.inv-children-count{font-size:9px;color:var(--muted);margin-top:6px;}
+.inv-central-ring{position:absolute;inset:-6px;border-radius:18px;padding:2px;background:conic-gradient(var(--accent) 0 var(--ring), rgba(36,53,71,.72) var(--ring) 100%);}
+.inv-central-inner{position:relative;background:var(--surface);border-radius:16px;padding:18px 16px 16px;min-height:136px;}
+.inv-central .inv-node-title{font-size:18px;}
+.inv-central-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.inv-mini-tag{padding:3px 9px;border-radius:999px;background:var(--s2);border:1px solid var(--border);font-size:10px;color:var(--muted2);font-weight:700;}
+.inv-thesis-card{position:absolute;left:18px;bottom:18px;width:360px;background:rgba(12,18,25,.94);border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 32px rgba(0,0,0,.22);padding:16px;backdrop-filter:blur(10px);z-index:5;}
+.inv-thesis-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.inv-sidecol{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start;}
+.inv-editor-card,.inv-editor-card,.inv-question-card,.inv-evidence-card,.inv-score-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.inv-card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.inv-node-empty{font-size:11px;color:var(--muted);line-height:1.6;}
+.inv-score-picker{display:flex;gap:5px;flex-wrap:wrap;}
+.inv-score-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted2);font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;transition:all .15s;}
+.inv-score-btn:hover,.inv-score-btn.sel{border-color:var(--accent);color:var(--accent);background:rgba(0,200,255,.08);}
+.inv-node-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.inv-q-row,.inv-ev-row{padding:12px 0;border-bottom:1px solid var(--border);}
+.inv-q-row:last-child,.inv-ev-row:last-child{border-bottom:none;}
+.inv-q-top,.inv-ev-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px;}
+.inv-q-title,.inv-ev-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;line-height:1.4;}
+.inv-q-meta,.inv-ev-meta{font-size:10px;color:var(--muted);line-height:1.55;}
+.inv-link-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--s2);border:1px solid var(--border);font-size:10px;color:var(--muted2);font-weight:700;margin:0 6px 6px 0;}
+.inv-checklist{max-height:170px;overflow:auto;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px;}
+.inv-check{display:flex;gap:8px;align-items:flex-start;padding:6px 0;font-size:11px;color:var(--text);}
+.inv-check input{margin-top:2px;}
+.inv-badges-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.inv-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px;}
+.inv-summary-box{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.inv-summary-box .big{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-top:6px;}
+.inv-dim-row{display:grid;grid-template-columns:190px minmax(0,1fr) 46px;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);}
+.inv-dim-row:last-child{border-bottom:none;}
+.inv-dim-label{font-size:11px;color:var(--text);}
+.inv-dim-bar{height:8px;background:var(--border);border-radius:999px;overflow:hidden;}
+.inv-dim-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--green));}
+.inv-radar{width:100%;height:320px;display:block;background:rgba(17,25,35,.5);border:1px solid var(--border);border-radius:12px;}
+.inv-health-inline{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.inv-health-pill{padding:5px 10px;border-radius:999px;background:rgba(0,200,255,.1);border:1px solid rgba(0,200,255,.22);font-size:10px;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent);}
+.inv-status-select{min-width:150px;}
+.inv-builder-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;min-height:200px;}
+.inv-builder-help{font-size:11px;color:var(--muted2);line-height:1.7;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:10px;white-space:pre-wrap;}
+.inv-builder-list{margin-top:12px;max-height:380px;overflow:auto;padding-right:2px;}
+.inv-builder-row{display:flex;gap:10px;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);}
+.inv-builder-row:last-child{border-bottom:none;}
+.inv-builder-meta{flex:1;min-width:0;}
+.inv-builder-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;line-height:1.35;}
+.inv-builder-desc{font-size:10px;color:var(--muted2);line-height:1.6;margin-top:4px;}
+.inv-builder-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.inv-check-status{padding:3px 8px;border-radius:999px;font-size:9px;font-family:'Syne',sans-serif;font-weight:800;letter-spacing:.3px;border:1px solid var(--border);background:var(--s2);color:var(--muted2);white-space:nowrap;}
+.inv-check-status.done{background:rgba(0,232,122,.1);border-color:rgba(0,232,122,.28);color:var(--green);}
+.inv-check-status.missing{background:rgba(255,202,40,.08);border-color:rgba(255,202,40,.2);color:var(--gold);}
+.inv-builder-note{font-size:10px;color:var(--muted);line-height:1.55;margin-top:6px;}
+.inv-stage-empty{font-size:11px;color:var(--muted2);}
+@media (max-width:1400px){
+  .inv-sidecol{grid-template-columns:1fr;}
+}
+@media (max-width:1180px){
+  .proj-identity-grid,.inv-summary-grid,.inv-topbar{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:760px){
+  .proj-identity-grid,.inv-summary-grid,.inv-topbar{grid-template-columns:1fr;}
+  .inv-thesis-card{position:static;width:auto;margin:14px;}
+  .inv-stage{height:620px;}
+}
+
+
 /* DEEP DIVE WIZARD */
 .wizard-steps{display:flex;gap:0;margin-bottom:28px;background:var(--s2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
 .wizard-step{flex:1;padding:12px 8px;text-align:center;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--muted);transition:all .2s;border-right:1px solid var(--border);cursor:pointer;}
@@ -777,6 +895,7 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
   </div>
 </div>
 
+
 <!-- ═══════════ PROJECTS ═══════════ -->
 <div class="sec" id="sec-projects">
   <div id="proj-list-view">
@@ -805,57 +924,279 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
         <h1 id="pd-title" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-top:6px"></h1>
         <div id="pd-date" style="font-size:11px;color:var(--muted);margin-top:4px"></div>
       </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-o btn-sm" onclick="addNote()">+ Add Note</button>
+      <div class="proj-header-actions">
+        <button class="btn btn-p btn-sm" onclick="openProjectMap()">Open Investigation Map</button>
+        <button class="btn btn-o btn-sm" onclick="setProjectPanel('workspace');addNote()">+ Add Note</button>
+        <button class="btn btn-o btn-sm" onclick="setProjectPanel('evidence')">Evidence Vault</button>
         <button class="btn btn-red btn-sm" onclick="deleteProject()">Delete</button>
       </div>
     </div>
 
-    <div class="card" id="pd-notes-container">
-      <div class="card-title">📝 Project Notes</div>
-      <div id="pd-notes-list"></div>
-      <div style="margin-top:16px">
-        <div class="lbl">Add a note</div>
-        <textarea class="tarea" id="pd-note-input" placeholder="Paste news, write your thoughts, add a link, note a data point..."></textarea>
-        <button class="btn btn-g btn-sm" style="margin-top:10px" onclick="submitNote()">Add Note</button>
+    <div class="proj-identity-grid" id="proj-summary-grid">
+      <div class="proj-kpi">
+        <div class="proj-kpi-label">Health Score</div>
+        <div class="proj-kpi-value" id="pd-health-score">0%</div>
+        <div class="proj-kpi-sub" id="pd-health-copy">Research coverage starts once the investigation is opened.</div>
+      </div>
+      <div class="proj-kpi">
+        <div class="proj-kpi-label">Answered Questions</div>
+        <div class="proj-kpi-value" id="pd-question-score">0 / 0</div>
+        <div class="proj-kpi-sub">Question Tree progress tied to the case file.</div>
+      </div>
+      <div class="proj-kpi">
+        <div class="proj-kpi-label">Evidence Items</div>
+        <div class="proj-kpi-value" id="pd-evidence-score">0</div>
+        <div class="proj-kpi-sub">Primary notes, filings, calls, and references linked to this project.</div>
+      </div>
+      <div class="proj-kpi">
+        <div class="proj-kpi-label">Company Status</div>
+        <div class="proj-kpi-value" id="pd-project-status">Watching</div>
+        <div class="proj-kpi-sub" id="pd-project-last">Updated —</div>
       </div>
     </div>
 
-    <div class="card" style="margin-top:14px">
-      <div class="card-title" style="justify-content:space-between;display:flex;align-items:center">
-        <span>✅ Tasks & Reading List</span>
-        <span id="pd-task-progress-text" style="font-size:11px;color:var(--muted2)">0 / 0</span>
-      </div>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pd-task-bar" style="width:0%"></div></div>
-      <div id="pd-task-list" style="margin-bottom:14px"></div>
-      <div class="frow" style="gap:8px">
-        <div style="flex:2"><div class="lbl">Task / Item</div><input class="inp" id="pd-task-input" placeholder="e.g. Read Q4 Annual Report, Review 10-K, Watch earnings call..."/></div>
-        <div style="flex:1"><div class="lbl">Type</div>
-          <select class="sel" id="pd-task-type">
-            <option value="read">📄 Read</option>
-            <option value="watch">👁 Watch</option>
-            <option value="research">🔬 Research</option>
-            <option value="calc">🧮 Calculate</option>
-            <option value="compare">⚖️ Compare</option>
-            <option value="decide">🎯 Decide</option>
-            <option value="other">📌 Other</option>
-          </select>
+    <div class="proj-view-tabs">
+      <button class="proj-view-tab active" data-panel="workspace" onclick="setProjectPanel('workspace')">Workspace</button>
+      <button class="proj-view-tab" data-panel="map" onclick="setProjectPanel('map')">Investigation Map</button>
+      <button class="proj-view-tab" data-panel="evidence" onclick="setProjectPanel('evidence')">Evidence Vault</button>
+      <button class="proj-view-tab" data-panel="score" onclick="setProjectPanel('score')">Scorecard</button>
+    </div>
+
+    <div class="proj-panel active" id="proj-panel-workspace">
+      <div class="card" id="pd-notes-container">
+        <div class="card-title">📝 Project Notes</div>
+        <div id="pd-notes-list"></div>
+        <div style="margin-top:16px">
+          <div class="lbl">Add a note</div>
+          <textarea class="tarea" id="pd-note-input" placeholder="Paste news, write your thoughts, add a link, note a data point..."></textarea>
+          <button class="btn btn-g btn-sm" style="margin-top:10px" onclick="submitNote()">Add Note</button>
         </div>
       </div>
-      <button class="btn btn-o btn-sm" style="margin-top:10px" onclick="addTask()">+ Add Task</button>
+
+      <div class="card" style="margin-top:14px">
+        <div class="card-title" style="justify-content:space-between;display:flex;align-items:center">
+          <span>✅ Tasks & Reading List</span>
+          <span id="pd-task-progress-text" style="font-size:11px;color:var(--muted2)">0 / 0</span>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pd-task-bar" style="width:0%"></div></div>
+        <div id="pd-task-list" style="margin-bottom:14px"></div>
+        <div class="frow" style="gap:8px">
+          <div style="flex:2"><div class="lbl">Task / Item</div><input class="inp" id="pd-task-input" placeholder="e.g. Read Q4 Annual Report, Review 10-K, Watch earnings call..."/></div>
+          <div style="flex:1"><div class="lbl">Type</div>
+            <select class="sel" id="pd-task-type">
+              <option value="read">📄 Read</option>
+              <option value="watch">👁 Watch</option>
+              <option value="research">🔬 Research</option>
+              <option value="calc">🧮 Calculate</option>
+              <option value="compare">⚖️ Compare</option>
+              <option value="decide">🎯 Decide</option>
+              <option value="other">📌 Other</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-o btn-sm" style="margin-top:10px" onclick="addTask()">+ Add Task</button>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="card-title">🔗 Relevant Info & Links</div>
+        <div id="pd-links-list"></div>
+        <div class="frow" style="margin-top:14px">
+          <div><div class="lbl">Label</div><input class="inp" id="pd-link-label" placeholder="e.g. Reuters article, SEC filing, earnings call"/></div>
+          <div><div class="lbl">URL or Reference</div><input class="inp" id="pd-link-url" placeholder="Paste link or reference text"/></div>
+        </div>
+        <button class="btn btn-o btn-sm" style="margin-top:10px" onclick="addLink()">+ Attach Info</button>
+      </div>
     </div>
 
-    <div class="card" style="margin-top:14px">
-      <div class="card-title">🔗 Relevant Info & Links</div>
-      <div id="pd-links-list"></div>
-      <div class="frow" style="margin-top:14px">
-        <div><div class="lbl">Label</div><input class="inp" id="pd-link-label" placeholder="e.g. Reuters article, SEC filing, earnings call"/></div>
-        <div><div class="lbl">URL or Reference</div><input class="inp" id="pd-link-url" placeholder="Paste link or reference text"/></div>
+    <div class="proj-panel" id="proj-panel-map">
+      <div class="inv-topbar">
+        <div class="fg">
+          <div class="lbl">Ticker</div>
+          <input class="inp" id="inv-meta-ticker" placeholder="e.g. CVX" oninput="updateInvestMeta('ticker',this.value)"/>
+        </div>
+        <div class="fg">
+          <div class="lbl">Sector</div>
+          <input class="inp" id="inv-meta-sector" placeholder="e.g. Energy" oninput="updateInvestMeta('sector',this.value)"/>
+        </div>
+        <div class="fg">
+          <div class="lbl">Status</div>
+          <select class="sel inv-status-select" id="inv-meta-status" onchange="updateInvestMeta('status',this.value)">
+            <option>Watching</option>
+            <option>Researching</option>
+            <option>Conviction</option>
+            <option>Ready</option>
+            <option>Closed</option>
+          </select>
+        </div>
+        <div class="fg">
+          <div class="lbl">Last Updated</div>
+          <input class="inp" id="inv-meta-updated" disabled placeholder="—"/>
+        </div>
       </div>
-      <button class="btn btn-o btn-sm" style="margin-top:10px" onclick="addLink()">+ Attach Info</button>
+
+      <div class="inv-map-shell">
+        <div class="inv-stage-card">
+          <div class="inv-toolbar">
+            <div class="inv-toolbar-left">
+              <input class="inp inv-search" id="inv-search" placeholder="Search node titles or content..." oninput="updateInvestSearch(this.value)"/>
+              <button class="btn btn-o btn-sm" onclick="centerInvestigation()">Center</button>
+              <button class="btn btn-o btn-sm" onclick="setInvestZoom(-0.1)">−</button>
+              <button class="btn btn-o btn-sm" onclick="setInvestZoom(0.1)">+</button>
+            </div>
+            <div class="inv-toolbar-right">
+              <div class="inv-stage-empty" id="inv-zoom-readout">Zoom 100%</div>
+              <button class="btn btn-p btn-sm" onclick="exportInvestigationReport()">📄 Export Report</button>
+              <button class="btn btn-o btn-sm" onclick="exportCurrentInvestigation()">⬇ Export JSON</button>
+            </div>
+          </div>
+
+          <div class="inv-stage" id="inv-stage">
+            <div class="inv-grid-bg"></div>
+            <div class="inv-world" id="inv-world">
+              <svg class="inv-svg" id="inv-svg-layer" viewBox="0 0 3200 2200" preserveAspectRatio="none"></svg>
+              <div class="inv-node-layer" id="inv-node-layer"></div>
+            </div>
+
+            <div class="inv-thesis-card">
+              <div class="inv-thesis-title">
+                <span>Three-Layer Thesis</span>
+                <span class="inv-health-pill" id="inv-thesis-complete">Incomplete</span>
+              </div>
+              <div class="fg">
+                <div class="lbl">Simple Thesis <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Simple Thesis</div><div class="tip-main">One sentence capturing the entire bet. If you cannot say it in one sentence, you do not understand it well enough yet.</div><div class="tip-kid">Explain it like you would at dinner to someone who knows nothing about investing. If they cannot follow it, simplify it.</div></div></div></div>
+                <input class="inp" id="inv-thesis-simple" placeholder="One sentence — what is the core bet?" oninput="updateThesisField('simple',this.value)"/>
+              </div>
+              <div class="fg">
+                <div class="lbl">Analytical Thesis <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Analytical Thesis</div><div class="tip-main">3 to 5 specific reasons supporting your simple thesis. Each point should be independently verifiable — a number, a trend, a structural advantage.</div><div class="tip-kid">Your top 5 reasons in a debate. You need to defend each one separately with facts, not feelings.</div></div></div></div>
+                <textarea class="tarea" id="inv-thesis-analytical" placeholder="3–5 bullets explaining why." oninput="updateThesisField('analytical',this.value)"></textarea>
+              </div>
+              <div class="fg" style="margin-bottom:0">
+                <div class="lbl">What Must Happen <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">What Must Happen — Exit Conditions</div><div class="tip-main">Specific measurable conditions that need to occur for your thesis to play out. These are your checkpoints. If they stop being true, exit — regardless of emotional attachment.</div><div class="tip-kid">You are writing your own exit rules before you have skin in the game. Most investors lose money holding losers because they never decided what wrong looks like. Decide now while thinking clearly.</div></div></div></div>
+                <textarea class="tarea" id="inv-thesis-must" placeholder="Specific measurable conditions that must occur." oninput="updateThesisField('must',this.value)"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;padding:4px 0 10px;">Node Controls &nbsp;·&nbsp; <span style="color:var(--muted2);font-weight:400">Select a node on the map to edit it</span></div>
+        <div class="inv-sidecol">
+          <div class="inv-builder-card">
+            <div class="inv-card-title">
+              <span>Section Checklist</span>
+              <span class="inv-health-pill" id="inv-builder-branch-pill">Business</span>
+            </div>
+            <div class="fg">
+              <div class="lbl">Section</div>
+              <select class="sel" id="inv-builder-branch" onchange="updateInvestBuilderBranch(this.value)"></select>
+            </div>
+            <div class="fg">
+              <div class="lbl">Subsection</div>
+              <select class="sel" id="inv-builder-subsection" onchange="renderInvestBuilder(getCurrentProject())"></select>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-p btn-sm" onclick="addPresetNodeFromBuilder()">+ Add Subsection</button>
+              <button class="btn btn-o btn-sm" onclick="focusBuilderNode()">Open Selected</button>
+            </div>
+            <div class="inv-builder-help" id="inv-builder-help">Pick a section and subsection to see what needs to be investigated.</div>
+            <div class="frow" style="margin-top:12px;gap:8px">
+              <div>
+                <div class="lbl">Custom Subsection</div>
+                <input class="inp" id="inv-builder-custom" placeholder="Add your own custom node title"/>
+              </div>
+              <div style="display:flex;align-items:flex-end">
+                <button class="btn btn-o btn-sm" style="width:100%" onclick="addCustomBuilderNode()">+ Add Custom</button>
+              </div>
+            </div>
+            <div class="inv-builder-note">Use this as the disciplined checklist. Add only the subsections you actually need on the map so the canvas stays clean.</div>
+            <div class="inv-builder-list" id="inv-builder-list"></div>
+          </div>
+
+          <div class="inv-editor-card">
+            <div class="inv-card-title">
+              <span>Selected Node</span>
+              <span class="inv-health-pill" id="inv-selected-branch">No node selected</span>
+            </div>
+            <div id="inv-node-editor"></div>
+          </div>
+
+          <div class="inv-question-card">
+            <div class="inv-card-title">
+              <span>Question Tree</span>
+              <button class="btn btn-o btn-xs" onclick="addInvestQuestion()">+ Question</button>
+            </div>
+            <div class="fg">
+              <div class="lbl">New Question</div>
+              <input class="inp" id="inv-question-input" placeholder="What must be answered before capital is committed?"/>
+            </div>
+            <div id="inv-question-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-panel" id="proj-panel-evidence">
+      <div class="card">
+        <div class="card-title" style="justify-content:space-between;display:flex;align-items:center">
+          <span>📚 Evidence Vault</span>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <select class="sel" id="inv-evidence-filter" onchange="renderProjectEvidence(getCurrentProject())" style="min-width:180px">
+              <option value="">All Sources</option>
+            </select>
+            <button class="btn btn-o btn-sm" onclick="setProjectPanel('map')">Back to Map</button>
+          </div>
+        </div>
+
+        <div class="frow3">
+          <div class="fg">
+            <div class="lbl">Title</div>
+            <input class="inp" id="inv-ev-title" placeholder="e.g. 2024 10-K, Q4 earnings call, supplier interview"/>
+          </div>
+          <div class="fg">
+            <div class="lbl">Source Type</div>
+            <select class="sel" id="inv-ev-source"></select>
+          </div>
+          <div class="fg">
+            <div class="lbl">Branch Link</div>
+            <select class="sel" id="inv-ev-branch"></select>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="fg">
+            <div class="lbl">Summary / Key Takeaway</div>
+            <textarea class="tarea" id="inv-ev-summary" placeholder="What matters from this piece of evidence? Why does it matter?"></textarea>
+          </div>
+          <div class="fg">
+            <div class="lbl">Reference / URL / Filing Note</div>
+            <textarea class="tarea" id="inv-ev-ref" placeholder="Paste the URL, note the call, or record the source location."></textarea>
+          </div>
+        </div>
+        <button class="btn btn-p btn-sm" onclick="addEvidenceItem()">+ Add Evidence</button>
+
+        <div class="div"></div>
+        <div id="inv-evidence-list"></div>
+      </div>
+    </div>
+
+    <div class="proj-panel" id="proj-panel-score">
+      <div class="card">
+        <div class="card-title">🎯 Investigation Scorecard</div>
+        <div class="inv-summary-grid" id="inv-summary-grid"></div>
+        <div class="g2">
+          <div>
+            <div class="inv-card-title" style="margin-bottom:10px">Composite Dimensions</div>
+            <div id="inv-dim-list"></div>
+          </div>
+          <div>
+            <div class="inv-card-title" style="margin-bottom:10px">Radar View</div>
+            <svg class="inv-radar" id="inv-radar" viewBox="0 0 420 320"></svg>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
 
 <!-- ═══════════ DEEP DIVE ═══════════ -->
 <div class="sec" id="sec-deepdive">
@@ -1809,12 +2150,280 @@ function deletePulse(id, e) {
   renderPulses();
 }
 
+
 // ═══════════════════════════════════
 // PROJECTS
 // ═══════════════════════════════════
 const labelMap = {acq:'Acquisition',earn:'Earnings',ipo:'IPO',merger:'Merger',reg:'Regulatory',macro:'Macro Event',split:'Stock Split',other:'General'};
 const tagClass = {acq:'tag-acq',earn:'tag-earn',ipo:'tag-ipo',merger:'tag-merger',reg:'tag-reg',macro:'tag-macro',split:'tag-split',other:'tag-macro'};
 const folderIcon = {acq:'💼',earn:'📈',ipo:'🚀',merger:'🤝',reg:'⚖️',macro:'🌐',split:'✂️',other:'📂'};
+const INV_BRANCH_ORDER = ['business','industry','management','financials','valuation','catalysts','risks','variant','evidence','decision'];
+const INV_BRANCH_META = {
+  business:{label:'Business',icon:'💼',color:'#00C8FF'},
+  industry:{label:'Industry',icon:'🏭',color:'#2FB8FF'},
+  management:{label:'Management',icon:'🧠',color:'#FFCA28'},
+  financials:{label:'Financials',icon:'📊',color:'#00E87A'},
+  valuation:{label:'Valuation',icon:'💎',color:'#B388FF'},
+  catalysts:{label:'Catalysts',icon:'⚡',color:'#FF7043'},
+  risks:{label:'Risks',icon:'🛑',color:'#FF3D5A'},
+  variant:{label:'Variant Perception',icon:'🎯',color:'#6D7CFF'},
+  evidence:{label:'Evidence',icon:'📚',color:'#7AA9C2'},
+  decision:{label:'Decision',icon:'✅',color:'#4DD0E1'}
+};
+const INV_SOURCE_TYPES = ['10-K','Earnings Call','News','Management Interview','Competitor Comment','Analyst Report','Primary Research','Own Analysis'];
+const INV_QUESTION_STATUS = ['Unanswered','Partially Answered','Answered','Contradicted'];
+const INV_RISK_SEVERITY = ['','Nuisance','Serious','Thesis Breaker'];
+const INV_PRESET_CHILDREN = {
+  business:['Economic Engine','Products / Services','Customer Types','Pricing Model','Revenue Recurring vs One-Time','Segment Split','Geographic Split','Revenue Durability','Revenue Fragility','Moat / Switching Costs'],
+  industry:['Market Structure','Competitive Landscape','Tailwinds','Headwinds','Cyclicality','Regulation / Structural Forces'],
+  management:['Capital Allocation','Incentive Alignment','Track Record','Communication Quality','What Changes if They Leave?'],
+  financials:['Revenue & Growth Quality','Margins','Balance Sheet','Free Cash Flow','Dilution / Buybacks'],
+  valuation:['Multiples','Intrinsic Value Range','What Is Priced In?','What Would Be Cheap?','What Would Be Expensive?'],
+  catalysts:['Near-Term Catalyst','Medium-Term Catalyst','Re-rating Trigger','Timeline / Milestones'],
+  risks:['Customer Concentration','Margin Compression','Debt Risk','Cyclicality','Management Risk','Dilution','Regulation','Competition','Obsolescence'],
+  variant:['Consensus View','Why The Market May Be Wrong','What Is Mispriced?','Expectation Gap'],
+  evidence:['10-K Notes','Earnings Call Notes','Primary Research','Competitor Checks'],
+  decision:['Simple Thesis','Analytical Thesis','What Must Happen','Why Now / Why Not Now']
+};
+
+const INV_SECTION_GUIDE = {
+  business:{
+    intro:'Dissect the economic engine first. Not the slogan. Work out exactly how money enters the business and what makes it durable or fragile.',
+    items:{
+      'Economic Engine':'Ask: how does it make money, who pays, why do they pay, how often do they pay, and what makes that revenue durable or fragile? This is the core of the case.',
+      'Products / Services':'List what is actually sold. Separate flagship offerings from low-value extras. Which products matter most to gross profit and future growth?',
+      'Customer Types':'Who is the actual buyer: consumer, enterprise, government, hospital, advertiser, distributor? Note concentration and customer quality.',
+      'Pricing Model':'How is price set: subscription, per-seat, usage, transaction, one-time sale, licensing, spread, take rate? What gives pricing power?',
+      'Revenue Recurring vs One-Time':'Split durable recurring revenue from project, cyclical, or transactional revenue. What is predictable and what is lumpy?',
+      'Segment Split':'Which segment truly drives earnings, margin, and narrative? Which segment looks good in presentations but matters less economically?',
+      'Geographic Split':'Where is money made geographically? Note exposure to one country, currency, regulation, or macro cycle.',
+      'Revenue Durability':'Look for retention, contract length, switching costs, mission-critical use, and embedded workflow dependence.',
+      'Revenue Fragility':'Look for churn risk, discretionary spend, easy substitution, customer bargaining power, obsolescence, or cyclical exposure.',
+      'Moat / Switching Costs':'What keeps customers from leaving: brand, data, workflow integration, regulation, network effects, distribution, or cost advantage?'
+    }
+  },
+  industry:{
+    intro:'Map the field the company is fighting on. Good companies inside bad industries still disappoint.',
+    items:{
+      'Market Structure':'Is the market fragmented or concentrated? Who has power: suppliers, customers, distributors, or regulators?',
+      'Competitive Landscape':'Who are the real rivals, and what do they do better or worse?',
+      'Tailwinds':'Which structural forces help this industry grow or gain pricing power?',
+      'Headwinds':'What is making life harder: regulation, oversupply, deflation, disruption, weak demand?',
+      'Cyclicality':'How sensitive is the industry to rates, commodity prices, budgets, or the economy?',
+      'Regulation / Structural Forces':'Which laws, standards, or market structures shape winners and losers?'
+    }
+  },
+  management:{
+    intro:'Judge management like capital allocators, not presenters.',
+    items:{
+      'Capital Allocation':'Have they bought back stock well, made smart acquisitions, or destroyed value?',
+      'Incentive Alignment':'How are management and the board paid? Are incentives tied to per-share value or empire building?',
+      'Track Record':'What have they actually delivered over multiple years, not just one good stretch?',
+      'Communication Quality':'Do they communicate clearly and honestly, or hide behind promotion and adjusted metrics?',
+      'What Changes if They Leave?':'How much of the thesis depends on this team specifically?'
+    }
+  },
+  financials:{
+    intro:'Use the numbers to test whether the story is real.',
+    items:{
+      'Revenue & Growth Quality':'Is growth organic, acquisition-driven, low-margin, promotional, or genuinely strong?',
+      'Margins':'Track gross, operating, and free-cash-flow margins. What is structural versus temporary?',
+      'Balance Sheet':'Debt, cash, maturities, covenant pressure, liquidity, and resilience in a bad year.',
+      'Free Cash Flow':'How much real cash is the business producing after the actual costs of staying alive?',
+      'Dilution / Buybacks':'Is per-share value improving, or is shareholder ownership being quietly watered down?'
+    }
+  },
+  valuation:{
+    intro:'Cheap versus what, and under what assumptions?',
+    items:{
+      'Multiples':'What multiples matter here and how do they compare with peers and history?',
+      'Intrinsic Value Range':'What range of value is reasonable if the thesis plays out, partially works, or fails?',
+      'What Is Priced In?':'What expectations already seem embedded in the stock price?',
+      'What Would Be Cheap?':'At what level would the downside be protected enough to matter?',
+      'What Would Be Expensive?':'At what level would upside already be pulled forward?'
+    }
+  },
+  catalysts:{
+    intro:'A thesis without a forcing function often stays dead money.',
+    items:{
+      'Near-Term Catalyst':'What could change perception soon: earnings, launch, ruling, asset sale, guidance?',
+      'Medium-Term Catalyst':'Which developments matter over the next few quarters?',
+      'Re-rating Trigger':'What specifically would make the market pay a higher multiple or stop discounting the stock?',
+      'Timeline / Milestones':'What dates, checkpoints, or KPIs should be watched?'
+    }
+  },
+  risks:{
+    intro:'Build the bear case with the same seriousness as the bull case.',
+    items:{
+      'Customer Concentration':'How badly would one lost customer hurt?',
+      'Margin Compression':'What could pressure pricing, mix, or input costs?',
+      'Debt Risk':'Could leverage force weak decisions or equity dilution?',
+      'Cyclicality':'What breaks when the cycle turns?',
+      'Management Risk':'Where could leadership make a poor decision or lose credibility?',
+      'Dilution':'Could stock comp, raises, or acquisitions impair per-share upside?',
+      'Regulation':'What rule change could hurt the economics?',
+      'Competition':'Who can attack share, pricing, or differentiation?',
+      'Obsolescence':'What if the product or business model ages out?'
+    }
+  },
+  variant:{
+    intro:'This is the edge section. What does the market believe, and where might it be wrong?',
+    items:{
+      'Consensus View':'What does the average investor seem to believe right now?',
+      'Why The Market May Be Wrong':'What assumption might be too optimistic or too pessimistic?',
+      'What Is Mispriced?':'Which piece of the business seems under- or over-valued?',
+      'Expectation Gap':'What gap exists between likely reality and current expectations?'
+    }
+  },
+  evidence:{
+    intro:'Do not dump sources. Capture only what moves the case.',
+    items:{
+      '10-K Notes':'What did filings reveal that matters economically?',
+      'Earnings Call Notes':'What guidance, tone, and disclosed metrics matter?',
+      'Primary Research':'What did direct checks, transcripts, docs, or product work reveal?',
+      'Competitor Checks':'What did rivals or adjacent players reveal indirectly?'
+    }
+  },
+  decision:{
+    intro:'Force a conclusion. Research without a decision framework turns into hoarding.',
+    items:{
+      'Simple Thesis':'One sentence: what is the bet?',
+      'Analytical Thesis':'The 3 to 5 most important reasons the idea works.',
+      'What Must Happen':'Which measurable conditions must occur for the thesis to be right?',
+      'Why Now / Why Not Now':'Why act now, or why wait?'
+    }
+  }
+};
+let currentProjectPanel = 'workspace';
+let invCanvasDrag = null;
+let invNodeDrag = null;
+let invStageListenersBound = false;
+
+function nowStamp() { return new Date().toLocaleString('en-CA'); }
+function makeInvId(prefix='n') { return prefix + '_' + Math.random().toString(36).slice(2,10); }
+function getCurrentProject() { return (state.projects || []).find(p => p.id === state.currentProject) || null; }
+
+function createDefaultInvestigation(proj) {
+  const nodes = [];
+  const centralId = 'central';
+  nodes.push({
+    id: centralId,
+    parentId: null,
+    kind: 'central',
+    branchKey: null,
+    title: proj.name,
+    body: '',
+    confidence: '',
+    sourceType: '',
+    counterpoint: '',
+    score: null,
+    mustVerify: false,
+    expanded: true,
+    childrenLocked: false,
+    offsetX: 0,
+    offsetY: 0,
+    evidenceIds: [],
+    critical: false
+  });
+  INV_BRANCH_ORDER.forEach((key) => {
+    const branchId = 'branch_' + key;
+    nodes.push({
+      id: branchId,
+      parentId: centralId,
+      kind: 'branch',
+      branchKey: key,
+      title: INV_BRANCH_META[key].label,
+      body: '',
+      confidence: '',
+      sourceType: '',
+      counterpoint: '',
+      score: null,
+      mustVerify: false,
+      expanded: false,
+      childrenLocked: true,
+      offsetX: 0,
+      offsetY: 0,
+      evidenceIds: [],
+      critical: false
+    });
+  });
+  return {
+    meta: {
+      companyName: proj.name,
+      ticker: '',
+      sector: '',
+      status: 'Watching',
+      lastUpdated: nowStamp(),
+      panX: -360,
+      panY: -260,
+      zoom: 0.78,
+      search: '',
+      selectedNodeId: 'central',
+      builderBranch: 'business',
+      builderVersion: 2
+    },
+    thesis: { simple:'', analytical:'', must:'' },
+    questions: [],
+    evidence: [],
+    nodes
+  };
+}
+
+function ensureProjectInvestigation(proj) {
+  if (!proj) return null;
+  if (!proj.investigation || !proj.investigation.nodes || !proj.investigation.meta) {
+    proj.investigation = createDefaultInvestigation(proj);
+  }
+  const inv = proj.investigation;
+  inv.meta = inv.meta || {};
+  inv.meta.companyName = inv.meta.companyName || proj.name;
+  inv.meta.status = inv.meta.status || 'Watching';
+  inv.meta.lastUpdated = inv.meta.lastUpdated || nowStamp();
+  if (typeof inv.meta.panX !== 'number') inv.meta.panX = -360;
+  if (typeof inv.meta.panY !== 'number') inv.meta.panY = -260;
+  if (typeof inv.meta.zoom !== 'number') inv.meta.zoom = 0.78;
+  inv.meta.search = inv.meta.search || '';
+  inv.meta.builderBranch = inv.meta.builderBranch || 'business';
+  inv.thesis = inv.thesis || { simple:'', analytical:'', must:'' };
+  inv.questions = inv.questions || [];
+  inv.evidence = inv.evidence || [];
+  inv.nodes = inv.nodes || [];
+  const existingIds = new Set(inv.nodes.map(n => n.id));
+  if (!existingIds.has('central')) {
+    proj.investigation = createDefaultInvestigation(proj);
+    return proj.investigation;
+  }
+  INV_BRANCH_ORDER.forEach((key) => {
+    const branchId = 'branch_' + key;
+    if (!existingIds.has(branchId)) {
+      inv.nodes.push({
+        id: branchId,parentId:'central',kind:'branch',branchKey:key,title:INV_BRANCH_META[key].label,body:'',confidence:'',sourceType:'',counterpoint:'',score:null,mustVerify:false,expanded:false,childrenLocked:true,offsetX:0,offsetY:0,evidenceIds:[],critical:false
+      });
+    }
+  });
+  inv.nodes.forEach(n => {
+    if (typeof n.offsetX !== 'number') n.offsetX = 0;
+    if (typeof n.offsetY !== 'number') n.offsetY = 0;
+    if (!Array.isArray(n.evidenceIds)) n.evidenceIds = [];
+    if (typeof n.expanded !== 'boolean') n.expanded = false;
+    if (typeof n.mustVerify !== 'boolean') n.mustVerify = false;
+    if (typeof n.critical !== 'boolean') n.critical = false;
+    if (!n.kind) n.kind = n.parentId === null ? 'central' : (String(n.id).startsWith('branch_') ? 'branch' : 'leaf');
+  });
+  if (inv.meta.builderVersion !== 2) {
+    const removable = new Set();
+    inv.nodes.forEach(n => {
+      if (n.kind === 'leaf' && INV_PRESET_CHILDREN[n.branchKey]?.includes(n.title) && !nodeIsFilled(n) && !getNodeChildren(inv, n.id).length) removable.add(n.id);
+    });
+    if (removable.size) {
+      inv.nodes = inv.nodes.filter(n => !removable.has(n.id));
+      inv.questions.forEach(q => { if (removable.has(q.linkedNodeId)) q.linkedNodeId = ''; });
+    }
+    inv.meta.builderVersion = 2;
+  }
+  if (!inv.meta.selectedNodeId || !inv.nodes.find(n => n.id === inv.meta.selectedNodeId)) inv.meta.selectedNodeId = 'central';
+  return inv;
+}
 
 function openNewProj() { document.getElementById('newProjModal').style.display = 'flex'; }
 function closeNewProj() { document.getElementById('newProjModal').style.display = 'none'; }
@@ -1828,10 +2437,13 @@ function createProject() {
     id: Date.now(),
     name,
     type: type || 'other',
-    created: new Date().toLocaleString('en-CA'),
-    notes: notes ? [{id:Date.now(),text:notes,time:new Date().toLocaleString('en-CA')}] : [],
-    links: []
+    created: nowStamp(),
+    notes: notes ? [{id:Date.now(),text:notes,time:nowStamp()}] : [],
+    links: [],
+    tasks: [],
+    investigation: null
   };
+  proj.investigation = createDefaultInvestigation(proj);
   state.projects = state.projects || [];
   state.projects.unshift(proj);
   document.getElementById('np-name').value = '';
@@ -1847,22 +2459,38 @@ function createProject() {
 function renderProjects() {
   const grid = document.getElementById('projGrid');
   const projects = state.projects || [];
-  const cards = projects.map(p => `
-    <div class="proj-folder" onclick="openProject(${p.id})">
-      <div class="proj-folder-icon">${folderIcon[p.type]||'📂'}</div>
-      <div class="proj-folder-title">${p.name}</div>
-      <div class="proj-folder-meta"><span>${p.created}</span></div>
-      <div class="proj-folder-tags"><span class="tag ${tagClass[p.type]||'tag-macro'}">${labelMap[p.type]||p.type}</span><span style="font-size:10px;color:var(--muted);margin-left:4px">${p.notes.length} note${p.notes.length!==1?'s':''}</span>${(()=>{const t=p.tasks||[];const d=t.filter(x=>x.done).length;return t.length?'<span style="font-size:10px;color:var(--green);margin-left:4px">✓ '+d+'/'+t.length+' tasks</span>':'';})()} </div>
-      ${(()=>{const t=p.tasks||[];if(!t.length)return '';const pct=Math.round((t.filter(x=>x.done).length/t.length)*100);return '<div class="progress-bar-wrap" style="margin:8px 0 0"><div class="progress-bar-fill" style="width:'+pct+'%"></div></div>';})()}
-    </div>
-  `).join('');
+  const cards = projects.map(p => {
+    const inv = ensureProjectInvestigation(p);
+    const health = calcInvestHealth(inv).health;
+    const tasks = p.tasks || [];
+    const done = tasks.filter(x => x.done).length;
+    const taskTag = tasks.length ? '<span style="font-size:10px;color:var(--green);margin-left:4px">✓ '+done+'/'+tasks.length+' tasks</span>' : '';
+    const healthTag = '<span style="font-size:10px;color:var(--accent);margin-left:4px">🧭 '+health+'% investigation</span>';
+    const pct = tasks.length ? Math.round((done/tasks.length)*100) : 0;
+    return `
+      <div class="proj-folder" onclick="openProject(${p.id})">
+        <div class="proj-folder-icon">${folderIcon[p.type]||'📂'}</div>
+        <div class="proj-folder-title">${p.name}</div>
+        <div class="proj-folder-meta"><span>${p.created}</span></div>
+        <div class="proj-folder-tags">
+          <span class="tag ${tagClass[p.type]||'tag-macro'}">${labelMap[p.type]||p.type}</span>
+          <span style="font-size:10px;color:var(--muted);margin-left:4px">${p.notes.length} note${p.notes.length!==1?'s':''}</span>
+          ${taskTag}
+          ${healthTag}
+        </div>
+        ${tasks.length ? '<div class="progress-bar-wrap" style="margin:8px 0 0"><div class="progress-bar-fill" style="width:'+pct+'%"></div></div>' : ''}
+      </div>
+    `;
+  }).join('');
   grid.innerHTML = cards + `<div class="proj-folder new-folder" onclick="openNewProj()"><div class="new-folder-plus">＋</div><div class="new-folder-text">New Project</div></div>`;
 }
 
 function openProject(id) {
   const proj = state.projects.find(p => p.id === id);
   if (!proj) return;
+  ensureProjectInvestigation(proj);
   state.currentProject = id;
+  currentProjectPanel = 'workspace';
   document.getElementById('proj-list-view').style.display = 'none';
   const detail = document.getElementById('proj-detail');
   detail.classList.add('open');
@@ -1872,13 +2500,35 @@ function openProject(id) {
   renderProjectNotes(proj);
   renderProjectTasks(proj);
   renderProjectLinks(proj);
+  renderProjectInvestigation(proj);
+  setProjectPanel('workspace');
+}
+
+function openProjectMap() {
+  setProjectPanel('map');
+  const proj = getCurrentProject();
+  if (proj) {
+    renderProjectInvestigation(proj);
+    setTimeout(bindInvestigationStage, 30);
+  }
 }
 
 function closeProject() {
   state.currentProject = null;
+  currentProjectPanel = 'workspace';
   document.getElementById('proj-list-view').style.display = 'block';
   document.getElementById('proj-detail').classList.remove('open');
   document.getElementById('pd-note-input').value = '';
+}
+
+function setProjectPanel(panel) {
+  currentProjectPanel = panel;
+  document.querySelectorAll('.proj-view-tab').forEach(btn => btn.classList.toggle('active', btn.dataset.panel === panel));
+  document.querySelectorAll('.proj-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('proj-panel-' + panel)?.classList.add('active');
+  if (panel === 'map') setTimeout(bindInvestigationStage, 30);
+  if (panel === 'score') renderInvestScorecard(getCurrentProject());
+  if (panel === 'evidence') renderProjectEvidence(getCurrentProject());
 }
 
 function renderProjectNotes(proj) {
@@ -1912,9 +2562,9 @@ function renderProjectLinks(proj) {
 function submitNote() {
   const text = document.getElementById('pd-note-input').value.trim();
   if (!text) return;
-  const proj = state.projects.find(p => p.id === state.currentProject);
+  const proj = getCurrentProject();
   if (!proj) return;
-  proj.notes.unshift({id:Date.now(),text,time:new Date().toLocaleString('en-CA')});
+  proj.notes.unshift({id:Date.now(),text,time:nowStamp()});
   document.getElementById('pd-note-input').value = '';
   saveAll();
   renderProjectNotes(proj);
@@ -1923,7 +2573,7 @@ function submitNote() {
 }
 
 function deleteNote(id) {
-  const proj = state.projects.find(p => p.id === state.currentProject);
+  const proj = getCurrentProject();
   if (!proj) return;
   proj.notes = proj.notes.filter(n => n.id !== id);
   saveAll();
@@ -1934,7 +2584,7 @@ function addLink() {
   const label = document.getElementById('pd-link-label').value.trim();
   const url = document.getElementById('pd-link-url').value.trim();
   if (!label || !url) { alert('Fill in both fields.'); return; }
-  const proj = state.projects.find(p => p.id === state.currentProject);
+  const proj = getCurrentProject();
   if (!proj) return;
   if (!proj.links) proj.links = [];
   proj.links.push({id:Date.now(),label,url});
@@ -1949,7 +2599,7 @@ function addTask() {
   const text = document.getElementById('pd-task-input').value.trim();
   if (!text) return;
   const type = document.getElementById('pd-task-type').value;
-  const proj = state.projects.find(p => p.id === state.currentProject);
+  const proj = getCurrentProject();
   if (!proj) return;
   if (!proj.tasks) proj.tasks = [];
   proj.tasks.push({id: Date.now(), text, type, done: false});
@@ -1959,9 +2609,9 @@ function addTask() {
 }
 
 function toggleTask(id) {
-  const proj = state.projects.find(p => p.id === state.currentProject);
+  const proj = getCurrentProject();
   if (!proj) return;
-  const task = proj.tasks.find(t => t.id === id);
+  const task = (proj.tasks || []).find(t => t.id === id);
   if (task) task.done = !task.done;
   saveAll();
   renderProjectTasks(proj);
@@ -1969,9 +2619,9 @@ function toggleTask(id) {
 }
 
 function deleteTask(id) {
-  const proj = state.projects.find(p => p.id === state.currentProject);
+  const proj = getCurrentProject();
   if (!proj) return;
-  proj.tasks = proj.tasks.filter(t => t.id !== id);
+  proj.tasks = (proj.tasks || []).filter(t => t.id !== id);
   saveAll();
   renderProjectTasks(proj);
   renderProjects();
@@ -1991,7 +2641,6 @@ function renderProjectTasks(proj) {
   if (bar) bar.style.width = pct + '%';
   if (txt) txt.textContent = done + ' / ' + tasks.length + ' (' + pct + '%)';
   if (!tasks.length) { list.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:8px 0">No tasks yet. Add what you need to read, watch, or research.</div>'; return; }
-  // Show incomplete first, then done
   const sorted = [...tasks.filter(t=>!t.done), ...tasks.filter(t=>t.done)];
   list.innerHTML = sorted.map(t => `
     <div class="task-item">
@@ -2004,21 +2653,1215 @@ function renderProjectTasks(proj) {
 }
 
 function deleteLink(id) {
-  const proj = state.projects.find(p => p.id === state.currentProject);
+  const proj = getCurrentProject();
   if (!proj) return;
-  proj.links = proj.links.filter(l => l.id !== id);
+  proj.links = (proj.links || []).filter(l => l.id !== id);
   saveAll();
   renderProjectLinks(proj);
 }
 
 function deleteProject() {
-  if (!confirm('Delete this project and all its notes? This cannot be undone.')) return;
+  if (!confirm('Delete this project and all its notes, map work, evidence, and questions? This cannot be undone.')) return;
   state.projects = state.projects.filter(p => p.id !== state.currentProject);
   saveAll();
   closeProject();
   renderProjects();
   toast('Project deleted');
 }
+
+function updateProjectSummary(proj) {
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const healthData = calcInvestHealth(inv);
+  document.getElementById('pd-health-score').textContent = healthData.health + '%';
+  document.getElementById('pd-health-copy').textContent = healthData.coverageText;
+  document.getElementById('pd-question-score').textContent = healthData.answeredQuestions + ' / ' + healthData.totalQuestions;
+  document.getElementById('pd-evidence-score').textContent = (inv.evidence || []).length;
+  document.getElementById('pd-project-status').textContent = inv.meta.status || 'Watching';
+  document.getElementById('pd-project-last').textContent = 'Updated ' + (inv.meta.lastUpdated || '—');
+}
+
+function getNodeById(inv, id) { return (inv.nodes || []).find(n => n.id === id) || null; }
+function getNodeChildren(inv, id) { return (inv.nodes || []).filter(n => n.parentId === id); }
+function getVisibleNodes(inv) {
+  const nodeMap = new Map(inv.nodes.map(n => [n.id, n]));
+  const visible = [];
+  function walk(id, visibleParent) {
+    const node = nodeMap.get(id);
+    if (!node || !visibleParent) return;
+    visible.push(node);
+    const kids = getNodeChildren(inv, id);
+    if (node.kind === 'central' || node.expanded) kids.forEach(ch => walk(ch.id, true));
+  }
+  walk('central', true);
+  return visible;
+}
+
+function computeInvestigationLayout(inv) {
+  const positions = {};
+  const centerX = 1600, centerY = 1100;
+  positions.central = {x:centerX, y:centerY, baseAngle:-Math.PI/2};
+  const branchRadius = 480;
+  const branches = INV_BRANCH_ORDER.map((key, idx) => getNodeById(inv, 'branch_' + key)).filter(Boolean);
+  branches.forEach((branch, idx) => {
+    const angle = (-Math.PI/2) + (Math.PI * 2 * idx / branches.length);
+    positions[branch.id] = {
+      x: centerX + Math.cos(angle) * branchRadius + (branch.offsetX || 0),
+      y: centerY + Math.sin(angle) * branchRadius + (branch.offsetY || 0),
+      baseAngle: angle
+    };
+  });
+
+  function placeChildren(parentId, depth=1) {
+    const parentPos = positions[parentId];
+    const parentNode = getNodeById(inv, parentId);
+    if (!parentPos || !parentNode) return;
+    const children = getNodeChildren(inv, parentId);
+    if (!children.length) return;
+    const spread = Math.min(Math.PI * 0.9, 0.44 * Math.max(1, children.length - 1));
+    const radius = depth === 1 ? 270 : Math.max(175, 250 - depth*18);
+    children.forEach((child, idx) => {
+      const t = children.length === 1 ? 0.5 : idx / (children.length - 1);
+      const angle = parentPos.baseAngle + (t - 0.5) * spread;
+      const x = parentPos.x + Math.cos(angle) * radius + (child.offsetX || 0);
+      const y = parentPos.y + Math.sin(angle) * radius + (child.offsetY || 0);
+      positions[child.id] = {x, y, baseAngle: angle};
+      if (child.expanded) placeChildren(child.id, depth + 1);
+    });
+  }
+
+  INV_BRANCH_ORDER.forEach(key => placeChildren('branch_' + key, 1));
+  return positions;
+}
+
+function nodeIsFilled(node) {
+  if (!node) return false;
+  return !!(
+    (node.body && node.body.trim()) ||
+    (node.counterpoint && node.counterpoint.trim()) ||
+    node.confidence ||
+    node.sourceType ||
+    node.score !== null && node.score !== undefined && node.score !== '' ||
+    node.mustVerify ||
+    node.critical ||
+    (node.severity && node.severity.trim()) ||
+    (node.evidenceIds && node.evidenceIds.length)
+  );
+}
+
+function calcInvestHealth(inv) {
+  const branchCoverageCount = INV_BRANCH_ORDER.filter(key => {
+    const branch = getNodeById(inv, 'branch_' + key);
+    const kids = branch ? getNodeChildren(inv, branch.id) : [];
+    return kids.some(nodeIsFilled);
+  }).length;
+  const nonCoreNodes = (inv.nodes || []).filter(n => !['central','branch'].includes(n.kind));
+  const confidentCount = nonCoreNodes.filter(n => n.confidence).length;
+  const totalQuestions = (inv.questions || []).length;
+  const answeredQuestions = (inv.questions || []).filter(q => ['Answered','Partially Answered'].includes(q.status)).length;
+  const riskBranch = getNodeById(inv, 'branch_risks');
+  const bearCaseFilled = riskBranch ? getNodeChildren(inv, riskBranch.id).some(nodeIsFilled) : false;
+  const thesisComplete = !!(inv.thesis?.simple?.trim() && inv.thesis?.analytical?.trim() && inv.thesis?.must?.trim());
+  const branchComponent = (branchCoverageCount / INV_BRANCH_ORDER.length) * 40;
+  const confidenceComponent = nonCoreNodes.length ? (confidentCount / nonCoreNodes.length) * 20 : 0;
+  const questionComponent = totalQuestions ? (answeredQuestions / totalQuestions) * 20 : 0;
+  const bearComponent = bearCaseFilled ? 10 : 0;
+  const thesisComponent = thesisComplete ? 10 : 0;
+  const health = Math.round(branchComponent + confidenceComponent + questionComponent + bearComponent + thesisComponent);
+  let coverageText = 'Research coverage is light. The map needs real filled sub-nodes.';
+  if (health >= 80) coverageText = 'Thorough case file. The work is being done — the score says nothing about whether to buy.';
+  else if (health >= 55) coverageText = 'Solid coverage. Keep pressing the bear case, variant perception, and evidence links.';
+  else if (health >= 30) coverageText = 'Partial coverage. Several branches still need evidence-backed work.';
+  return {health, branchCoverageCount, confidentCount, nodeCount: nonCoreNodes.length, totalQuestions, answeredQuestions, bearCaseFilled, thesisComplete, coverageText};
+}
+
+function avgScore(nodes) {
+  const vals = nodes.map(n => Number(n.score)).filter(v => !isNaN(v) && v > 0);
+  return vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : 0;
+}
+
+function calcInvestDimensions(inv) {
+  const branchKids = key => {
+    const branch = getNodeById(inv, 'branch_' + key);
+    return branch ? getNodeChildren(inv, branch.id) : [];
+  };
+  const businessNodes = branchKids('business');
+  const industryNodes = branchKids('industry');
+  const managementNodes = branchKids('management');
+  const financialNodes = branchKids('financials');
+  const valuationNodes = branchKids('valuation');
+  const catalystNodes = branchKids('catalysts');
+  const riskNodes = branchKids('risks');
+  const variantNodes = branchKids('variant');
+  const moatNodes = businessNodes.filter(n => /moat|switching|advantage/i.test(n.title + ' ' + (n.body || '')));
+  const predictNodes = businessNodes.filter(n => /recurring|durability|predict|retention/i.test(n.title + ' ' + (n.body || ''))).concat(financialNodes.filter(n => /margin|cash|fcf|growth/i.test(n.title + ' ' + (n.body || ''))));
+  const dims = {
+    'Business Quality': avgScore(businessNodes),
+    'Moat Strength': avgScore(moatNodes.length ? moatNodes : businessNodes.slice(0,2)),
+    'Management': avgScore(managementNodes),
+    'Financial Strength': avgScore(financialNodes),
+    'Predictability': avgScore(predictNodes.length ? predictNodes : businessNodes.concat(financialNodes).slice(0,4)),
+    'Valuation': avgScore(valuationNodes),
+    'Catalyst Strength': avgScore(catalystNodes),
+    'Risk Severity': (() => {
+      const raw = avgScore(riskNodes);
+      return raw ? +(6 - raw).toFixed(1) : 0;
+    })(),
+    'Variant Perception Strength': avgScore(variantNodes)
+  };
+  const bizScore = avgScore([{score:dims['Business Quality']},{score:dims['Moat Strength']},{score:dims['Management']},{score:dims['Financial Strength']},{score:dims['Predictability']}]);
+  const stockScore = avgScore([{score:dims['Valuation']},{score:dims['Catalyst Strength']},{score:dims['Risk Severity']},{score:dims['Variant Perception Strength']}]);
+  const health = calcInvestHealth(inv).health;
+  const researchConfidence = +(((health/20) + (dims['Variant Perception Strength'] || 0) + (dims['Risk Severity'] || 0)) / 3).toFixed(1);
+  return { dims, businessScore: bizScore, stockScore, researchConfidence };
+}
+
+function renderProjectInvestigation(proj) {
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  updateProjectSummary(proj);
+  document.getElementById('inv-meta-ticker').value = inv.meta.ticker || '';
+  document.getElementById('inv-meta-sector').value = inv.meta.sector || '';
+  document.getElementById('inv-meta-status').value = inv.meta.status || 'Watching';
+  document.getElementById('inv-meta-updated').value = inv.meta.lastUpdated || '';
+  document.getElementById('inv-search').value = inv.meta.search || '';
+  document.getElementById('inv-thesis-simple').value = inv.thesis?.simple || '';
+  document.getElementById('inv-thesis-analytical').value = inv.thesis?.analytical || '';
+  document.getElementById('inv-thesis-must').value = inv.thesis?.must || '';
+  document.getElementById('inv-thesis-complete').textContent = (calcInvestHealth(inv).thesisComplete ? 'Complete' : 'Incomplete');
+  renderInvestMap(proj);
+  renderInvestBuilder(proj);
+  renderInvestNodeEditor(proj);
+  renderInvestQuestions(proj);
+  renderProjectEvidence(proj);
+  renderInvestScorecard(proj);
+}
+
+function renderInvestMap(proj) {
+  const inv = ensureProjectInvestigation(proj);
+  const nodeLayer = document.getElementById('inv-node-layer');
+  const svg = document.getElementById('inv-svg-layer');
+  if (!nodeLayer || !svg) return;
+  const visibleNodes = getVisibleNodes(inv);
+  const positions = computeInvestigationLayout(inv);
+  const search = (inv.meta.search || '').trim().toLowerCase();
+  nodeLayer.innerHTML = visibleNodes.map(node => {
+    const pos = positions[node.id];
+    if (!pos) return '';
+    const branchKey = node.branchKey || 'business';
+    const meta = INV_BRANCH_META[branchKey] || {color:'#00C8FF',icon:'•',label:'Node'};
+    const selected = inv.meta.selectedNodeId === node.id;
+    const scoreText = node.kind === 'branch' ? meta.label : (node.score ? ('Score ' + node.score) : 'Open');
+    const preview = node.body ? node.body.trim().slice(0,150) : (node.kind === 'branch' ? 'Expand this branch and work through its child nodes.' : 'Click to start filling the case file.');
+    const searchHit = search && ((node.title || '').toLowerCase().includes(search) || (node.body || '').toLowerCase().includes(search));
+    const childCount = getNodeChildren(inv, node.id).length;
+    const border = meta.color;
+    if (node.kind === 'central') {
+      const health = calcInvestHealth(inv).health;
+      return `
+        <div class="inv-node inv-central ${selected?'selected':''} ${searchHit?'search-hit':''}" data-node-id="${node.id}" style="left:${pos.x}px;top:${pos.y}px;border-color:${border};">
+          <div class="inv-central-ring" style="--ring:${health}%">
+            <div class="inv-central-inner">
+              <div class="inv-node-top">
+                <div>
+                  <div class="inv-node-title">${inv.meta.companyName || proj.name}</div>
+                  <div class="inv-node-sub">${inv.meta.ticker || '—'} · ${inv.meta.sector || 'Sector not set'}</div>
+                </div>
+                <div class="inv-node-score">${health}%</div>
+              </div>
+              <div class="inv-central-meta">
+                <span class="inv-mini-tag">${inv.meta.status || 'Watching'}</span>
+                <span class="inv-mini-tag">${(inv.evidence || []).length} evidence</span>
+                <span class="inv-mini-tag">${(inv.questions || []).length} questions</span>
+              </div>
+              <div class="inv-preview">${preview}</div><div class="inv-node-click-hint">Click to edit ↓</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    const flags = [];
+    if (node.mustVerify) flags.push('<span class="inv-flag warn">Must verify</span>');
+    if (node.confidence) flags.push('<span class="inv-flag conf">'+node.confidence+'</span>');
+    if (node.critical) flags.push('<span class="inv-flag warn">Critical</span>');
+    return `
+      <div class="inv-node inv-${node.kind} ${selected?'selected':''} ${searchHit?'search-hit':''}" data-node-id="${node.id}" style="left:${pos.x}px;top:${pos.y}px;border-color:${border};">
+        <div class="inv-node-top">
+          <div>
+            <div class="inv-node-title">${node.kind === 'branch' ? meta.icon + ' ' : ''}${node.title}</div>
+            <div class="inv-node-sub">${node.kind === 'branch' ? 'Fixed branch • click to expand' : (node.sourceType || meta.label)}</div>
+          </div>
+          <div class="inv-drag-handle" data-drag-id="${node.id}" title="Drag node">⋮⋮</div>
+        </div>
+        <div class="inv-preview">${preview || 'No content yet.'}</div>
+        ${flags.length ? `<div class="inv-flags">${flags.join('')}</div>` : ''}
+        <div class="inv-children-count">${childCount ? (node.expanded ? 'Collapse' : 'Expand') + ' · ' + childCount + ' child node' + (childCount>1?'s':'') : scoreText}</div>
+      </div>
+    `;
+  }).join('');
+  svg.innerHTML = visibleNodes.filter(n => n.parentId && positions[n.id] && positions[n.parentId]).map(node => {
+    const start = positions[node.parentId];
+    const end = positions[node.id];
+    const color = (INV_BRANCH_META[node.branchKey] || {color:'#00C8FF'}).color;
+    const c1x = start.x + (end.x - start.x) * 0.36;
+    const c1y = start.y;
+    const c2x = end.x - (end.x - start.x) * 0.36;
+    const c2y = end.y;
+    return `<path d="M ${start.x} ${start.y} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${end.x} ${end.y}" stroke="${color}"></path>`;
+  }).join('');
+  applyInvestigationTransform(inv);
+  bindInvestigationStage();
+}
+
+
+function selectInvestNode(nodeId, expandParent=true) {
+  const edCard = document.getElementById('inv-editor-card');
+  if (edCard) edCard.style.borderColor = nodeId ? 'var(--accent)' : 'var(--border)';
+  const emptyEl = document.getElementById('inv-editor-empty');
+  const fieldsEl = document.getElementById('inv-editor-fields');
+
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const node = getNodeById(inv, nodeId);
+  if (!node) return;
+  inv.meta.selectedNodeId = node.id;
+  if (expandParent && node.parentId) {
+    const parent = getNodeById(inv, node.parentId);
+    if (parent) parent.expanded = true;
+  }
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function applyInvestigationTransform(inv) {
+  const world = document.getElementById('inv-world');
+  if (!world) return;
+  world.style.transform = `translate(${inv.meta.panX}px, ${inv.meta.panY}px) scale(${inv.meta.zoom})`;
+  document.getElementById('inv-zoom-readout').textContent = 'Zoom ' + Math.round(inv.meta.zoom * 100) + '%';
+}
+
+function bindInvestigationStage() {
+  if (invStageListenersBound) return;
+  invStageListenersBound = true;
+  const stage = document.getElementById('inv-stage');
+  if (!stage) return;
+
+  stage.addEventListener('mousedown', (e) => {
+    const proj = getCurrentProject();
+    if (!proj || currentProjectPanel !== 'map') return;
+    const inv = ensureProjectInvestigation(proj);
+    const dragHandle = e.target.closest('.inv-drag-handle');
+    const nodeEl = e.target.closest('.inv-node');
+    if (dragHandle && nodeEl) {
+      const nodeId = dragHandle.dataset.dragId;
+      const node = getNodeById(inv, nodeId);
+      if (!node) return;
+      invNodeDrag = { nodeId, startX: e.clientX, startY: e.clientY, startOX: node.offsetX || 0, startOY: node.offsetY || 0 };
+      e.preventDefault();
+      return;
+    }
+    if (nodeEl) return;
+    invCanvasDrag = { startX: e.clientX, startY: e.clientY, panX: inv.meta.panX, panY: inv.meta.panY };
+    stage.classList.add('panning');
+  });
+
+  stage.addEventListener('click', (e) => {
+    const proj = getCurrentProject();
+    if (!proj || currentProjectPanel !== 'map') return;
+    const inv = ensureProjectInvestigation(proj);
+    const nodeEl = e.target.closest('.inv-node');
+    if (!nodeEl || e.target.closest('.inv-drag-handle')) return;
+    const node = getNodeById(inv, nodeEl.dataset.nodeId);
+    if (!node) return;
+    inv.meta.selectedNodeId = node.id;
+    const childCount = getNodeChildren(inv, node.id).length;
+    if (childCount) node.expanded = !node.expanded;
+    touchInvestigation(inv);
+    renderProjectInvestigation(proj);
+  });
+
+  stage.addEventListener('wheel', (e) => {
+    const proj = getCurrentProject();
+    if (!proj || currentProjectPanel !== 'map') return;
+    e.preventDefault();
+    setInvestZoom(e.deltaY > 0 ? -0.08 : 0.08);
+  }, { passive:false });
+
+  document.addEventListener('mousemove', (e) => {
+    const proj = getCurrentProject();
+    if (!proj || currentProjectPanel !== 'map') return;
+    const inv = ensureProjectInvestigation(proj);
+    if (invNodeDrag) {
+      const node = getNodeById(inv, invNodeDrag.nodeId);
+      if (!node) return;
+      node.offsetX = invNodeDrag.startOX + ((e.clientX - invNodeDrag.startX) / inv.meta.zoom);
+      node.offsetY = invNodeDrag.startOY + ((e.clientY - invNodeDrag.startY) / inv.meta.zoom);
+      renderInvestMap(proj);
+      return;
+    }
+    if (invCanvasDrag) {
+      inv.meta.panX = invCanvasDrag.panX + (e.clientX - invCanvasDrag.startX);
+      inv.meta.panY = invCanvasDrag.panY + (e.clientY - invCanvasDrag.startY);
+      applyInvestigationTransform(inv);
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    const proj = getCurrentProject();
+    if (proj) {
+      const inv = ensureProjectInvestigation(proj);
+      if (invNodeDrag || invCanvasDrag) touchInvestigation(inv);
+    }
+    invNodeDrag = null;
+    invCanvasDrag = null;
+    document.getElementById('inv-stage')?.classList.remove('panning');
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const proj = getCurrentProject();
+    if (!proj || currentProjectPanel !== 'map') return;
+    const inv = ensureProjectInvestigation(proj);
+    const selected = getNodeById(inv, inv.meta.selectedNodeId);
+    if (selected && selected.expanded) {
+      selected.expanded = false;
+      touchInvestigation(inv);
+      renderProjectInvestigation(proj);
+    } else {
+      inv.meta.selectedNodeId = 'central';
+      renderProjectInvestigation(proj);
+    }
+  });
+}
+
+function saveProjectStateSilently() {
+  localStorage.setItem('pb2_state', JSON.stringify(state));
+}
+
+function touchInvestigation(inv, persist=true) {
+  inv.meta.lastUpdated = nowStamp();
+  document.getElementById('inv-meta-updated').value = inv.meta.lastUpdated;
+  if (persist) saveProjectStateSilently();
+}
+
+function centerInvestigation() {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  inv.meta.panX = -360;
+  inv.meta.panY = -260;
+  inv.meta.zoom = 0.78;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function setInvestZoom(delta) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  inv.meta.zoom = Math.max(0.42, Math.min(1.4, +(inv.meta.zoom + delta).toFixed(2)));
+  touchInvestigation(inv);
+  applyInvestigationTransform(inv);
+}
+
+function updateInvestMeta(field, value) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  inv.meta[field] = value;
+  touchInvestigation(inv);
+  updateProjectSummary(proj);
+  renderInvestMap(proj);
+}
+
+function updateInvestSearch(value) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  inv.meta.search = value;
+  renderInvestMap(proj);
+}
+
+function updateThesisField(field, value) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  inv.thesis[field] = value;
+  touchInvestigation(inv);
+  document.getElementById('inv-thesis-complete').textContent = (calcInvestHealth(inv).thesisComplete ? 'Complete' : 'Incomplete');
+  updateProjectSummary(proj);
+  renderInvestScorecard(proj);
+  renderInvestMap(proj);
+}
+
+
+function getBranchNode(inv, branchKey) {
+  return getNodeById(inv, 'branch_' + branchKey);
+}
+
+function getBranchLeafNodes(inv, branchKey) {
+  const branch = getBranchNode(inv, branchKey);
+  return branch ? getNodeChildren(inv, branch.id).filter(n => n.kind === 'leaf') : [];
+}
+
+function renderInvestBuilder(proj) {
+  const branchSel = document.getElementById('inv-builder-branch');
+  const subSel = document.getElementById('inv-builder-subsection');
+  const help = document.getElementById('inv-builder-help');
+  const list = document.getElementById('inv-builder-list');
+  const pill = document.getElementById('inv-builder-branch-pill');
+  if (!branchSel || !subSel || !help || !list || !pill || !proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const branchKey = INV_BRANCH_META[inv.meta.builderBranch] ? inv.meta.builderBranch : 'business';
+  inv.meta.builderBranch = branchKey;
+  branchSel.innerHTML = INV_BRANCH_ORDER.map(key => `<option value="${key}" ${key===branchKey?'selected':''}>${INV_BRANCH_META[key].label}</option>`).join('');
+  pill.textContent = INV_BRANCH_META[branchKey].label;
+  const section = INV_SECTION_GUIDE[branchKey] || {intro:'', items:{}};
+  const subsectionList = INV_PRESET_CHILDREN[branchKey] || [];
+  const currentSubValue = subsectionList.includes(subSel.value) ? subSel.value : subsectionList[0] || '';
+  subSel.innerHTML = subsectionList.map(title => `<option value="${escapeAttr(title)}" ${title===currentSubValue?'selected':''}>${title}</option>`).join('');
+  const selectedSub = subSel.value || currentSubValue || '';
+  const selectedDesc = section.items?.[selectedSub] || 'Select a subsection to see the investigation prompt.';
+  help.textContent = (section.intro || '') + (selectedSub ? `
+
+${selectedSub}: ${selectedDesc}` : '');
+  const active = getBranchLeafNodes(inv, branchKey);
+  const activeMap = new Map(active.map(n => [n.title, n]));
+  list.innerHTML = subsectionList.map(title => {
+    const node = activeMap.get(title);
+    const desc = section.items?.[title] || '';
+    return `
+      <div class="inv-builder-row">
+        <div class="inv-builder-meta">
+          <div class="inv-builder-name">${title}</div>
+          <div class="inv-builder-desc">${escapeHtml(desc)}</div>
+        </div>
+        <div class="inv-builder-actions">
+          <span class="inv-check-status ${node ? 'done' : 'missing'}">${node ? 'Added' : 'Missing'}</span>
+          <button class="btn btn-o btn-xs" onclick="${node ? `selectInvestNode('${node.id}')` : `addPresetNode('${branchKey}','${title.replace(/'/g, "\'")}')`}">${node ? 'Open' : 'Add'}</button>
+        </div>
+      </div>
+    `;
+  }).join('') || '<div class="inv-node-empty">No preset subsections for this branch.</div>';
+}
+
+function updateInvestBuilderBranch(value) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  inv.meta.builderBranch = value;
+  touchInvestigation(inv, false);
+  renderInvestBuilder(proj);
+}
+
+function addPresetNode(branchKey, title) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const branch = getBranchNode(inv, branchKey);
+  if (!branch) return;
+  let node = getBranchLeafNodes(inv, branchKey).find(n => n.title === title);
+  if (!node) {
+    node = {
+      id: makeInvId('n'),
+      parentId: branch.id,
+      kind: 'leaf',
+      branchKey,
+      title,
+      body: '',
+      confidence: '',
+      sourceType: '',
+      counterpoint: '',
+      score: null,
+      mustVerify: false,
+      expanded: false,
+      childrenLocked: false,
+      offsetX: 0,
+      offsetY: 0,
+      evidenceIds: [],
+      critical: false,
+      severity: branchKey === 'risks' ? '' : undefined
+    };
+    inv.nodes.push(node);
+  }
+  branch.expanded = true;
+  inv.meta.selectedNodeId = node.id;
+  inv.meta.builderBranch = branchKey;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function addPresetNodeFromBuilder() {
+  const branchKey = document.getElementById('inv-builder-branch')?.value;
+  const title = document.getElementById('inv-builder-subsection')?.value;
+  if (!branchKey || !title) return;
+  addPresetNode(branchKey, title);
+}
+
+function addCustomBuilderNode() {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const branchKey = document.getElementById('inv-builder-branch')?.value || 'business';
+  const input = document.getElementById('inv-builder-custom');
+  const title = (input?.value || '').trim();
+  if (!title) { alert('Write the custom subsection title first.'); return; }
+  const inv = ensureProjectInvestigation(proj);
+  const branch = getBranchNode(inv, branchKey);
+  if (!branch) return;
+  const existing = getBranchLeafNodes(inv, branchKey).find(n => n.title.toLowerCase() === title.toLowerCase());
+  if (existing) {
+    inv.meta.selectedNodeId = existing.id;
+    branch.expanded = true;
+    touchInvestigation(inv);
+    renderProjectInvestigation(proj);
+    if (input) input.value = '';
+    return;
+  }
+  const node = {
+    id: makeInvId('n'),
+    parentId: branch.id,
+    kind: 'leaf',
+    branchKey,
+    title,
+    body: '',
+    confidence: '',
+    sourceType: '',
+    counterpoint: '',
+    score: null,
+    mustVerify: false,
+    expanded: false,
+    childrenLocked: false,
+    offsetX: 0,
+    offsetY: 0,
+    evidenceIds: [],
+    critical: false,
+    severity: branchKey === 'risks' ? '' : undefined
+  };
+  inv.nodes.push(node);
+  branch.expanded = true;
+  inv.meta.selectedNodeId = node.id;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+  if (input) input.value = '';
+}
+
+function focusBuilderNode() {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const branchKey = document.getElementById('inv-builder-branch')?.value || 'business';
+  const title = document.getElementById('inv-builder-subsection')?.value || '';
+  const inv = ensureProjectInvestigation(proj);
+  const existing = getBranchLeafNodes(inv, branchKey).find(n => n.title === title);
+  if (existing) {
+    selectInvestNode(existing.id);
+    return;
+  }
+  const branch = getBranchNode(inv, branchKey);
+  if (!branch) return;
+  inv.meta.selectedNodeId = branch.id;
+  branch.expanded = true;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function renderInvestNodeEditor(proj) {
+  const wrap = document.getElementById('inv-node-editor');
+  if (!wrap || !proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const node = getNodeById(inv, inv.meta.selectedNodeId || 'central');
+  if (!node) { wrap.innerHTML = '<div class="inv-node-empty">Select a node from the map to edit it.</div>'; return; }
+  const branchMeta = node.branchKey ? INV_BRANCH_META[node.branchKey] : null;
+  const evidenceChecks = (inv.evidence || []).length ? `
+    <div class="fg">
+      <div class="lbl">Linked Evidence</div>
+      <div class="inv-checklist">
+        ${(inv.evidence || []).map(ev => `
+          <label class="inv-check">
+            <input type="checkbox" ${node.evidenceIds.includes(ev.id) ? 'checked' : ''} onchange="toggleNodeEvidence('${node.id}','${ev.id}',this.checked)"/>
+            <span><strong>${ev.title}</strong><br><span style="color:var(--muted2)">${ev.sourceType}</span></span>
+          </label>
+        `).join('')}
+      </div>
+    </div>
+  ` : '<div class="inv-node-empty" style="margin-top:10px">No evidence items yet. Build them in Evidence Vault, then link them here.</div>';
+  wrap.innerHTML = `
+    <div class="inv-health-inline" style="margin-bottom:12px">
+      <span class="inv-health-pill">${node.kind === 'central' ? 'Central Node' : (branchMeta ? branchMeta.label : 'Custom Node')}</span>
+      ${branchMeta ? `<span class="inv-link-chip">${branchMeta.icon} ${branchMeta.label}</span>` : ''}
+    </div>
+    <div class="fg">
+      <div class="lbl">Title</div>
+      <input class="inp" value="${escapeAttr(node.kind === 'central' ? (inv.meta.companyName || proj.name) : node.title || '')}" ${node.kind === 'central' ? 'disabled' : ''} oninput="setInvestNodeField('${node.id}','title',this.value)"/>
+    </div>
+    ${node.kind === 'central' ? `
+      <div class="fg">
+        <div class="lbl">Case Snapshot</div>
+        <textarea class="tarea" oninput="setInvestNodeField('${node.id}','body',this.value)" placeholder="Summarize the current state of the company case.">${escapeHtml(node.body || '')}</textarea>
+      </div>
+    ` : `
+      <div class="fg">
+        <div class="lbl">Body <div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Body — Evidence-Backed Answer</div><div class=\"tip-main\">Write your specific answer for what this node is asking. Quote numbers, cite earnings calls or 10-K filings. Vague notes are useless six months later.</div><div class=\"tip-kid\">Write this so your future self can read it and immediately understand what you found. Be specific enough that you would not need to re-research it.</div></div></div></div>
+        <textarea class="tarea" oninput="setInvestNodeField('${node.id}','body',this.value)" placeholder="Write the evidence-backed answer here.">${escapeHtml(node.body || '')}</textarea>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <div class="lbl">Confidence <div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Confidence Level</div><div class=\"tip-main\">Low = early hypothesis, needs verification. Medium = reasonably supported but some unknowns remain. High = verified from multiple primary sources.</div><div class=\"tip-kid\">Are you guessing, pretty sure, or absolutely certain? Be honest. Overconfidence in shaky research is how portfolios get destroyed.</div></div></div></div>
+          <select class="sel" onchange="setInvestNodeField('${node.id}','confidence',this.value)">
+            <option value="">Select</option>
+            <option ${node.confidence==='Low'?'selected':''}>Low</option>
+            <option ${node.confidence==='Medium'?'selected':''}>Medium</option>
+            <option ${node.confidence==='High'?'selected':''}>High</option>
+          </select>
+        </div>
+        <div class="fg">
+          <div class="lbl">Source Type <div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Source Type</div><div class=\"tip-main\">Where did this come from? 10-K and earnings calls are primary sources — strongest. Analyst reports and news are secondary — weaker. Your own analysis must be grounded in primary data.</div><div class=\"tip-kid\">10-K = the company official annual report filed with regulators. Always prefer what the company actually said over what someone else wrote about it.</div></div></div></div>
+          <select class="sel" onchange="setInvestNodeField('${node.id}','sourceType',this.value)">
+            <option value="">Select</option>
+            ${INV_SOURCE_TYPES.map(s => `<option value="${s}" ${node.sourceType===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <div class="lbl">Counterpoint <div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Counterpoint</div><div class=\"tip-main\">Write the strongest argument against what you wrote. Forcing yourself to argue the opposite view separates disciplined research from confirmation bias.</div><div class=\"tip-kid\">Pretend you are hired to destroy your own argument. What is the best case against your finding? If you cannot think of one, you are not looking hard enough.</div></div></div></div>
+        <textarea class="tarea" oninput="setInvestNodeField('${node.id}','counterpoint',this.value)" placeholder="Force the devil’s advocate note.">${escapeHtml(node.counterpoint || '')}</textarea>
+      </div>
+      ${node.branchKey === 'risks' ? `
+        <div class="fg">
+          <div class="lbl">Severity</div>
+          <select class="sel" onchange="setInvestNodeField('${node.id}','severity',this.value)">
+            ${INV_RISK_SEVERITY.map(s => `<option value="${s}" ${node.severity===s?'selected':''}>${s || 'Select severity'}</option>`).join('')}
+          </select>
+        </div>
+      ` : ''}
+      <div class="fg">
+        <div class="lbl">Score (1–5) <div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Node Score (1–5)</div><div class=\"tip-main\">Rate the strength of this factor for the company. 1 = very weak or concerning. 3 = average. 5 = exceptional. These scores feed directly into the Scorecard — Business Score, Stock Score, and Research Confidence are all calculated from your node scores.</div><div class=\"tip-kid\">Grading the company on this specific topic. A 5 on Revenue Durability means customers are locked in and revenue is highly predictable. A 1 means revenue is fragile and could disappear.</div></div></div></div>
+        <div class="inv-score-picker">
+          ${[1,2,3,4,5].map(v => `<button class="inv-score-btn ${Number(node.score)===v?'sel':''}" onclick="setInvestNodeScore('${node.id}',${v})">${v}</button>`).join('')}
+        </div>
+      </div>
+      <div class="inv-badges-row">
+        <label class="inv-link-chip"><input type="checkbox" ${node.mustVerify?'checked':''} onchange="setInvestNodeBool('${node.id}','mustVerify',this.checked)"/> Must verify <div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Must Verify Flag</div><div class=\"tip-main\">Mark this if the information needs confirmation from another source before committing capital. Do not invest with unverified nodes flagged as high confidence.</div><div class=\"tip-kid\">A reminder: come back and check this before investing. Flag now, confirm later.</div></div></div></label>
+        <label class="inv-link-chip"><input type="checkbox" ${node.critical?'checked':''} onchange="setInvestNodeBool('${node.id}','critical',this.checked)"/> Flag critical <div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Flag Critical</div><div class=\"tip-main\">Mark this as a factor that could single-handedly make or break the investment. If a Critical node scores 1 or 2, pause before entering.</div><div class=\"tip-kid\">If this one thing went wrong, would it destroy the entire thesis? Flag it so you never miss it in your review.</div></div></div></label>
+      </div>
+      ${evidenceChecks}
+    `}
+    <div class="inv-node-actions">
+      ${node.kind !== 'central' ? `<button class="btn btn-o btn-sm" onclick="addInvestChild('${node.id}')">+ Add Child</button>` : ''}
+      ${node.kind === 'leaf' ? `<button class="btn btn-red btn-sm" onclick="deleteInvestNode('${node.id}')">Delete Node</button>` : ''}
+      ${getNodeChildren(inv, node.id).length ? `<button class="btn btn-o btn-sm" onclick="toggleInvestExpand('${node.id}')">${node.expanded ? 'Collapse' : 'Expand'}</button>` : ''}
+      ${node.kind !== 'central' ? `<button class="btn btn-o btn-sm" onclick="resetInvestNodePosition('${node.id}')">Reset Position</button>` : ''}
+    </div>
+  `;
+  document.getElementById('inv-selected-branch').textContent = node.kind === 'central' ? 'Central Node' : (branchMeta ? branchMeta.label : 'Custom Node');
+}
+
+function setInvestNodeField(nodeId, field, value) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const node = getNodeById(inv, nodeId);
+  if (!node) return;
+  node[field] = value;
+  if (node.kind === 'central' && field === 'title') inv.meta.companyName = value;
+  touchInvestigation(inv);
+  updateProjectSummary(proj);
+  renderInvestScorecard(proj);
+  if (['title','body','sourceType','confidence','mustVerify','critical','severity'].includes(field)) renderInvestMap(proj);
+}
+
+function setInvestNodeBool(nodeId, field, value) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const node = getNodeById(inv, nodeId);
+  if (!node) return;
+  node[field] = !!value;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function setInvestNodeScore(nodeId, score) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const node = getNodeById(inv, nodeId);
+  if (!node) return;
+  node.score = score;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function toggleInvestExpand(nodeId) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const node = getNodeById(inv, nodeId);
+  if (!node) return;
+  node.expanded = !node.expanded;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function addInvestChild(parentId) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const parent = getNodeById(inv, parentId);
+  if (!parent) return;
+  const title = prompt('New child node title:', 'New node');
+  if (!title) return;
+  const branchKey = parent.kind === 'branch' ? parent.branchKey : (parent.branchKey || 'business');
+  const existing = getNodeChildren(inv, parentId).find(n => (n.title || '').toLowerCase() === title.trim().toLowerCase());
+  if (existing) {
+    inv.meta.selectedNodeId = existing.id;
+    parent.expanded = true;
+    touchInvestigation(inv);
+    renderProjectInvestigation(proj);
+    return;
+  }
+  const child = {
+    id: makeInvId('n'),
+    parentId,
+    kind: 'leaf',
+    branchKey,
+    title: title.trim(),
+    body: '',
+    confidence: '',
+    sourceType: '',
+    counterpoint: '',
+    score: null,
+    mustVerify: false,
+    expanded: false,
+    childrenLocked: false,
+    offsetX: 0,
+    offsetY: 0,
+    evidenceIds: [],
+    critical: false,
+    severity: branchKey === 'risks' ? '' : undefined
+  };
+  inv.nodes.push(child);
+  parent.expanded = true;
+  inv.meta.selectedNodeId = child.id;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function deleteInvestNode(nodeId) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const node = getNodeById(inv, nodeId);
+  if (!node || ['central','branch'].includes(node.kind)) return;
+  if (!confirm('Delete this node and all of its child nodes?')) return;
+  const toDelete = new Set([nodeId]);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    inv.nodes.forEach(n => {
+      if (!toDelete.has(n.id) && toDelete.has(n.parentId)) {
+        toDelete.add(n.id);
+        changed = true;
+      }
+    });
+  }
+  inv.nodes = inv.nodes.filter(n => !toDelete.has(n.id));
+  inv.questions.forEach(q => { if (toDelete.has(q.linkedNodeId)) q.linkedNodeId = ''; });
+  if (toDelete.has(inv.meta.selectedNodeId)) inv.meta.selectedNodeId = 'central';
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function resetInvestNodePosition(nodeId) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const node = getNodeById(inv, nodeId);
+  if (!node) return;
+  node.offsetX = 0;
+  node.offsetY = 0;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function addInvestQuestion() {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const textEl = document.getElementById('inv-question-input');
+  const text = textEl.value.trim();
+  if (!text) { alert('Write the question first.'); return; }
+  const inv = ensureProjectInvestigation(proj);
+  inv.questions.unshift({
+    id: makeInvId('q'),
+    text,
+    status: 'Unanswered',
+    linkedNodeId: inv.meta.selectedNodeId || '',
+    created: nowStamp()
+  });
+  textEl.value = '';
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function renderInvestQuestions(proj) {
+  const list = document.getElementById('inv-question-list');
+  if (!list || !proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const nodeOptions = inv.nodes.filter(n => n.kind !== 'central').map(n => `<option value="${n.id}" ${n.id === (inv.meta.selectedNodeId || '') ? 'selected' : ''}>${n.title}</option>`).join('');
+  if (!(inv.questions || []).length) {
+    list.innerHTML = '<div class="inv-node-empty">No questions yet. Force the open loops into this list before capital is committed.</div>';
+    return;
+  }
+  list.innerHTML = inv.questions.map(q => `
+    <div class="inv-q-row">
+      <div class="inv-q-top">
+        <div>
+          <div class="inv-q-title">${q.text}</div>
+          <div class="inv-q-meta">${q.created || ''}</div>
+        </div>
+        <button class="btn btn-red btn-xs" onclick="deleteInvestQuestion('${q.id}')">✕</button>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <div class="lbl">Status</div>
+          <select class="sel" onchange="updateInvestQuestion('${q.id}','status',this.value)">
+            ${INV_QUESTION_STATUS.map(s => `<option value="${s}" ${q.status===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div class="fg">
+          <div class="lbl">Linked Node</div>
+          <select class="sel" onchange="updateInvestQuestion('${q.id}','linkedNodeId',this.value)">
+            <option value="">Select node</option>
+            ${inv.nodes.filter(n => n.kind !== 'central').map(n => `<option value="${n.id}" ${q.linkedNodeId===n.id?'selected':''}>${n.title}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateInvestQuestion(id, field, value) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const q = (inv.questions || []).find(x => x.id === id);
+  if (!q) return;
+  q[field] = value;
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function deleteInvestQuestion(id) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  inv.questions = (inv.questions || []).filter(q => q.id !== id);
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function populateEvidenceControls(proj) {
+  const inv = ensureProjectInvestigation(proj);
+  const sourceSel = document.getElementById('inv-ev-source');
+  const branchSel = document.getElementById('inv-ev-branch');
+  const filterSel = document.getElementById('inv-evidence-filter');
+  if (sourceSel && !sourceSel.dataset.ready) {
+    sourceSel.innerHTML = `<option value="">Select source</option>` + INV_SOURCE_TYPES.map(s => `<option value="${s}">${s}</option>`).join('');
+    sourceSel.dataset.ready = '1';
+  }
+  if (branchSel && !branchSel.dataset.ready) {
+    branchSel.innerHTML = `<option value="">Link branch</option>` + INV_BRANCH_ORDER.map(k => `<option value="${k}">${INV_BRANCH_META[k].label}</option>`).join('');
+    branchSel.dataset.ready = '1';
+  }
+  if (filterSel) {
+    const current = filterSel.value;
+    filterSel.innerHTML = `<option value="">All Sources</option>` + INV_SOURCE_TYPES.map(s => `<option value="${s}" ${current===s?'selected':''}>${s}</option>`).join('');
+  }
+}
+
+function addEvidenceItem() {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const title = document.getElementById('inv-ev-title').value.trim();
+  const sourceType = document.getElementById('inv-ev-source').value;
+  const branchKey = document.getElementById('inv-ev-branch').value;
+  const summary = document.getElementById('inv-ev-summary').value.trim();
+  const reference = document.getElementById('inv-ev-ref').value.trim();
+  if (!title || !sourceType || !summary) { alert('Add at least a title, source type, and summary.'); return; }
+  inv.evidence.unshift({
+    id: makeInvId('ev'),
+    title,
+    sourceType,
+    branchKey,
+    summary,
+    reference,
+    created: nowStamp()
+  });
+  ['inv-ev-title','inv-ev-summary','inv-ev-ref'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('inv-ev-source').value = '';
+  document.getElementById('inv-ev-branch').value = '';
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+  toast('✓ Evidence added');
+}
+
+function renderProjectEvidence(proj) {
+  const list = document.getElementById('inv-evidence-list');
+  if (!list || !proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  populateEvidenceControls(proj);
+  const filter = document.getElementById('inv-evidence-filter')?.value || '';
+  const items = (inv.evidence || []).filter(ev => !filter || ev.sourceType === filter);
+  if (!items.length) {
+    list.innerHTML = '<div class="inv-node-empty">No evidence items yet. Add filings, call notes, or primary research, then link them back to nodes in the map.</div>';
+    return;
+  }
+  list.innerHTML = items.map(ev => `
+    <div class="inv-ev-row">
+      <div class="inv-ev-top">
+        <div>
+          <div class="inv-ev-title">${ev.title}</div>
+          <div class="inv-ev-meta">${ev.sourceType}${ev.branchKey ? ' · ' + INV_BRANCH_META[ev.branchKey].label : ''} · ${ev.created}</div>
+        </div>
+        <button class="btn btn-red btn-xs" onclick="deleteEvidenceItem('${ev.id}')">✕</button>
+      </div>
+      <div style="font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap">${ev.summary}</div>
+      ${ev.reference ? `<div style="font-size:11px;color:var(--accent);margin-top:8px;word-break:break-word">${ev.reference}</div>` : ''}
+      <div style="margin-top:10px">${linkedNodeChips(inv, ev.id)}</div>
+    </div>
+  `).join('');
+}
+
+function linkedNodeChips(inv, evidenceId) {
+  const linked = (inv.nodes || []).filter(n => (n.evidenceIds || []).includes(evidenceId));
+  if (!linked.length) return '<span class="inv-stage-empty">Not linked to a node yet.</span>';
+  return linked.map(n => `<span class="inv-link-chip">${n.title}</span>`).join('');
+}
+
+function deleteEvidenceItem(id) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  inv.evidence = (inv.evidence || []).filter(ev => ev.id !== id);
+  inv.nodes.forEach(n => n.evidenceIds = (n.evidenceIds || []).filter(eid => eid !== id));
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+function toggleNodeEvidence(nodeId, evidenceId, checked) {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const node = getNodeById(inv, nodeId);
+  if (!node) return;
+  node.evidenceIds = node.evidenceIds || [];
+  if (checked && !node.evidenceIds.includes(evidenceId)) node.evidenceIds.push(evidenceId);
+  if (!checked) node.evidenceIds = node.evidenceIds.filter(id => id !== evidenceId);
+  touchInvestigation(inv);
+  renderProjectInvestigation(proj);
+}
+
+const SCORECARD_TIPS = {
+  'Business Quality': '<div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Business Quality Score</div><div class=\"tip-main\">Average of all scores in the Business branch. Measures how fundamentally strong the underlying company is — revenue model, customer relationships, pricing power.</div><div class=\"tip-kid\">Is this a good business? Not a good stock — a good business. A great business can still be a terrible stock at the wrong price.</div></div></div>',
+  'Moat Strength': '<div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Moat Strength Score</div><div class=\"tip-main\">Derived from moat and switching cost nodes. Measures how protected profits are from competition stealing customers.</div><div class=\"tip-kid\">A wide moat means competitors cannot easily take customers. No moat means profits could disappear when someone cheaper shows up.</div></div></div>',
+  'Management': '<div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Management Score</div><div class=\"tip-main\">Average of Management branch nodes. Measures capital allocation, honesty, track record, and shareholder alignment.</div><div class=\"tip-kid\">Bad management destroys great businesses. Great management builds value from average ones. Do you trust these people with your money?</div></div></div>',
+  'Financial Strength': '<div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Financial Strength Score</div><div class=\"tip-main\">Average of Financials branch nodes — margins, cash flow, debt, balance sheet quality. Measures financial resilience.</div><div class=\"tip-kid\">Can this company survive a bad year? Two bad years? Does it generate cash or burn it?</div></div></div>',
+  'Predictability': '<div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Predictability Score</div><div class=\"tip-main\">From recurring revenue and durability nodes. Measures how reliably you can forecast earnings.</div><div class=\"tip-kid\">Can you predict what this company earns next year within 10 percent? High predictability means lower risk and often a higher justified valuation.</div></div></div>',
+  'Valuation': '<div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Valuation Score</div><div class=\"tip-main\">Average of Valuation branch nodes. Measures whether the stock is attractively priced relative to intrinsic value.</div><div class=\"tip-kid\">A great company at a terrible price scores low here. Valuation is not about the business quality — it is about whether you are paying a fair price.</div></div></div>',
+  'Catalyst Strength': '<div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Catalyst Strength Score</div><div class=\"tip-main\">Average of Catalysts branch nodes. Measures the strength and timing of events that could force the market to reprice the stock.</div><div class=\"tip-kid\">Even the best thesis can sit dormant for years without a catalyst. High score means clear near-term events should make the stock move.</div></div></div>',
+  'Risk Severity': '<div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Risk Severity Score — Inverted</div><div class=\"tip-main\">Inverted from raw risk scores. High number here means LOW risk severity — good. High raw risk scores on your nodes become low scores here.</div><div class=\"tip-kid\">This is intentionally backwards. If you rated your risks as very serious, that becomes a low score here — flagging danger. Low node risk scores mean high safety score.</div></div></div>',
+  'Variant Perception Strength': '<div class=\"tip\"><div class=\"tip-q\">?</div><div class=\"tip-box\"><div class=\"tip-title\">Variant Perception Score</div><div class=\"tip-main\">Average of Variant Perception branch nodes. Measures the strength of your differentiated view — where you believe the market is wrong.</div><div class=\"tip-kid\">Without a differentiated view, you have no edge. Even if you are right about the company, if everyone agrees, the upside is already priced in.</div></div></div>',
+};
+function renderInvestScorecard(proj) {
+  const summary = document.getElementById('inv-summary-grid');
+  const list = document.getElementById('inv-dim-list');
+  const radar = document.getElementById('inv-radar');
+  if (!summary || !list || !radar || !proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const health = calcInvestHealth(inv);
+  const metrics = calcInvestDimensions(inv);
+  summary.innerHTML = `
+    <div class="inv-summary-box"><div class="proj-kpi-label">Health Score</div><div class="big">${health.health}%</div><div class="proj-kpi-sub">${health.coverageText}</div></div>
+    <div class="inv-summary-box"><div class="proj-kpi-label">Business Score</div><div class="big">${metrics.businessScore || '—'}</div><div class="proj-kpi-sub">Quality of the company itself.</div></div>
+    <div class="inv-summary-box"><div class="proj-kpi-label">Stock Score</div><div class="big">${metrics.stockScore || '—'}</div><div class="proj-kpi-sub">Valuation, catalyst, risk, and perception.</div></div>
+    <div class="inv-summary-box"><div class="proj-kpi-label">Research Confidence</div><div class="big">${metrics.researchConfidence || '—'}</div><div class="proj-kpi-sub">The process score, not the buy signal.</div></div>
+  `;
+  list.innerHTML = Object.entries(metrics.dims).map(([label, value]) => `
+    <div class="inv-dim-row">
+      <div class="inv-dim-label" style="display:flex;align-items:center;gap:6px">${label} ${SCORECARD_TIPS[label]||''}</div>
+      <div class="inv-dim-bar"><div class="inv-dim-fill" style="width:${(value/5)*100}%"></div></div>
+      <div style="text-align:right;font-weight:700">${value ? value.toFixed(1) : '—'}</div>
+    </div>
+  `).join('');
+  renderRadarChart(radar, metrics.dims);
+}
+
+function renderRadarChart(svg, dims) {
+  const entries = Object.entries(dims);
+  const cx = 210, cy = 160, maxR = 110;
+  const levels = [1,2,3,4,5];
+  const pts = entries.map(([label, value], i) => {
+    const angle = (-Math.PI/2) + (Math.PI*2*i/entries.length);
+    const r = (value/5) * maxR;
+    return { label, value, angle, x: cx + Math.cos(angle)*r, y: cy + Math.sin(angle)*r };
+  });
+  const grid = levels.map(level => {
+    const r = (level/5)*maxR;
+    const path = entries.map((_,i) => {
+      const angle = (-Math.PI/2) + (Math.PI*2*i/entries.length);
+      const x = cx + Math.cos(angle)*r;
+      const y = cy + Math.sin(angle)*r;
+      return `${i===0?'M':'L'} ${x} ${y}`;
+    }).join(' ') + ' Z';
+    return `<path d="${path}" fill="none" stroke="rgba(74,100,120,.45)" stroke-width="1"></path>`;
+  }).join('');
+  const axes = entries.map(([label],i) => {
+    const angle = (-Math.PI/2) + (Math.PI*2*i/entries.length);
+    const x = cx + Math.cos(angle)*(maxR+24);
+    const y = cy + Math.sin(angle)*(maxR+24);
+    const lx = cx + Math.cos(angle)*maxR;
+    const ly = cy + Math.sin(angle)*maxR;
+    return `
+      <line x1="${cx}" y1="${cy}" x2="${lx}" y2="${ly}" stroke="rgba(74,100,120,.45)" stroke-width="1"></line>
+      <text x="${x}" y="${y}" fill="#7A9BB0" font-size="10" text-anchor="middle" dominant-baseline="middle">${label.replace('Variant Perception Strength','Variant').replace('Risk Severity','Risk')}</text>
+    `;
+  }).join('');
+  const poly = pts.length ? `<polygon points="${pts.map(p => `${p.x},${p.y}`).join(' ')}" fill="rgba(0,200,255,.18)" stroke="#00C8FF" stroke-width="2"></polygon>` : '';
+  const dots = pts.map(p => `<circle cx="${p.x}" cy="${p.y}" r="4" fill="#00E87A" stroke="#06090D" stroke-width="1.5"></circle>`).join('');
+  svg.innerHTML = `
+    <rect x="0" y="0" width="420" height="320" fill="transparent"></rect>
+    ${grid}
+    ${axes}
+    ${poly}
+    ${dots}
+  `;
+}
+
+function exportCurrentInvestigation() {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const data = JSON.stringify({project: proj.name, created: new Date().toISOString(), investigation: inv}, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (proj.name.replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase() || 'investigation') + '-backup.json';
+  a.click();
+}
+
+function exportInvestigationReport() {
+  const proj = getCurrentProject();
+  if (!proj) return;
+  const inv = ensureProjectInvestigation(proj);
+  const health = calcInvestHealth(inv);
+  const dims = calcInvestDimensions(inv);
+
+  const branchSections = (INV_BRANCH_ORDER || []).map(key => {
+    const branch = getNodeById(inv, 'branch_' + key);
+    if (!branch) return '';
+    const meta = INV_BRANCH_META[key] || {label: key, icon: ''};
+    const children = getNodeChildren(inv, branch.id);
+    if (!children.length) return '';
+    const childRows = children.map(n => {
+      const score = n.score ? `Score: ${n.score}/5` : '';
+      const conf = n.confidence ? `Confidence: ${n.confidence}` : '';
+      const src = n.sourceType ? `Source: ${n.sourceType}` : '';
+      const flags = [n.mustVerify ? 'MUST VERIFY' : '', n.critical ? 'CRITICAL' : ''].filter(Boolean).join(' | ');
+      return `<div style="margin:14px 0;padding:14px;background:#f8f9fa;border-left:4px solid #333;border-radius:4px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:6px">${n.title || 'Untitled'}</div>
+        ${score || conf || src ? `<div style="font-size:11px;color:#666;margin-bottom:8px">${[score,conf,src].filter(Boolean).join(' &nbsp;·&nbsp; ')}</div>` : ''}
+        ${flags ? `<div style="font-size:11px;color:#c00;font-weight:700;margin-bottom:8px">${flags}</div>` : ''}
+        ${n.body ? `<div style="font-size:13px;line-height:1.7;margin-bottom:8px">${n.body}</div>` : ''}
+        ${n.counterpoint ? `<div style="font-size:12px;color:#555;padding:8px;background:#fff;border:1px solid #ddd;border-radius:4px"><strong>Counterpoint:</strong> ${n.counterpoint}</div>` : ''}
+      </div>`;
+    }).join('');
+    return `<div style="margin-bottom:30px">
+      <h2 style="font-size:18px;font-weight:700;border-bottom:2px solid #333;padding-bottom:8px;margin-bottom:14px">${meta.icon} ${meta.label}</h2>
+      ${childRows}
+    </div>`;
+  }).filter(Boolean).join('');
+
+  const dimRows = Object.entries(dims.dims).map(([label, val]) =>
+    `<tr><td style="padding:8px 12px;font-weight:600">${label}</td><td style="padding:8px 12px;text-align:center">${val ? val.toFixed(1) : '—'}/5</td><td style="padding:8px 12px"><div style="background:#eee;border-radius:4px;height:10px;width:200px"><div style="background:#1a6b3c;height:10px;border-radius:4px;width:${val?(val/5)*200:0}px"></div></div></td></tr>`
+  ).join('');
+
+  const thesis = inv.thesis || {};
+  const questions = (inv.questions || []);
+  const evidence = (inv.evidence || []);
+
+  const reportHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"/>
+  <title>Investigation Report — ${proj.name}</title>
+  <style>
+    body{font-family:'Georgia',serif;max-width:900px;margin:40px auto;padding:0 30px;color:#1a1a1a;line-height:1.6;}
+    h1{font-size:28px;font-weight:700;margin-bottom:4px;}
+    .meta{color:#666;font-size:13px;margin-bottom:30px;}
+    .score-box{display:inline-block;padding:12px 20px;border:2px solid #333;border-radius:8px;margin:6px;text-align:center;}
+    .score-box .num{font-size:28px;font-weight:700;}
+    .score-box .lbl{font-size:11px;color:#666;margin-top:2px;}
+    table{width:100%;border-collapse:collapse;}
+    th{background:#333;color:#fff;padding:10px 12px;text-align:left;}
+    tr:nth-child(even){background:#f5f5f5;}
+    .q-row{padding:10px 0;border-bottom:1px solid #eee;}
+    .ev-row{padding:10px 0;border-bottom:1px solid #eee;}
+    @media print{body{margin:20px;}.no-print{display:none;}}
+  </style>
+  </head><body>
+  <div class="no-print" style="text-align:right;margin-bottom:20px"><button onclick="window.print()" style="padding:10px 24px;background:#1a1a1a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px">🖨 Print / Save as PDF</button></div>
+  <h1>${proj.name}</h1>
+  <div class="meta">
+    ${inv.meta.ticker ? `<strong>${inv.meta.ticker}</strong> &nbsp;·&nbsp;` : ''}
+    ${inv.meta.sector || ''} &nbsp;·&nbsp;
+    Status: <strong>${inv.meta.status || 'Watching'}</strong> &nbsp;·&nbsp;
+    Exported: ${new Date().toLocaleDateString('en-CA', {year:'numeric',month:'long',day:'numeric'})}
+  </div>
+
+  <h2 style="font-size:20px;margin-bottom:12px">Scores</h2>
+  <div style="margin-bottom:30px">
+    <div class="score-box"><div class="num">${health.health}%</div><div class="lbl">Research Health</div></div>
+    <div class="score-box"><div class="num">${dims.businessScore || '—'}</div><div class="lbl">Business Score</div></div>
+    <div class="score-box"><div class="num">${dims.stockScore || '—'}</div><div class="lbl">Stock Score</div></div>
+    <div class="score-box"><div class="num">${dims.researchConfidence || '—'}</div><div class="lbl">Research Confidence</div></div>
+  </div>
+
+  ${thesis.simple || thesis.analytical || thesis.must ? `
+  <h2 style="font-size:20px;margin-bottom:12px">Three-Layer Thesis</h2>
+  <div style="margin-bottom:30px;padding:20px;background:#f8f9fa;border-radius:8px">
+    ${thesis.simple ? `<div style="margin-bottom:14px"><strong>Simple Thesis:</strong><br>${thesis.simple}</div>` : ''}
+    ${thesis.analytical ? `<div style="margin-bottom:14px"><strong>Analytical Thesis:</strong><br><div style="white-space:pre-wrap">${thesis.analytical}</div></div>` : ''}
+    ${thesis.must ? `<div><strong>What Must Happen:</strong><br><div style="white-space:pre-wrap">${thesis.must}</div></div>` : ''}
+  </div>` : ''}
+
+  <h2 style="font-size:20px;margin-bottom:12px">Investigation</h2>
+  ${branchSections}
+
+  ${dimRows ? `<h2 style="font-size:20px;margin-bottom:12px;margin-top:30px">Scorecard</h2>
+  <table style="margin-bottom:30px"><thead><tr><th>Dimension</th><th>Score</th><th>Bar</th></tr></thead><tbody>${dimRows}</tbody></table>` : ''}
+
+  ${questions.length ? `<h2 style="font-size:20px;margin-bottom:12px">Question Tree</h2>
+  <div style="margin-bottom:30px">${questions.map(q=>`<div class="q-row"><span style="font-weight:600">${q.text}</span> <span style="color:#666;font-size:12px">— ${q.status||'Unanswered'}</span></div>`).join('')}</div>` : ''}
+
+  ${evidence.length ? `<h2 style="font-size:20px;margin-bottom:12px">Evidence Vault</h2>
+  <div style="margin-bottom:30px">${evidence.map(e=>`<div class="ev-row"><strong>${e.title}</strong> <span style="color:#666;font-size:12px">(${e.sourceType||''})</span>${e.body?`<div style="font-size:13px;margin-top:4px">${e.body}</div>`:''}</div>`).join('')}</div>` : ''}
+
+  </body></html>`;
+
+  const blob = new Blob([reportHTML], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (proj.name.replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase() || 'investigation') + '-report.html';
+  a.click();
+}
+
+function escapeAttr(str) {
+  return String(str || '')
+    .replace(/&/g,'&amp;')
+    .replace(/"/g,'&quot;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+function escapeHtml(str) { return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 
 // ═══════════════════════════════════
 // DEEP DIVE WIZARD
