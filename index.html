@@ -524,10 +524,10 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
 
       <div class="gauge-row">
         <div>
-          <div class="gauge-label">10yr Treasury Yield Change <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">10-Year Treasury Yield — Day Change (bps)</div><div class="tip-main">Enter today's change in basis points (1 bps = 0.01%). When yields rise sharply, money shifts from stocks to bonds and borrowing gets more expensive — that's Risk-Off. When yields fall, the opposite happens.</div><div class="tip-kid">Imagine the government's savings account interest rate. When that rate shoots up, everyone pulls money out of stocks to put in the "safe" account. That hurts stocks — Risk-Off.</div></div></div></div>
-          <div class="gauge-scale">Below −5 bps (falling) → Risk-On &nbsp;·&nbsp; −5 to +5 → Neutral &nbsp;·&nbsp; Above +5 bps (rising fast) → Risk-Off</div>
+          <div class="gauge-label">10yr Treasury Yield (level) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">10-Year Treasury Yield — Day Change (bps)</div><div class="tip-main">Enter today's change in basis points (1 bps = 0.01%). When yields rise sharply, money shifts from stocks to bonds and borrowing gets more expensive — that's Risk-Off. When yields fall, the opposite happens.</div><div class="tip-kid">Imagine the government's savings account interest rate. When that rate shoots up, everyone pulls money out of stocks to put in the "safe" account. That hurts stocks — Risk-Off.</div></div></div></div>
+          <div class="gauge-scale">Below 3.5% → Risk-On &nbsp;·&nbsp; 3.5–4.5% → Neutral &nbsp;·&nbsp; Above 4.5% → Risk-Off</div>
         </div>
-        <input class="gauge-inp" id="g-us-yld" type="number" placeholder="e.g. +8 or -4" oninput="recalcGauges('us')"/>
+        <input class="gauge-inp" id="g-us-yld" type="number" placeholder="e.g. 4.29" oninput="recalcGauges('us')"/>
         <div class="gauge-badge empty" id="gb-us-yld">—</div>
       </div>
 
@@ -607,7 +607,7 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
       <div class="gauge-row">
         <div>
           <div class="gauge-label">VSTOXX (European VIX) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">VSTOXX — Euro Stoxx 50 Volatility</div><div class="tip-main">Europe's equivalent of the VIX. Measures expected volatility of the Euro Stoxx 50 index over 30 days. Typically moves with VIX but can diverge during Europe-specific crises (energy shocks, debt crises, elections).</div><div class="tip-kid">Same as VIX but for Europe. If VSTOXX is high while US VIX is low, something is specifically scaring Europe — like an energy shortage or a big election result nobody expected.</div></div></div></div>
-          <div class="gauge-scale">Below 20 → calm, Risk-On &nbsp;·&nbsp; 20–30 → elevated fear &nbsp;·&nbsp; Above 30 → high stress, Risk-Off</div>
+          <div class="gauge-scale">Below 22 → calm, Risk-On &nbsp;·&nbsp; 22–32 → elevated fear &nbsp;·&nbsp; Above 32 → high stress, Risk-Off</div>
         </div>
         <input class="gauge-inp" id="g-eu-vstx" type="number" placeholder="e.g. 22.1" oninput="recalcGauges('eu')"/>
         <div class="gauge-badge empty" id="gb-eu-vstx">—</div>
@@ -2482,44 +2482,62 @@ function deleteMapEvent(id) {
 // ═══════════════════════════════════
 // RISK GAUGE SYSTEM
 // ═══════════════════════════════════
-function gaugeClass(val, ronMax, roffMin, direction) {
-  // direction: 'normal' = low is ron, high is roff
-  //            'inverse' = high is ron, low is roff  
+function gaugeClass(val, ronThresh, roffThresh, direction) {
+  // 'normal':  low = Risk-On (e.g. VIX — low fear is good)
+  //            ronThresh = upper bound for Ron, roffThresh = lower bound for Roff
+  // 'inverse': high = Risk-On (e.g. S&P up % — positive is good)
+  //            ronThresh = lower bound for Ron, roffThresh = upper bound for Roff
   if (val === null || val === undefined || val === '') return 'empty';
   const n = parseFloat(val);
   if (isNaN(n)) return 'empty';
   if (direction === 'inverse') {
-    if (n >= ronMax) return 'ron';
-    if (n <= roffMin) return 'roff';
+    // High values = Risk-On, Low values = Risk-Off
+    if (n >= ronThresh) return 'ron';
+    if (n <= roffThresh) return 'roff';
     return 'neu';
   }
-  // normal: low=ron, high=roff
-  if (n <= ronMax) return 'ron';
-  if (n >= roffMin) return 'roff';
+  // Normal: Low values = Risk-On, High values = Risk-Off
+  if (n <= ronThresh) return 'ron';
+  if (n >= roffThresh) return 'roff';
   return 'neu';
 }
 
 const GAUGES = {
   us: [
+    // VIX: normal — low = calm = Risk-On, high = fear = Risk-Off
     { inp:'g-us-vix',   badge:'gb-us-vix',   fn: v => gaugeClass(v, 20, 30, 'normal') },
-    { inp:'g-us-yld',   badge:'gb-us-yld',   fn: v => gaugeClass(v, -5, 5, 'normal') },
+    // 10yr yield LEVEL: normal — low yield = cheap money = Risk-On
+    { inp:'g-us-yld',   badge:'gb-us-yld',   fn: v => gaugeClass(v, 3.5, 4.5, 'normal') },
+    // DXY LEVEL: normal — low dollar = Risk-On, high dollar = Risk-Off
     { inp:'g-us-dxy',   badge:'gb-us-dxy',   fn: v => gaugeClass(v, 100, 104, 'normal') },
-    { inp:'g-us-spx',   badge:'gb-us-spx',   fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
+    // S&P day %: inverse — positive = Risk-On, negative = Risk-Off
+    { inp:'g-us-spx',   badge:'gb-us-spx',   fn: v => gaugeClass(v, 0.5, -0.5, 'inverse') },
+    // Credit spread: normal — tight (low) = Risk-On, wide (high) = Risk-Off
     { inp:'g-us-cred',  badge:'gb-us-cred',  fn: v => gaugeClass(v, 90, 130, 'normal') },
   ],
   eu: [
-    { inp:'g-eu-vstx',  badge:'gb-eu-vstx',  fn: v => gaugeClass(v, 20, 30, 'normal') },
-    { inp:'g-eu-stx',   badge:'gb-eu-stx',   fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
-    { inp:'g-eu-eurusd',badge:'gb-eu-eurusd', fn: v => gaugeClass(v, -0.3, 0.3, 'inverse') },
+    // VSTOXX: normal — low = calm = Risk-On (threshold slightly higher than VIX)
+    { inp:'g-eu-vstx',  badge:'gb-eu-vstx',  fn: v => gaugeClass(v, 22, 32, 'normal') },
+    // Euro Stoxx day %: inverse — positive = Risk-On
+    { inp:'g-eu-stx',   badge:'gb-eu-stx',   fn: v => gaugeClass(v, 0.5, -0.5, 'inverse') },
+    // EUR/USD day %: inverse — Euro rising = dollar weak = Risk-On
+    { inp:'g-eu-eurusd',badge:'gb-eu-eurusd', fn: v => gaugeClass(v, 0.3, -0.3, 'inverse') },
+    // Bund yield change bps: normal — falling yields = Risk-On
     { inp:'g-eu-bund',  badge:'gb-eu-bund',  fn: v => gaugeClass(v, -5, 5, 'normal') },
+    // TTF gas day %: normal — falling gas = relief = Risk-On
     { inp:'g-eu-gas',   badge:'gb-eu-gas',   fn: v => gaugeClass(v, -2, 2, 'normal') },
   ],
   asia: [
-    { inp:'g-as-usdjpy',badge:'gb-as-usdjpy',fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
-    { inp:'g-as-copper',badge:'gb-as-copper',fn: v => gaugeClass(v, -1, 1, 'inverse') },
-    { inp:'g-as-nk',    badge:'gb-as-nk',   fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
-    { inp:'g-as-hsi',   badge:'gb-as-hsi',  fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
-    { inp:'g-as-pmi',   badge:'gb-as-pmi',  fn: v => gaugeClass(v, 49, 51, 'inverse') },
+    // USD/JPY day change: inverse — rising (yen weakening) = risk appetite = Risk-On
+    { inp:'g-as-usdjpy',badge:'gb-as-usdjpy',fn: v => gaugeClass(v, 0.5, -0.5, 'inverse') },
+    // Copper day %: inverse — rising = global growth = Risk-On
+    { inp:'g-as-copper',badge:'gb-as-copper',fn: v => gaugeClass(v, 1, -1, 'inverse') },
+    // Nikkei day %: inverse — positive = Risk-On
+    { inp:'g-as-nk',    badge:'gb-as-nk',   fn: v => gaugeClass(v, 0.5, -0.5, 'inverse') },
+    // Hang Seng day %: inverse — positive = Risk-On
+    { inp:'g-as-hsi',   badge:'gb-as-hsi',  fn: v => gaugeClass(v, 0.5, -0.5, 'inverse') },
+    // China PMI: inverse — above 51 expansion = Risk-On
+    { inp:'g-as-pmi',   badge:'gb-as-pmi',  fn: v => gaugeClass(v, 51, 49, 'inverse') },
   ]
 };
 
