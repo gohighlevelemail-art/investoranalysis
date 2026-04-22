@@ -274,6 +274,17 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
 .lp-link{font-size:10px;color:var(--accent);margin-bottom:10px;}
 .lp-btns{display:flex;gap:6px;}
 .lp-btn{padding:5px 11px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;border:none;font-family:'Syne',sans-serif;transition:all .2s;}
+/* PROJECT TASKS */
+.task-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.task-item:last-child{border-bottom:none;}
+.task-check{width:18px;height:18px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.task-check.done{background:var(--green);border-color:var(--green);}
+.task-check.done::after{content:'✓';color:var(--bg);font-size:11px;font-weight:900;}
+.task-label{flex:1;font-size:12px;cursor:pointer;transition:color .2s;}
+.task-label.done{text-decoration:line-through;color:var(--muted);}
+.task-type-badge{font-size:9px;font-weight:700;font-family:'Syne',sans-serif;padding:2px 7px;border-radius:10px;letter-spacing:.3px;flex-shrink:0;}
+.progress-bar-wrap{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin:10px 0 4px;}
+.progress-bar-fill{height:100%;border-radius:4px;background:var(--green);transition:width .4s ease;}
 /* SESSION LOG */
 .slog-entry{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
 .slog-entry:last-child{border-bottom:none;}
@@ -552,6 +563,30 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
     </div>
 
     <div class="card" style="margin-top:14px">
+      <div class="card-title" style="justify-content:space-between;display:flex;align-items:center">
+        <span>✅ Tasks & Reading List</span>
+        <span id="pd-task-progress-text" style="font-size:11px;color:var(--muted2)">0 / 0</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pd-task-bar" style="width:0%"></div></div>
+      <div id="pd-task-list" style="margin-bottom:14px"></div>
+      <div class="frow" style="gap:8px">
+        <div style="flex:2"><div class="lbl">Task / Item</div><input class="inp" id="pd-task-input" placeholder="e.g. Read Q4 Annual Report, Review 10-K, Watch earnings call..."/></div>
+        <div style="flex:1"><div class="lbl">Type</div>
+          <select class="sel" id="pd-task-type">
+            <option value="read">📄 Read</option>
+            <option value="watch">👁 Watch</option>
+            <option value="research">🔬 Research</option>
+            <option value="calc">🧮 Calculate</option>
+            <option value="compare">⚖️ Compare</option>
+            <option value="decide">🎯 Decide</option>
+            <option value="other">📌 Other</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-o btn-sm" style="margin-top:10px" onclick="addTask()">+ Add Task</button>
+    </div>
+
+    <div class="card" style="margin-top:14px">
       <div class="card-title">🔗 Relevant Info & Links</div>
       <div id="pd-links-list"></div>
       <div class="frow" style="margin-top:14px">
@@ -817,7 +852,7 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
       <div class="fg"><div class="lbl">Market Impact</div><select class="sel" id="mev-impact"><option value="">Select impact</option><option value="bullish">Bullish</option><option value="bearish">Bearish</option><option value="neutral">Neutral / Unclear</option><option value="watch">Worth watching</option></select></div>
     </div>
     <div style="display:flex;gap:8px;margin-top:4px;align-items:center">
-      <div id="mev-coords-display" style="font-size:10px;color:var(--muted2);flex:1">📍 Click map to set location, or enter coordinates manually below</div>
+      <div id="mev-coords-display" style="font-size:10px;color:var(--muted2);flex:1">📍 Ctrl+Click or Shift+Click the map to pin a location</div>
       <button class="btn btn-o btn-sm" onclick="toggleMapForm()">Cancel</button>
       <button class="btn btn-g btn-sm" onclick="saveMapEvent()">Save Event</button>
     </div>
@@ -845,7 +880,7 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
     </div>
     <div class="map-container">
       <div id="worldmap"></div>
-      <div class="map-hint" id="map-hint">Click anywhere to drop a pin</div>
+      <div class="map-hint" id="map-hint">Ctrl+Click or Shift+Click anywhere to drop a pin</div>
     </div>
   </div>
 </div>
@@ -1049,6 +1084,7 @@ function sent(btn) {
 function savePulse() {
   const title = prompt('Name this pulse snapshot:', 'Macro Pulse — ' + new Date().toLocaleDateString('en-CA'));
   if (!title) return;
+  const locInput = prompt('Pin a location to this pulse? (e.g. "Washington D.C." or leave blank to skip)', '');
   const pulse = {
     id: Date.now(),
     title,
@@ -1058,13 +1094,18 @@ function savePulse() {
     asiaNotes: document.getElementById('as-notes')?.value || '',
     usSP: document.getElementById('us-sp500')?.value || '',
     usFed: document.getElementById('us-fed')?.value || '',
+    linkedLocation: locInput ? locInput.trim() : '',
   };
   state.pulses = state.pulses || [];
   state.pulses.unshift(pulse);
+  // If location provided, geocode and pin to map
+  if (locInput && locInput.trim()) {
+    geocodeAndPin(locInput.trim(), pulse);
+  }
   addSlogEntry({type:'pulse', title:'Macro Pulse: '+title, body:'US: '+(pulse.usNotes||'').slice(0,80)+(pulse.usNotes&&pulse.usNotes.length>80?'…':''), tag:'Macro Pulse', tagColor:'var(--accent)'});
   saveAll();
   renderPulses();
-  toast('✓ Pulse saved');
+  toast('✓ Pulse saved' + (locInput ? ' + pinned to map' : ''));
 }
 
 function renderPulses() {
@@ -1141,7 +1182,8 @@ function renderProjects() {
       <div class="proj-folder-icon">${folderIcon[p.type]||'📂'}</div>
       <div class="proj-folder-title">${p.name}</div>
       <div class="proj-folder-meta"><span>${p.created}</span></div>
-      <div class="proj-folder-tags"><span class="tag ${tagClass[p.type]||'tag-macro'}">${labelMap[p.type]||p.type}</span><span style="font-size:10px;color:var(--muted);margin-left:4px">${p.notes.length} note${p.notes.length!==1?'s':''}</span></div>
+      <div class="proj-folder-tags"><span class="tag ${tagClass[p.type]||'tag-macro'}">${labelMap[p.type]||p.type}</span><span style="font-size:10px;color:var(--muted);margin-left:4px">${p.notes.length} note${p.notes.length!==1?'s':''}</span>${(()=>{const t=p.tasks||[];const d=t.filter(x=>x.done).length;return t.length?'<span style="font-size:10px;color:var(--green);margin-left:4px">✓ '+d+'/'+t.length+' tasks</span>':'';})()} </div>
+      ${(()=>{const t=p.tasks||[];if(!t.length)return '';const pct=Math.round((t.filter(x=>x.done).length/t.length)*100);return '<div class="progress-bar-wrap" style="margin:8px 0 0"><div class="progress-bar-fill" style="width:'+pct+'%"></div></div>';})()}
     </div>
   `).join('');
   grid.innerHTML = cards + `<div class="proj-folder new-folder" onclick="openNewProj()"><div class="new-folder-plus">＋</div><div class="new-folder-text">New Project</div></div>`;
@@ -1158,6 +1200,7 @@ function openProject(id) {
   document.getElementById('pd-date').textContent = 'Created ' + proj.created;
   document.getElementById('pd-tag-display').innerHTML = `<span class="tag ${tagClass[proj.type]||'tag-macro'}">${labelMap[proj.type]||proj.type}</span>`;
   renderProjectNotes(proj);
+  renderProjectTasks(proj);
   renderProjectLinks(proj);
 }
 
@@ -1230,6 +1273,64 @@ function addLink() {
   saveAll();
   renderProjectLinks(proj);
   toast('✓ Info attached');
+}
+
+function addTask() {
+  const text = document.getElementById('pd-task-input').value.trim();
+  if (!text) return;
+  const type = document.getElementById('pd-task-type').value;
+  const proj = state.projects.find(p => p.id === state.currentProject);
+  if (!proj) return;
+  if (!proj.tasks) proj.tasks = [];
+  proj.tasks.push({id: Date.now(), text, type, done: false});
+  document.getElementById('pd-task-input').value = '';
+  saveAll();
+  renderProjectTasks(proj);
+}
+
+function toggleTask(id) {
+  const proj = state.projects.find(p => p.id === state.currentProject);
+  if (!proj) return;
+  const task = proj.tasks.find(t => t.id === id);
+  if (task) task.done = !task.done;
+  saveAll();
+  renderProjectTasks(proj);
+  renderProjects();
+}
+
+function deleteTask(id) {
+  const proj = state.projects.find(p => p.id === state.currentProject);
+  if (!proj) return;
+  proj.tasks = proj.tasks.filter(t => t.id !== id);
+  saveAll();
+  renderProjectTasks(proj);
+  renderProjects();
+}
+
+const taskTypeLabel = {read:'📄 Read',watch:'👁 Watch',research:'🔬 Research',calc:'🧮 Calculate',compare:'⚖️ Compare',decide:'🎯 Decide',other:'📌 Other'};
+const taskTypeColor = {read:'var(--accent)',watch:'var(--gold)',research:'var(--green)',calc:'var(--purple)',compare:'var(--orange)',decide:'var(--red)',other:'var(--muted2)'};
+
+function renderProjectTasks(proj) {
+  const list = document.getElementById('pd-task-list');
+  const bar = document.getElementById('pd-task-bar');
+  const txt = document.getElementById('pd-task-progress-text');
+  if (!list) return;
+  const tasks = proj.tasks || [];
+  const done = tasks.filter(t => t.done).length;
+  const pct = tasks.length ? Math.round((done/tasks.length)*100) : 0;
+  if (bar) bar.style.width = pct + '%';
+  if (txt) txt.textContent = done + ' / ' + tasks.length + ' (' + pct + '%)';
+  if (!tasks.length) { list.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:8px 0">No tasks yet. Add what you need to read, watch, or research.</div>'; return; }
+  // Show incomplete first, then done
+  const sorted = [...tasks.filter(t=>!t.done), ...tasks.filter(t=>t.done)];
+  list.innerHTML = sorted.map(t => `
+    <div class="task-item">
+      <div class="task-check ${t.done?'done':''}" onclick="toggleTask(${t.id})"></div>
+      <div class="task-label ${t.done?'done':''}" onclick="toggleTask(${t.id})">${t.text}</div>
+      <span class="task-type-badge" style="background:${taskTypeColor[t.type]}22;color:${taskTypeColor[t.type]}">${taskTypeLabel[t.type]||t.type}</span>
+      <button class="btn btn-red btn-xs" onclick="deleteTask(${t.id})">✕</button>
+    </div>
+  `).join('');
 }
 
 function deleteLink(id) {
@@ -1545,13 +1646,19 @@ function initMap() {
     maxZoom: 18, opacity: 0.8
   }).addTo(leafletMap);
   leafletMap.on('click', function(e) {
+    if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) return;
+    pendingLatLng = e.latlng;
+    document.getElementById('mev-lat').value = e.latlng.lat.toFixed(4);
+    document.getElementById('mev-lng').value = e.latlng.lng.toFixed(4);
+    document.getElementById('mev-coords-display').textContent = '📍 Location set: ' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3);
+    // Auto-open form if closed
     const form = document.getElementById('map-event-form');
-    if (form.style.display !== 'none') {
-      pendingLatLng = e.latlng;
-      document.getElementById('mev-lat').value = e.latlng.lat.toFixed(4);
-      document.getElementById('mev-lng').value = e.latlng.lng.toFixed(4);
-      document.getElementById('mev-coords-display').textContent = '📍 Location set: ' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3);
+    if (form.style.display === 'none') {
+      toggleMapForm();
     }
+    // Flash marker preview
+    const tmp = L.circleMarker([e.latlng.lat, e.latlng.lng], {radius:8, color:'#00C8FF', fillColor:'#00C8FF', fillOpacity:0.5, weight:2}).addTo(leafletMap);
+    setTimeout(() => leafletMap.removeLayer(tmp), 1500);
   });
   renderMapEvents();
 }
@@ -1657,6 +1764,34 @@ function focusMapEvent(id) {
   if (!ev || !leafletMap) return;
   leafletMap.setView([ev.lat, ev.lng], 5, {animate: true});
   if (mapMarkers[id]) mapMarkers[id].openPopup();
+}
+
+function geocodeAndPin(locationName, pulse) {
+  fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(locationName) + '&limit=1')
+    .then(r => r.json())
+    .then(data => {
+      if (!data || !data.length) { toast('Could not find location: ' + locationName); return; }
+      const lat = parseFloat(data[0].lat);
+      const lng = parseFloat(data[0].lon);
+      const ev = {
+        id: Date.now(),
+        title: 'Pulse: ' + pulse.title,
+        type: 'cb',
+        loc: locationName,
+        date: new Date().toISOString().slice(0,10),
+        desc: (pulse.usNotes || pulse.euNotes || pulse.asiaNotes || '').slice(0,200),
+        proj: '',
+        impact: '',
+        lat, lng,
+        fromPulse: pulse.id
+      };
+      state.mapEvents = state.mapEvents || [];
+      state.mapEvents.unshift(ev);
+      saveAll();
+      if (leafletMap) { renderMapEvents(); renderMapSidebar(); }
+      toast('📍 Pinned: ' + locationName);
+    })
+    .catch(() => toast('Geocoding failed — try manual pin'));
 }
 
 function deleteMapEvent(id) {
