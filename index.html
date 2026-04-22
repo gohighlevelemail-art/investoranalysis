@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ThePlaybook</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
 :root{
   --bg:#06090D;--surface:#0C1219;--s2:#111923;--s3:#172030;
@@ -237,6 +238,60 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
 .empty-icon{font-size:36px;margin-bottom:12px;}
 .empty-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--muted2);margin-bottom:6px;}
 .empty-sub{font-size:11px;color:var(--muted);}
+/* WORLD MAP */
+.map-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;height:calc(100vh - 170px);}
+.map-sidebar{display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-right:2px;}
+.map-container{border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;min-height:400px;}
+#worldmap{height:100%;width:100%;background:#0C1A26;}
+.leaflet-container{background:#0C1A26!important;font-family:'IBM Plex Mono',monospace!important;}
+.leaflet-tile-pane{filter:brightness(0.5) saturate(0.4) hue-rotate(180deg);}
+.filter-bar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.fchip{padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:transparent;font-size:10px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;color:var(--muted2);transition:all .15s;letter-spacing:.3px;}
+.fchip:hover,.fchip.on{color:#fff;}
+.fchip.on.t-geo{background:#c62828;border-color:#c62828;}
+.fchip.on.t-cb{background:#1565c0;border-color:#1565c0;}
+.fchip.on.t-earn{background:#2e7d32;border-color:#2e7d32;}
+.fchip.on.t-trade{background:#e65100;border-color:#e65100;}
+.fchip.on.t-commod{background:#6a1599;border-color:#6a1599;}
+.fchip.on.t-elect{background:#00695c;border-color:#00695c;}
+.fchip.on.t-conflict{background:#bf360c;border-color:#bf360c;}
+.fchip.on.t-other{background:#37474f;border-color:#37474f;}
+.ev-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;cursor:pointer;transition:all .15s;margin-bottom:8px;}
+.ev-card:hover{background:var(--s3);}
+.ev-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:4px;}
+.ev-card-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;line-height:1.3;}
+.ev-card-date{font-size:9px;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+.ev-card-loc{font-size:10px;color:var(--muted2);margin-bottom:4px;}
+.ev-card-desc{font-size:11px;color:var(--muted2);line-height:1.5;}
+.ev-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;}
+.map-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(6,9,13,0.9);border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:10px;color:var(--muted2);pointer-events:none;z-index:1000;white-space:nowrap;backdrop-filter:blur(6px);}
+.leaflet-popup-content-wrapper{background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:10px!important;color:var(--text)!important;box-shadow:0 8px 30px rgba(0,0,0,0.6)!important;}
+.leaflet-popup-tip{background:var(--surface)!important;}
+.leaflet-popup-content{margin:13px 15px!important;font-family:'IBM Plex Mono',monospace!important;font-size:12px!important;}
+.lp-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;}
+.lp-meta{font-size:10px;color:var(--muted2);margin-bottom:8px;}
+.lp-body{font-size:11px;color:var(--muted2);line-height:1.6;margin-bottom:10px;max-width:260px;}
+.lp-link{font-size:10px;color:var(--accent);margin-bottom:10px;}
+.lp-btns{display:flex;gap:6px;}
+.lp-btn{padding:5px 11px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;border:none;font-family:'Syne',sans-serif;transition:all .2s;}
+/* SESSION LOG */
+.slog-entry{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.slog-entry:last-child{border-bottom:none;}
+.slog-left{display:flex;flex-direction:column;align-items:center;gap:0;}
+.slog-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.slog-dot.pulse{background:var(--accent);}
+.slog-dot.project{background:var(--gold);}
+.slog-dot.dive{background:var(--green);}
+.slog-dot.portfolio{background:var(--purple);}
+.slog-dot.map{background:var(--orange);}
+.slog-dot.idea{background:var(--red);}
+.slog-dot.general{background:var(--muted);}
+.slog-line{flex:1;width:1px;background:var(--border);margin-top:4px;}
+.slog-right{flex:1;}
+.slog-time{font-size:9px;color:var(--muted);margin-bottom:3px;}
+.slog-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;margin-bottom:3px;}
+.slog-body{font-size:11px;color:var(--muted2);line-height:1.5;}
+.slog-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;font-family:'Syne',sans-serif;margin-top:5px;}
 </style>
 </head>
 <body>
@@ -306,6 +361,10 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
   <div class="nav-div"></div>
   <div class="nav-section">Portfolio</div>
   <div class="nav-item" onclick="nav('portfolio')" id="n-portfolio"><span class="nav-icon">📊</span> My Portfolio</div>
+  <div class="nav-div"></div>
+  <div class="nav-section">Intelligence</div>
+  <div class="nav-item" onclick="nav('worldmap')" id="n-worldmap"><span class="nav-icon">🗺</span> World Map</div>
+  <div class="nav-item" onclick="nav('sessionlog')" id="n-sessionlog"><span class="nav-icon">📓</span> Session Log</div>
 </nav>
 
 <!-- ══════════════════════ MAIN ══════════════════════ -->
@@ -720,6 +779,125 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
   </div>
 </div>
 
+
+<!-- ═══════════ WORLD MAP ═══════════ -->
+<div class="sec" id="sec-worldmap">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+    <div class="sh" style="margin-bottom:0">
+      <h1>🗺 World Map</h1>
+      <p>Pin events to locations. Click anywhere on the map to drop a pin, or use the form below.</p>
+    </div>
+    <button class="btn btn-o btn-sm" onclick="toggleMapForm()">+ Log Event</button>
+  </div>
+
+  <div class="new-event-form card" id="map-event-form" style="display:none;margin-bottom:16px;">
+    <div class="card-title">📍 Log a New Map Event</div>
+    <div class="frow">
+      <div class="fg"><div class="lbl">Event Title</div><input class="inp" id="mev-title" placeholder="e.g. ECB raises rates 25bps"/></div>
+      <div class="fg"><div class="lbl">Event Type</div>
+        <select class="sel" id="mev-type">
+          <option value="geo">Geopolitical</option>
+          <option value="cb">Central Bank</option>
+          <option value="earn">Earnings / Corporate</option>
+          <option value="trade">Trade / Sanctions</option>
+          <option value="commod">Commodity</option>
+          <option value="elect">Election / Political</option>
+          <option value="conflict">Conflict / War</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg"><div class="lbl">Location Name</div><input class="inp" id="mev-loc" placeholder="e.g. Frankfurt, Germany"/></div>
+      <div class="fg"><div class="lbl">Date</div><input class="inp" type="date" id="mev-date"/></div>
+    </div>
+    <div class="fg"><div class="lbl">Description / Notes</div><textarea class="tarea" id="mev-desc" placeholder="What happened? Why does it matter to markets?"></textarea></div>
+    <div class="frow">
+      <div class="fg"><div class="lbl">Linked Project (optional)</div><input class="inp" id="mev-proj" placeholder="Project name to link"/></div>
+      <div class="fg"><div class="lbl">Market Impact</div><select class="sel" id="mev-impact"><option value="">Select impact</option><option value="bullish">Bullish</option><option value="bearish">Bearish</option><option value="neutral">Neutral / Unclear</option><option value="watch">Worth watching</option></select></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px;align-items:center">
+      <div id="mev-coords-display" style="font-size:10px;color:var(--muted2);flex:1">📍 Click map to set location, or enter coordinates manually below</div>
+      <button class="btn btn-o btn-sm" onclick="toggleMapForm()">Cancel</button>
+      <button class="btn btn-g btn-sm" onclick="saveMapEvent()">Save Event</button>
+    </div>
+    <div class="frow" style="margin-top:10px">
+      <div class="fg"><div class="lbl">Lat (manual)</div><input class="inp" id="mev-lat" placeholder="e.g. 50.1109"/></div>
+      <div class="fg"><div class="lbl">Lng (manual)</div><input class="inp" id="mev-lng" placeholder="e.g. 8.6821"/></div>
+    </div>
+  </div>
+
+  <div class="filter-bar" id="map-filters">
+    <span style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;padding:4px 0;letter-spacing:1px">FILTER:</span>
+    <button class="fchip t-geo on" onclick="toggleFilter(this,'geo')">🔴 Geopolitical</button>
+    <button class="fchip t-cb on" onclick="toggleFilter(this,'cb')">🔵 Central Bank</button>
+    <button class="fchip t-earn on" onclick="toggleFilter(this,'earn')">🟢 Earnings</button>
+    <button class="fchip t-trade on" onclick="toggleFilter(this,'trade')">🟠 Trade</button>
+    <button class="fchip t-commod on" onclick="toggleFilter(this,'commod')">🟣 Commodity</button>
+    <button class="fchip t-elect on" onclick="toggleFilter(this,'elect')">🩵 Election</button>
+    <button class="fchip t-conflict on" onclick="toggleFilter(this,'conflict')">🩸 Conflict</button>
+    <button class="fchip t-other on" onclick="toggleFilter(this,'other')">⚫ Other</button>
+  </div>
+
+  <div class="map-wrap">
+    <div class="map-sidebar" id="map-event-list">
+      <div style="font-size:10px;color:var(--muted);padding:6px 0">No events yet. Click the map or use "+ Log Event".</div>
+    </div>
+    <div class="map-container">
+      <div id="worldmap"></div>
+      <div class="map-hint" id="map-hint">Click anywhere to drop a pin</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SESSION LOG ═══════════ -->
+<div class="sec" id="sec-sessionlog">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+    <div class="sh" style="margin-bottom:0">
+      <h1>📓 Session Log</h1>
+      <p>Every Macro Pulse save, project created, deep dive, and map event — automatically timestamped here.</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-o btn-sm" onclick="addManualLog()">+ Add Manual Entry</button>
+      <button class="btn btn-red btn-sm" onclick="clearLog()">Clear Log</button>
+    </div>
+  </div>
+
+  <div class="g4" style="margin-bottom:20px" id="log-stats">
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Total Entries</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent)" id="slog-count">0</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Pulses Saved</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent)" id="slog-pulses">0</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Active Sessions</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent)" id="slog-sessions">0</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Last Session</div>
+      <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--muted2)" id="slog-last">—</div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <div class="card-title" style="margin-bottom:0">Timeline</div>
+      <select class="sel" style="width:160px;padding:6px 10px;font-size:11px" onchange="filterSlog(this.value)">
+        <option value="all">All entries</option>
+        <option value="pulse">Macro Pulses only</option>
+        <option value="project">Projects only</option>
+        <option value="dive">Deep Dives only</option>
+        <option value="map">Map Events only</option>
+        <option value="portfolio">Portfolio only</option>
+      </select>
+    </div>
+    <div id="slog-timeline"></div>
+  </div>
+</div>
+
 </div><!-- /main -->
 
 <div class="toast" id="toast">✓ Saved</div>
@@ -849,6 +1027,8 @@ function nav(id) {
   document.getElementById('sec-'+id).classList.add('active');
   document.getElementById('n-'+id)?.classList.add('active');
   window.scrollTo(0,0);
+  if (id === 'worldmap') setTimeout(initMap, 50);
+  if (id === 'sessionlog') { renderSlog(); updateSlogStats(); }
 }
 
 // ═══════════════════════════════════
@@ -881,6 +1061,7 @@ function savePulse() {
   };
   state.pulses = state.pulses || [];
   state.pulses.unshift(pulse);
+  addSlogEntry({type:'pulse', title:'Macro Pulse: '+title, body:'US: '+(pulse.usNotes||'').slice(0,80)+(pulse.usNotes&&pulse.usNotes.length>80?'…':''), tag:'Macro Pulse', tagColor:'var(--accent)'});
   saveAll();
   renderPulses();
   toast('✓ Pulse saved');
@@ -946,6 +1127,7 @@ function createProject() {
   document.getElementById('np-type').value = '';
   document.getElementById('np-notes').value = '';
   closeNewProj();
+  addSlogEntry({type:'project', title:'Project Created: '+name, body:labelMap[type||'other']||'General', tag:labelMap[type||'other']||'General', tagColor:'var(--gold)'});
   saveAll();
   renderProjects();
   toast('✓ Project created');
@@ -1117,6 +1299,7 @@ function saveDive() {
   };
   state.ideas = state.ideas || [];
   state.ideas.push(idea);
+  addSlogEntry({type:'dive', title:'Deep Dive: '+ticker, body:(document.getElementById('dd-theme').value||'No theme')+' · Score: '+(state.wizScore||'?')+'/10', tag:'Deep Dive', tagColor:'var(--green)'});
   saveAll();
   renderKanban();
   toast('✓ Saved to Idea Board');
@@ -1331,10 +1514,231 @@ function renderAll() {
   renderPortfolio();
   renderPulses();
   renderLog();
+  renderMapSidebar();
+  renderSlog();
+  updateSlogStats();
 }
 
 // Unused stubs
 function addNote() { document.getElementById('pd-note-input')?.focus(); }
+
+// ═══════════════════════════════════
+// WORLD MAP
+// ═══════════════════════════════════
+let leafletMap = null;
+let mapMarkers = {};
+let activeFilters = new Set(['geo','cb','earn','trade','commod','elect','conflict','other']);
+let pendingLatLng = null;
+
+const evColors = {geo:'#c62828',cb:'#1565c0',earn:'#2e7d32',trade:'#e65100',commod:'#6a1599',elect:'#00695c',conflict:'#bf360c',other:'#37474f'};
+const evLabels = {geo:'Geopolitical',cb:'Central Bank',earn:'Earnings',trade:'Trade',commod:'Commodity',elect:'Election',conflict:'Conflict',other:'Other'};
+
+function initMap() {
+  if (leafletMap) return;
+  if (!document.getElementById('worldmap')) return;
+  leafletMap = L.map('worldmap', {
+    center: [20, 10], zoom: 2,
+    zoomControl: true,
+    attributionControl: false
+  });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18, opacity: 0.8
+  }).addTo(leafletMap);
+  leafletMap.on('click', function(e) {
+    const form = document.getElementById('map-event-form');
+    if (form.style.display !== 'none') {
+      pendingLatLng = e.latlng;
+      document.getElementById('mev-lat').value = e.latlng.lat.toFixed(4);
+      document.getElementById('mev-lng').value = e.latlng.lng.toFixed(4);
+      document.getElementById('mev-coords-display').textContent = '📍 Location set: ' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3);
+    }
+  });
+  renderMapEvents();
+}
+
+function toggleMapForm() {
+  const form = document.getElementById('map-event-form');
+  const isOpen = form.style.display !== 'none';
+  form.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    document.getElementById('mev-date').value = new Date().toISOString().slice(0,10);
+    pendingLatLng = null;
+  }
+}
+
+function toggleFilter(btn, type) {
+  btn.classList.toggle('on');
+  if (activeFilters.has(type)) activeFilters.delete(type);
+  else activeFilters.add(type);
+  renderMapEvents();
+  renderMapSidebar();
+}
+
+function makeIcon(type) {
+  const color = evColors[type] || evColors.other;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="${color}"/><circle cx="12" cy="12" r="5" fill="white" opacity="0.9"/></svg>`;
+  return L.divIcon({html: svg, className:'', iconSize:[24,32], iconAnchor:[12,32], popupAnchor:[0,-32]});
+}
+
+function saveMapEvent() {
+  const title = document.getElementById('mev-title').value.trim();
+  const lat = parseFloat(document.getElementById('mev-lat').value) || (pendingLatLng ? pendingLatLng.lat : null);
+  const lng = parseFloat(document.getElementById('mev-lng').value) || (pendingLatLng ? pendingLatLng.lng : null);
+  if (!title) { alert('Please enter an event title.'); return; }
+  if (lat === null || lng === null) { alert('Click on the map to set a location, or enter coordinates manually.'); return; }
+  const ev = {
+    id: Date.now(),
+    title,
+    type: document.getElementById('mev-type').value,
+    loc: document.getElementById('mev-loc').value.trim() || 'Unknown location',
+    date: document.getElementById('mev-date').value || new Date().toISOString().slice(0,10),
+    desc: document.getElementById('mev-desc').value.trim(),
+    proj: document.getElementById('mev-proj').value.trim(),
+    impact: document.getElementById('mev-impact').value,
+    lat, lng
+  };
+  state.mapEvents = state.mapEvents || [];
+  state.mapEvents.unshift(ev);
+  ['mev-title','mev-loc','mev-desc','mev-proj'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('mev-impact').value = '';
+  pendingLatLng = null;
+  toggleMapForm();
+  addSlogEntry({type:'map', title:'Map Event: '+ev.title, body:ev.loc+' — '+evLabels[ev.type], tag:evLabels[ev.type], tagColor:evColors[ev.type]});
+  saveAll();
+  renderMapEvents();
+  renderMapSidebar();
+  toast('📍 Event pinned to map');
+}
+
+function renderMapEvents() {
+  if (!leafletMap) return;
+  Object.values(mapMarkers).forEach(m => leafletMap.removeLayer(m));
+  mapMarkers = {};
+  const events = state.mapEvents || [];
+  events.filter(ev => activeFilters.has(ev.type)).forEach(ev => {
+    const marker = L.marker([ev.lat, ev.lng], {icon: makeIcon(ev.type)}).addTo(leafletMap);
+    const impactColor = {bullish:'#2e7d32',bearish:'#c62828',neutral:'#546e7a',watch:'#e65100'}[ev.impact] || '#546e7a';
+    marker.bindPopup(`
+      <div class="lp-title">${ev.title}</div>
+      <div class="lp-meta">📍 ${ev.loc} &nbsp;·&nbsp; 📅 ${ev.date} &nbsp;·&nbsp; <span style="color:${evColors[ev.type]}">${evLabels[ev.type]}</span></div>
+      ${ev.desc ? `<div class="lp-body">${ev.desc}</div>` : ''}
+      ${ev.impact ? `<div style="font-size:10px;margin-bottom:8px"><span style="color:${impactColor};font-weight:700;font-family:'Syne',sans-serif">${ev.impact.toUpperCase()}</span></div>` : ''}
+      ${ev.proj ? `<div class="lp-link">🔗 Linked: ${ev.proj}</div>` : ''}
+      <div class="lp-btns">
+        <button class="lp-btn" style="background:rgba(255,61,90,0.15);color:#ff3d5a" onclick="deleteMapEvent(${ev.id})">Delete</button>
+      </div>
+    `, {maxWidth: 300});
+    mapMarkers[ev.id] = marker;
+  });
+}
+
+function renderMapSidebar() {
+  const list = document.getElementById('map-event-list');
+  if (!list) return;
+  const events = (state.mapEvents || []).filter(ev => activeFilters.has(ev.type));
+  if (!events.length) {
+    list.innerHTML = '<div style="font-size:10px;color:var(--muted);padding:6px 0">No events match current filters.</div>';
+    return;
+  }
+  list.innerHTML = events.map(ev => `
+    <div class="ev-card" onclick="focusMapEvent(${ev.id})" style="border-left:3px solid ${evColors[ev.type]||'#37474f'}">
+      <div class="ev-card-top">
+        <div class="ev-card-title"><span class="ev-dot" style="background:${evColors[ev.type]}"></span>${ev.title}</div>
+        <div class="ev-card-date">${ev.date}</div>
+      </div>
+      <div class="ev-card-loc">📍 ${ev.loc}</div>
+      ${ev.desc ? `<div class="ev-card-desc">${ev.desc.slice(0,100)}${ev.desc.length>100?'…':''}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function focusMapEvent(id) {
+  const ev = (state.mapEvents||[]).find(e => e.id === id);
+  if (!ev || !leafletMap) return;
+  leafletMap.setView([ev.lat, ev.lng], 5, {animate: true});
+  if (mapMarkers[id]) mapMarkers[id].openPopup();
+}
+
+function deleteMapEvent(id) {
+  state.mapEvents = (state.mapEvents||[]).filter(e => e.id !== id);
+  saveAll();
+  renderMapEvents();
+  renderMapSidebar();
+  toast('Event removed');
+}
+
+// ═══════════════════════════════════
+// SESSION LOG
+// ═══════════════════════════════════
+function addSlogEntry(entry) {
+  state.sessionLog = state.sessionLog || [];
+  state.sessionLog.unshift({
+    id: Date.now(),
+    time: new Date().toLocaleString('en-CA'),
+    type: entry.type || 'general',
+    title: entry.title || 'Entry',
+    body: entry.body || '',
+    tag: entry.tag || '',
+    tagColor: entry.tagColor || 'var(--muted)'
+  });
+  if (state.sessionLog.length > 500) state.sessionLog = state.sessionLog.slice(0, 500);
+  renderSlog();
+  updateSlogStats();
+}
+
+function renderSlog(filter) {
+  const el = document.getElementById('slog-timeline');
+  if (!el) return;
+  let entries = state.sessionLog || [];
+  if (filter && filter !== 'all') entries = entries.filter(e => e.type === filter);
+  if (!entries.length) {
+    el.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:20px 0;text-align:center">No log entries yet. They appear automatically when you save pulses, create projects, and add map events.</div>';
+    return;
+  }
+  el.innerHTML = entries.map((e, i) => `
+    <div class="slog-entry">
+      <div class="slog-left">
+        <div class="slog-dot ${e.type}"></div>
+        ${i < entries.length-1 ? '<div class="slog-line"></div>' : ''}
+      </div>
+      <div class="slog-right">
+        <div class="slog-time">${e.time}</div>
+        <div class="slog-title">${e.title}</div>
+        ${e.body ? `<div class="slog-body">${e.body}</div>` : ''}
+        ${e.tag ? `<span class="slog-tag" style="background:${e.tagColor}22;color:${e.tagColor};border:1px solid ${e.tagColor}44">${e.tag}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateSlogStats() {
+  const log = state.sessionLog || [];
+  const el = id => document.getElementById(id);
+  if (el('slog-count')) el('slog-count').textContent = log.length;
+  if (el('slog-pulses')) el('slog-pulses').textContent = log.filter(e=>e.type==='pulse').length;
+  const sessions = new Set(log.map(e => e.time ? e.time.slice(0,10) : '')).size;
+  if (el('slog-sessions')) el('slog-sessions').textContent = sessions;
+  if (el('slog-last') && log.length) el('slog-last').textContent = log[0].time.slice(0,10);
+}
+
+function filterSlog(val) { renderSlog(val); }
+
+function addManualLog() {
+  const text = prompt('Enter your manual log entry:');
+  if (!text) return;
+  addSlogEntry({type:'general', title:'Manual Entry', body:text, tag:'Manual', tagColor:'var(--muted2)'});
+  saveAll();
+}
+
+function clearLog() {
+  if (!confirm('Clear the entire session log? This cannot be undone.')) return;
+  state.sessionLog = [];
+  saveAll();
+  renderSlog();
+  updateSlogStats();
+}
+
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 </body>
 </html>
