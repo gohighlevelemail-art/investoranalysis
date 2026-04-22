@@ -238,6 +238,39 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
 .empty-icon{font-size:36px;margin-bottom:12px;}
 .empty-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--muted2);margin-bottom:6px;}
 .empty-sub{font-size:11px;color:var(--muted);}
+/* RISK GAUGE CHECKLIST */
+.gauge-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:14px;}
+.gauge-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+.gauge-row{display:grid;grid-template-columns:1fr 140px auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+.gauge-row:last-of-type{border-bottom:none;}
+.gauge-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.gauge-scale{font-size:9px;color:var(--muted);line-height:1.5;margin-top:3px;}
+.gauge-inp{background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:12px;font-family:'IBM Plex Mono',monospace;width:100%;transition:border-color .2s;}
+.gauge-inp:focus{outline:none;border-color:var(--accent);}
+.gauge-badge{padding:5px 12px;border-radius:20px;font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:.5px;text-align:center;min-width:90px;transition:all .3s;}
+.gauge-badge.ron{background:rgba(0,232,122,0.12);color:var(--green);border:1px solid rgba(0,232,122,0.3);}
+.gauge-badge.neu{background:rgba(255,202,40,0.12);color:var(--gold);border:1px solid rgba(255,202,40,0.3);}
+.gauge-badge.roff{background:rgba(255,61,90,0.12);color:var(--red);border:1px solid rgba(255,61,90,0.3);}
+.gauge-badge.empty{background:var(--s2);color:var(--muted);border:1px solid var(--border);}
+.score-card{background:var(--s2);border-radius:10px;padding:16px 20px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.score-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;font-family:'Syne',sans-serif;margin-bottom:4px;}
+.score-result{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;}
+.score-result.ron{color:var(--green);}
+.score-result.neu{color:var(--gold);}
+.score-result.roff{color:var(--red);}
+.score-result.empty{color:var(--muted);}
+.score-bar-wrap{flex:1;background:var(--border);border-radius:4px;height:8px;overflow:hidden;}
+.score-bar-inner{height:100%;border-radius:4px;transition:width .4s,background .4s;}
+.score-tally{font-size:11px;color:var(--muted2);white-space:nowrap;}
+.global-score-banner{background:linear-gradient(135deg,rgba(0,200,255,0.06),rgba(0,232,122,0.04));border:1px solid rgba(0,200,255,0.15);border-radius:12px;padding:18px 22px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.gsb-region{text-align:center;}
+.gsb-region-name{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;font-family:'Syne',sans-serif;text-transform:uppercase;margin-bottom:4px;}
+.gsb-region-score{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;}
+.gsb-divider{width:1px;background:var(--border);height:40px;}
+.gsb-global{text-align:center;}
+.gsb-global-label{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;font-family:'Syne',sans-serif;text-transform:uppercase;margin-bottom:4px;}
+.gsb-global-score{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+
 /* WORLD MAP */
 .map-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;height:calc(100vh - 170px);}
 .map-sidebar{display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-right:2px;}
@@ -445,6 +478,69 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
     </div>
   </div>
 
+
+    <!-- US RISK GAUGE CHECKLIST -->
+    <div class="gauge-card" id="us-gauge-card">
+      <div class="gauge-title">🎯 US Risk Gauge Checklist
+        <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Risk Gauge Checklist</div><div class="tip-main">Enter today's values for each indicator. The system applies fixed rules to classify each one as Risk-On, Neutral, or Risk-Off — then scores the overall market regime. No AI, just rules.</div><div class="tip-kid">It's like a scorecard. Each indicator votes. The one with the most votes wins. If most things look scary, it's Risk-Off. If most things look good, it's Risk-On.</div></div></div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">VIX Index <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">VIX — Volatility Index</div><div class="tip-main">Measures how much the market expects the S&P 500 to swing over the next 30 days. It's derived from options prices — when traders are scared and buying protection, VIX spikes. Often called the "Fear Index."</div><div class="tip-kid">Imagine a weather forecast for storms in the stock market. VIX = 10 means clear skies. VIX = 40 means hurricane warning. The higher it is, the more scared everyone is.</div></div></div></div>
+          <div class="gauge-scale">Below 20 → calm, Risk-On &nbsp;·&nbsp; 20–30 → heightened uncertainty &nbsp;·&nbsp; Above 30 → storm warning, Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-us-vix" type="number" placeholder="e.g. 18.4" oninput="recalcGauges('us')"/>
+        <div class="gauge-badge empty" id="gb-us-vix">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">10yr Treasury Yield Change <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">10-Year Treasury Yield — Day Change (bps)</div><div class="tip-main">Enter today's change in basis points (1 bps = 0.01%). When yields rise sharply, money shifts from stocks to bonds and borrowing gets more expensive — that's Risk-Off. When yields fall, the opposite happens.</div><div class="tip-kid">Imagine the government's savings account interest rate. When that rate shoots up, everyone pulls money out of stocks to put in the "safe" account. That hurts stocks — Risk-Off.</div></div></div></div>
+          <div class="gauge-scale">Below −5 bps (falling) → Risk-On &nbsp;·&nbsp; −5 to +5 → Neutral &nbsp;·&nbsp; Above +5 bps (rising fast) → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-us-yld" type="number" placeholder="e.g. +8 or -4" oninput="recalcGauges('us')"/>
+        <div class="gauge-badge empty" id="gb-us-yld">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">DXY US Dollar Index <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">DXY — US Dollar Index</div><div class="tip-main">Measures the US dollar's strength against a basket of 6 major currencies (Euro, Yen, Pound, etc.). A rising dollar makes US exports expensive and tightens financial conditions globally — generally Risk-Off for risk assets.</div><div class="tip-kid">Imagine the dollar is a ruler everyone uses. When the ruler gets bigger (stronger dollar), everything priced in dollars costs more for foreigners. Less buying happens globally. That's usually bad for stocks.</div></div></div></div>
+          <div class="gauge-scale">Below 100 → weak dollar, Risk-On &nbsp;·&nbsp; 100–104 → Neutral &nbsp;·&nbsp; Above 104 → strong dollar, Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-us-dxy" type="number" placeholder="e.g. 103.4" oninput="recalcGauges('us')"/>
+        <div class="gauge-badge empty" id="gb-us-dxy">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">S&P 500 Day % Change <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">S&P 500 Daily Return</div><div class="tip-main">Enter today's percentage change in the S&P 500. A strong positive day signals risk appetite. A meaningful decline signals risk aversion. Small moves are noise.</div><div class="tip-kid">If the S&P is up big today, people are buying — that's confident. If it's down big, people are selling and running scared. Small moves (less than 0.5%) don't tell you much.</div></div></div></div>
+          <div class="gauge-scale">Above +0.5% → Risk-On &nbsp;·&nbsp; −0.5% to +0.5% → Neutral &nbsp;·&nbsp; Below −0.5% → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-us-spx" type="number" placeholder="e.g. +1.2 or -0.8" oninput="recalcGauges('us')"/>
+        <div class="gauge-badge empty" id="gb-us-spx">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">IG Credit Spread (bps) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Investment Grade Credit Spread</div><div class="tip-main">The extra yield corporate bonds pay over US Treasuries. Tight spreads = lenders trust companies = Risk-On. Wide spreads = lenders scared of default risk = Risk-Off. Find this on FRED or Bloomberg as "ICE BofA IG OAS."</div><div class="tip-kid">Imagine borrowing money from a friend. If they trust you, they lend at 2% extra. If they're scared you won't pay back, they charge 5% extra. Wide spread = scared lenders = bad sign for markets.</div></div></div></div>
+          <div class="gauge-scale">Below 90 bps → Risk-On &nbsp;·&nbsp; 90–130 bps → Neutral &nbsp;·&nbsp; Above 130 bps → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-us-cred" type="number" placeholder="e.g. 95" oninput="recalcGauges('us')"/>
+        <div class="gauge-badge empty" id="gb-us-cred">—</div>
+      </div>
+
+      <div class="score-card" id="us-score-card">
+        <div>
+          <div class="score-label">US Market Regime Today</div>
+          <div class="score-result empty" id="us-score-result">Enter values above</div>
+        </div>
+        <div class="score-bar-wrap"><div class="score-bar-inner" id="us-score-bar" style="width:0%;background:var(--muted)"></div></div>
+        <div class="score-tally" id="us-score-tally">0 / 5</div>
+      </div>
+    </div>
+
+
   <!-- EUROPE -->
   <div class="region-sec" id="region-eu">
     <div class="info-box"><p>European markets open before the US. Use this section to pick up early signals. ECB policy, energy prices, and geopolitics (Ukraine, Middle East) are the key drivers here.</p></div>
@@ -473,6 +569,67 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
       </div>
     </div>
   </div>
+
+
+    <!-- EU RISK GAUGE CHECKLIST -->
+    <div class="gauge-card" id="eu-gauge-card">
+      <div class="gauge-title">🎯 European Risk Gauge Checklist</div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">VSTOXX (European VIX) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">VSTOXX — Euro Stoxx 50 Volatility</div><div class="tip-main">Europe's equivalent of the VIX. Measures expected volatility of the Euro Stoxx 50 index over 30 days. Typically moves with VIX but can diverge during Europe-specific crises (energy shocks, debt crises, elections).</div><div class="tip-kid">Same as VIX but for Europe. If VSTOXX is high while US VIX is low, something is specifically scaring Europe — like an energy shortage or a big election result nobody expected.</div></div></div></div>
+          <div class="gauge-scale">Below 20 → calm, Risk-On &nbsp;·&nbsp; 20–30 → elevated fear &nbsp;·&nbsp; Above 30 → high stress, Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-eu-vstx" type="number" placeholder="e.g. 22.1" oninput="recalcGauges('eu')"/>
+        <div class="gauge-badge empty" id="gb-eu-vstx">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">Euro Stoxx 50 Day % <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Euro Stoxx 50 Daily Return</div><div class="tip-main">Europe's benchmark index of the 50 largest Eurozone companies. A strong day signals confidence in European growth. Because Europe opens before the US, this often sets the early tone for the New York open.</div><div class="tip-kid">Europe's version of the S&P 500 scorecard. If Europe's school day started well, there's a good chance the US school day will too — they influence each other.</div></div></div></div>
+          <div class="gauge-scale">Above +0.5% → Risk-On &nbsp;·&nbsp; −0.5% to +0.5% → Neutral &nbsp;·&nbsp; Below −0.5% → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-eu-stx" type="number" placeholder="e.g. +0.8 or -1.2" oninput="recalcGauges('eu')"/>
+        <div class="gauge-badge empty" id="gb-eu-stx">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">EUR/USD Day Change % <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">EUR/USD Daily Change</div><div class="tip-main">Enter today's % change in the Euro vs Dollar. Rising EUR/USD (Euro strengthening) suggests the dollar is weakening — typically Risk-On globally. Falling EUR/USD often signals dollar strength or euro-specific weakness — Risk-Off.</div><div class="tip-kid">If the Euro is getting stronger vs the dollar today, it usually means investors are feeling brave and buying riskier things. If the dollar is getting stronger, people are running to safety.</div></div></div></div>
+          <div class="gauge-scale">Above +0.3% (Euro rising) → Risk-On &nbsp;·&nbsp; −0.3% to +0.3% → Neutral &nbsp;·&nbsp; Below −0.3% (Euro falling) → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-eu-eurusd" type="number" placeholder="e.g. +0.4 or -0.6" oninput="recalcGauges('eu')"/>
+        <div class="gauge-badge empty" id="gb-eu-eurusd">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">German Bund 10yr Yield Change (bps) <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">German 10-Year Bund Yield — Day Change</div><div class="tip-main">Germany's 10yr government bond is Europe's equivalent of the US 10yr Treasury — the "risk-free" benchmark for the Eurozone. Rising Bund yields signal inflation/rate fears (Risk-Off for stocks). Falling yields signal a flight to safety or dovish ECB expectations.</div><div class="tip-kid">Germany's government savings account rate. When it goes up fast, European investors get nervous about inflation and pull money from stocks. When it falls, people feel safer.</div></div></div></div>
+          <div class="gauge-scale">Below −5 bps → Risk-On &nbsp;·&nbsp; −5 to +5 → Neutral &nbsp;·&nbsp; Above +5 bps → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-eu-bund" type="number" placeholder="e.g. +7 or -3" oninput="recalcGauges('eu')"/>
+        <div class="gauge-badge empty" id="gb-eu-bund">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">EU Natural Gas (TTF) Day % <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">TTF Natural Gas Price — Daily Change</div><div class="tip-main">TTF is the European natural gas benchmark (Title Transfer Facility, Netherlands). Europe imports most of its gas — when prices spike, manufacturing costs surge and inflation rises, squeezing corporate margins. A major Risk-Off signal specific to Europe.</div><div class="tip-kid">Imagine gas prices for European factories. When gas gets expensive, it's like raising the price of electricity for every factory in Europe at once. Everything slows down and costs more — that's bad for stocks.</div></div></div></div>
+          <div class="gauge-scale">Below −2% (gas falling) → Risk-On &nbsp;·&nbsp; −2% to +2% → Neutral &nbsp;·&nbsp; Above +2% (gas spiking) → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-eu-gas" type="number" placeholder="e.g. +3.5 or -1.2" oninput="recalcGauges('eu')"/>
+        <div class="gauge-badge empty" id="gb-eu-gas">—</div>
+      </div>
+
+      <div class="score-card">
+        <div>
+          <div class="score-label">European Market Regime Today</div>
+          <div class="score-result empty" id="eu-score-result">Enter values above</div>
+        </div>
+        <div class="score-bar-wrap"><div class="score-bar-inner" id="eu-score-bar" style="width:0%;background:var(--muted)"></div></div>
+        <div class="score-tally" id="eu-score-tally">0 / 5</div>
+      </div>
+    </div>
+
 
   <!-- ASIA -->
   <div class="region-sec" id="region-asia">
@@ -503,6 +660,67 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
     </div>
   </div>
 
+
+    <!-- ASIA RISK GAUGE CHECKLIST -->
+    <div class="gauge-card" id="asia-gauge-card">
+      <div class="gauge-title">🎯 Asian Market Risk Gauge Checklist</div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">USD/JPY Day Change <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">USD/JPY — Yen as Safe Haven Signal</div><div class="tip-main">Enter today's change in USD/JPY (how many yen per dollar). When USD/JPY falls (yen strengthening), it means investors are buying yen as a safe haven — a Risk-Off signal. When USD/JPY rises (yen weakening), it often signals risk appetite returning.</div><div class="tip-kid">The yen is like a global panic button. When things get scary worldwide, investors buy yen because Japan is considered safe. So if yen is getting stronger (USD/JPY number goes DOWN), people are scared somewhere in the world.</div></div></div></div>
+          <div class="gauge-scale">Rising (yen weakening, risk appetite) → Risk-On &nbsp;·&nbsp; Small move → Neutral &nbsp;·&nbsp; Falling (yen strengthening, safety bid) → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-as-usdjpy" type="number" placeholder="e.g. +0.8 or -1.2" oninput="recalcGauges('asia')"/>
+        <div class="gauge-badge empty" id="gb-as-usdjpy">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">Copper Day % Change <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Copper — Global Economic Barometer</div><div class="tip-main">Copper is used in construction, electronics, and manufacturing — everywhere in the economy. Because of this, traders call it "Dr. Copper" — it has a PhD in economics. Rising copper = global growth expected. Falling copper = slowdown feared.</div><div class="tip-kid">Copper goes into almost everything made or built. If the price is going up, factories worldwide are busy and buying copper. That means the economy is growing — Risk-On. If copper is falling, factories are slowing down — Risk-Off.</div></div></div></div>
+          <div class="gauge-scale">Above +1% → growth signal, Risk-On &nbsp;·&nbsp; −1% to +1% → Neutral &nbsp;·&nbsp; Below −1% → slowdown signal, Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-as-copper" type="number" placeholder="e.g. +1.5 or -0.8" oninput="recalcGauges('asia')"/>
+        <div class="gauge-badge empty" id="gb-as-copper">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">Nikkei 225 Day % <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Nikkei 225 — Japan's Main Index</div><div class="tip-main">Japan's benchmark of 225 large companies. Very sensitive to the yen — a weaker yen tends to boost the Nikkei because it makes Japanese exports cheaper. Also watches US tech heavily since many Japanese companies supply components to US tech firms.</div><div class="tip-kid">Japan's school scorecard. Japan's companies love a cheap yen because their products get cheaper for Americans to buy. So often when the yen weakens, Nikkei goes up at the same time.</div></div></div></div>
+          <div class="gauge-scale">Above +0.5% → Risk-On &nbsp;·&nbsp; −0.5% to +0.5% → Neutral &nbsp;·&nbsp; Below −0.5% → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-as-nk" type="number" placeholder="e.g. +1.2 or -0.4" oninput="recalcGauges('asia')"/>
+        <div class="gauge-badge empty" id="gb-as-nk">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">Hang Seng Day % <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">Hang Seng — China Proxy Signal</div><div class="tip-main">Hong Kong's index is the most liquid proxy for Chinese equities. Big moves here reflect Beijing policy changes, US-China tensions, or Chinese economic data. A strong Hang Seng often signals improving global risk appetite, especially for EM assets.</div><div class="tip-kid">Think of Hang Seng as the report card for China's biggest companies. If it's up big, China's economy is probably doing well or the government just announced something positive. That's good for global markets.</div></div></div></div>
+          <div class="gauge-scale">Above +0.5% → Risk-On &nbsp;·&nbsp; −0.5% to +0.5% → Neutral &nbsp;·&nbsp; Below −0.5% → Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-as-hsi" type="number" placeholder="e.g. +0.9 or -1.8" oninput="recalcGauges('asia')"/>
+        <div class="gauge-badge empty" id="gb-as-hsi">—</div>
+      </div>
+
+      <div class="gauge-row">
+        <div>
+          <div class="gauge-label">China Manufacturing PMI <div class="tip"><div class="tip-q">?</div><div class="tip-box"><div class="tip-title">China PMI — Manufacturing Activity</div><div class="tip-main">Purchasing Managers Index for Chinese factories. Above 50 = expansion (factories getting busier). Below 50 = contraction (factories slowing down). Released monthly. Because China manufactures so much of the world's goods, this number moves global commodity prices and supply chains.</div><div class="tip-kid">Imagine asking 1,000 Chinese factory managers: "Is business better or worse than last month?" PMI above 50 means more said better. Below 50 means more said worse. It's a monthly pulse check for the world's factory floor.</div></div></div></div>
+          <div class="gauge-scale">Above 51 → expansion, Risk-On &nbsp;·&nbsp; 49–51 → borderline &nbsp;·&nbsp; Below 49 → contraction, Risk-Off</div>
+        </div>
+        <input class="gauge-inp" id="g-as-pmi" type="number" placeholder="e.g. 50.4 or 48.9" oninput="recalcGauges('asia')"/>
+        <div class="gauge-badge empty" id="gb-as-pmi">—</div>
+      </div>
+
+      <div class="score-card">
+        <div>
+          <div class="score-label">Asian Market Regime Today</div>
+          <div class="score-result empty" id="asia-score-result">Enter values above</div>
+        </div>
+        <div class="score-bar-wrap"><div class="score-bar-inner" id="asia-score-bar" style="width:0%;background:var(--muted)"></div></div>
+        <div class="score-tally" id="asia-score-tally">0 / 5</div>
+      </div>
+    </div>
+
+
   <!-- SAVED PULSES -->
   <div class="region-sec" id="region-pulses">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
@@ -512,6 +730,16 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospac
       </div>
       <button class="btn btn-p btn-sm" onclick="savePulse()">+ Save Today's Pulse</button>
     </div>
+    <div class="global-score-banner" id="global-score-banner">
+      <div class="gsb-region"><div class="gsb-region-name">🇺🇸 US</div><div class="gsb-region-score empty" id="gsc-us">—</div></div>
+      <div class="gsb-divider"></div>
+      <div class="gsb-region"><div class="gsb-region-name">🇪🇺 Europe</div><div class="gsb-region-score empty" id="gsc-eu">—</div></div>
+      <div class="gsb-divider"></div>
+      <div class="gsb-region"><div class="gsb-region-name">🌏 Asia</div><div class="gsb-region-score empty" id="gsc-asia">—</div></div>
+      <div class="gsb-divider"></div>
+      <div class="gsb-global"><div class="gsb-global-label">🌐 Global Regime</div><div class="gsb-global-score empty" id="gsc-global">No data yet</div></div>
+    </div>
+    <div class="div"></div>
     <div id="pulse-list">
       <div class="empty"><div class="empty-icon">🗂</div><div class="empty-title">No pulses saved yet</div><div class="empty-sub">Fill out the US, Europe, and Asia sections then hit "Save Today's Pulse"</div></div>
     </div>
@@ -995,7 +1223,7 @@ function doLogin() {
 
 function saveAll() {
   // Capture all text inputs
-  const ids = ['us-sp500','us-nasdaq','us-dow','us-russ','us-vix','us-10yr','us-fed','us-cpi','us-feddate','us-macro-notes','us-leading','us-lagging','eu-ftse','eu-dax','eu-cac','eu-eurusd','eu-gas','eu-ecb','eu-geo','as-nikkei','as-hsi','as-shcomp','as-usdjpy','as-central','as-comm','as-notes'];
+  const ids = ['us-sp500','us-nasdaq','us-dow','us-russ','us-vix','us-10yr','us-fed','us-cpi','us-feddate','us-macro-notes','us-leading','us-lagging','eu-ftse','eu-dax','eu-cac','eu-eurusd','eu-gas','eu-ecb','eu-geo','as-nikkei','as-hsi','as-shcomp','as-usdjpy','as-central','as-comm','as-notes','g-us-vix','g-us-yld','g-us-dxy','g-us-spx','g-us-cred','g-eu-vstx','g-eu-stx','g-eu-eurusd','g-eu-bund','g-eu-gas','g-as-usdjpy','g-as-copper','g-as-nk','g-as-hsi','g-as-pmi'];
   const inputs = {};
   ids.forEach(id => { const el = document.getElementById(id); if(el) inputs[id] = el.value; });
   state.inputs = inputs;
@@ -1009,6 +1237,8 @@ function restoreInputs() {
     const el = document.getElementById(id);
     if (el) el.value = val;
   });
+  // Recalc gauges after restoring
+  setTimeout(() => { recalcGauges('us'); recalcGauges('eu'); recalcGauges('asia'); }, 50);
 }
 
 function exportData() {
@@ -1030,16 +1260,28 @@ function importData(e) {
     try {
       const parsed = JSON.parse(ev.target.result);
       if (!parsed.user) { alert('Invalid Playbook file.'); return; }
-      if (!confirm(`Import data for "${parsed.user}"? This will overwrite your current session.`)) return;
-      state = { ...state, ...parsed };
+      if (!confirm('Import data for "' + parsed.user + '"? Your saved pulses, projects, ideas, portfolio and map events will be restored. Input fields will be blank so you can start fresh today.')) return;
+      // Restore all saved data EXCEPT inputs (start each session fresh)
+      state.user = parsed.user;
+      state.pulses = parsed.pulses || [];
+      state.projects = parsed.projects || [];
+      state.ideas = parsed.ideas || [];
+      state.portfolio = parsed.portfolio || [];
+      state.updateLog = parsed.updateLog || [];
+      state.sessionLog = parsed.sessionLog || [];
+      state.mapEvents = parsed.mapEvents || [];
+      // Intentionally NOT restoring state.inputs — blank slate for today
+      state.inputs = {};
       localStorage.setItem('pb2_state', JSON.stringify(state));
       document.getElementById('userDisplay').textContent = state.user;
       document.getElementById('loginModal').style.display = 'none';
-      restoreInputs();
+      // Clear all input fields explicitly
+      const ids = ['us-sp500','us-nasdaq','us-dow','us-russ','us-vix','us-10yr','us-fed','us-cpi','us-feddate','us-macro-notes','us-leading','us-lagging','eu-ftse','eu-dax','eu-cac','eu-eurusd','eu-gas','eu-ecb','eu-geo','as-nikkei','as-hsi','as-shcomp','as-usdjpy','as-central','as-comm','as-notes','g-us-vix','g-us-yld','g-us-dxy','g-us-spx','g-us-cred','g-eu-vstx','g-eu-stx','g-eu-eurusd','g-eu-bund','g-eu-gas','g-as-usdjpy','g-as-copper','g-as-nk','g-as-hsi','g-as-pmi'];
+      ids.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
       renderAll();
-      toast('✓ Imported successfully');
+      toast('✓ Imported — all your saved data is back, inputs are fresh for today');
     } catch(err) {
-      alert('Could not read file. Make sure it\'s a valid Playbook export.');
+      alert('Could not read file. Make sure it is a valid Playbook export.');
     }
   };
   reader.readAsText(file);
@@ -1800,6 +2042,142 @@ function deleteMapEvent(id) {
   renderMapEvents();
   renderMapSidebar();
   toast('Event removed');
+}
+
+
+// ═══════════════════════════════════
+// RISK GAUGE SYSTEM
+// ═══════════════════════════════════
+function gaugeClass(val, ronMax, roffMin, direction) {
+  // direction: 'normal' = low is ron, high is roff
+  //            'inverse' = high is ron, low is roff  
+  if (val === null || val === undefined || val === '') return 'empty';
+  const n = parseFloat(val);
+  if (isNaN(n)) return 'empty';
+  if (direction === 'inverse') {
+    if (n >= ronMax) return 'ron';
+    if (n <= roffMin) return 'roff';
+    return 'neu';
+  }
+  // normal: low=ron, high=roff
+  if (n <= ronMax) return 'ron';
+  if (n >= roffMin) return 'roff';
+  return 'neu';
+}
+
+const GAUGES = {
+  us: [
+    { inp:'g-us-vix',   badge:'gb-us-vix',   fn: v => gaugeClass(v, 20, 30, 'normal') },
+    { inp:'g-us-yld',   badge:'gb-us-yld',   fn: v => gaugeClass(v, -5, 5, 'normal') },
+    { inp:'g-us-dxy',   badge:'gb-us-dxy',   fn: v => gaugeClass(v, 100, 104, 'normal') },
+    { inp:'g-us-spx',   badge:'gb-us-spx',   fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
+    { inp:'g-us-cred',  badge:'gb-us-cred',  fn: v => gaugeClass(v, 90, 130, 'normal') },
+  ],
+  eu: [
+    { inp:'g-eu-vstx',  badge:'gb-eu-vstx',  fn: v => gaugeClass(v, 20, 30, 'normal') },
+    { inp:'g-eu-stx',   badge:'gb-eu-stx',   fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
+    { inp:'g-eu-eurusd',badge:'gb-eu-eurusd', fn: v => gaugeClass(v, -0.3, 0.3, 'inverse') },
+    { inp:'g-eu-bund',  badge:'gb-eu-bund',  fn: v => gaugeClass(v, -5, 5, 'normal') },
+    { inp:'g-eu-gas',   badge:'gb-eu-gas',   fn: v => gaugeClass(v, -2, 2, 'normal') },
+  ],
+  asia: [
+    { inp:'g-as-usdjpy',badge:'gb-as-usdjpy',fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
+    { inp:'g-as-copper',badge:'gb-as-copper',fn: v => gaugeClass(v, -1, 1, 'inverse') },
+    { inp:'g-as-nk',    badge:'gb-as-nk',   fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
+    { inp:'g-as-hsi',   badge:'gb-as-hsi',  fn: v => gaugeClass(v, -0.5, 0.5, 'inverse') },
+    { inp:'g-as-pmi',   badge:'gb-as-pmi',  fn: v => gaugeClass(v, 49, 51, 'inverse') },
+  ]
+};
+
+const BADGE_LABELS = { ron:'RISK-ON ↑', neu:'NEUTRAL →', roff:'RISK-OFF ↓', empty:'—' };
+const BADGE_COLORS = { ron:'var(--green)', neu:'var(--gold)', roff:'var(--red)', empty:'var(--muted)' };
+
+function recalcGauges(region) {
+  const gauges = GAUGES[region];
+  let ronCount = 0, roffCount = 0, filled = 0;
+  gauges.forEach(g => {
+    const el = document.getElementById(g.inp);
+    const badge = document.getElementById(g.badge);
+    if (!el || !badge) return;
+    const val = el.value.trim();
+    const cls = val === '' ? 'empty' : g.fn(val);
+    badge.className = 'gauge-badge ' + cls;
+    badge.textContent = BADGE_LABELS[cls];
+    if (cls !== 'empty') {
+      filled++;
+      if (cls === 'ron') ronCount++;
+      if (cls === 'roff') roffCount++;
+    }
+  });
+
+  // Calculate score
+  const resultEl = document.getElementById(region+'-score-result');
+  const barEl = document.getElementById(region+'-score-bar');
+  const tallyEl = document.getElementById(region+'-score-tally');
+  const gscEl = document.getElementById('gsc-'+region);
+
+  if (!resultEl) return;
+
+  if (filled === 0) {
+    resultEl.className = 'score-result empty';
+    resultEl.textContent = 'Enter values above';
+    if (barEl) { barEl.style.width='0%'; barEl.style.background='var(--muted)'; }
+    if (tallyEl) tallyEl.textContent = '0 / ' + gauges.length;
+    if (gscEl) { gscEl.className='gsb-region-score empty'; gscEl.textContent='—'; }
+    updateGlobalScore();
+    return;
+  }
+
+  const netScore = ronCount - roffCount;
+  let regime, cls;
+  if (netScore > 0) { regime = 'RISK-ON ↑'; cls = 'ron'; }
+  else if (netScore < 0) { regime = 'RISK-OFF ↓'; cls = 'roff'; }
+  else { regime = 'NEUTRAL →'; cls = 'neu'; }
+
+  resultEl.className = 'score-result ' + cls;
+  resultEl.textContent = regime;
+
+  const pct = Math.round((ronCount / filled) * 100);
+  if (barEl) {
+    barEl.style.width = pct + '%';
+    barEl.style.background = cls === 'ron' ? 'var(--green)' : cls === 'roff' ? 'var(--red)' : 'var(--gold)';
+  }
+  if (tallyEl) tallyEl.textContent = ronCount + ' bullish / ' + filled + ' filled';
+  if (gscEl) {
+    gscEl.className = 'gsb-region-score ' + cls;
+    gscEl.textContent = regime;
+  }
+  updateGlobalScore();
+}
+
+function updateGlobalScore() {
+  const globalEl = document.getElementById('gsc-global');
+  if (!globalEl) return;
+  const regions = ['us','eu','asia'];
+  let totalRon = 0, totalRoff = 0, totalFilled = 0;
+  regions.forEach(r => {
+    GAUGES[r].forEach(g => {
+      const el = document.getElementById(g.inp);
+      if (!el || el.value.trim() === '') return;
+      const cls = g.fn(el.value.trim());
+      if (cls === 'empty') return;
+      totalFilled++;
+      if (cls === 'ron') totalRon++;
+      if (cls === 'roff') totalRoff++;
+    });
+  });
+  if (totalFilled === 0) {
+    globalEl.className = 'gsb-global-score empty';
+    globalEl.textContent = 'No data yet';
+    return;
+  }
+  const net = totalRon - totalRoff;
+  let label, cls;
+  if (net > 0) { label = 'RISK-ON ↑'; cls = 'ron'; }
+  else if (net < 0) { label = 'RISK-OFF ↓'; cls = 'roff'; }
+  else { label = 'NEUTRAL →'; cls = 'neu'; }
+  globalEl.className = 'gsb-global-score ' + cls;
+  globalEl.textContent = label + '  (' + totalRon + '/' + totalFilled + ')';
 }
 
 // ═══════════════════════════════════
